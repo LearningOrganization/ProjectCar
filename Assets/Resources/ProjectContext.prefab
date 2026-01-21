@@ -47,7 +47,7 @@ MonoBehaviour:
   _scriptableObjectInstallers: []
   _monoInstallers: []
   _installerPrefabs:
-  - {fileID: -443893838518646678, guid: 3a827b63a453b3e48951f89be023b333, type: 3}
+  - {fileID: 5556978799792583013, guid: 0617cfa775b65b041977282e6e56acfb, type: 3}
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
   _buildsReflectionBakingCoverageMode: 0
