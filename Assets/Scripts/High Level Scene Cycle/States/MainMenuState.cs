@@ -4,7 +4,6 @@ using Zenject;
 
 public class MainMenuState : IGameState
 {
-
     private GameStateMachine _fsm;
 
     [Inject]
@@ -16,11 +15,11 @@ public class MainMenuState : IGameState
     public void Enter()
     {
         //_fsm.Enter<LoadingState>();
-        UnityEngine.Debug.Log("GamePlayState runs");
+        UnityEngine.Debug.Log("MainMenuState runs");
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+         UnityEngine.Debug.Log("MainMenuState exit");
     }
 }

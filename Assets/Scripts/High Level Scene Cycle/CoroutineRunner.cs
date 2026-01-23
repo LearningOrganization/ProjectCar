@@ -1,21 +1,36 @@
 
 
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
 public class CoroutineRunner : MonoBehaviour
 {
-    public static CoroutineRunner Instance { get; private set;}
+    private static CoroutineRunner _instance;
 
-    public void Awake()
+    public static CoroutineRunner Instance
     {
-        if(Instance != null)
+        get
         {
-                Destroy(gameObject);
-                return;
+            if (_instance == null)
+            {
+                var go = new GameObject("[CoroutineRunner]");
+                _instance = go.AddComponent<CoroutineRunner>();
+                DontDestroyOnLoad(go);
+            }
+            return _instance;
         }
+    }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+    public Coroutine Run(IEnumerator routine)
+    {
+        return StartCoroutine(routine);
+    }
+
+    public void Stop(Coroutine coroutine)
+    {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
     }
 }

@@ -1,44 +1,69 @@
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class SceneLoader : ISceneLoader
 {
+    private static NonPlayingScene _loadingScene = NonPlayingScene.LoadingScene;
+    [Inject] private GameStateMachine _gameState;
 
-    private static Scene _loadingScene = Scene.LoadingScene;
-
-    public void AsyncSceneLoad(Scene sceneID, Action onLoaded = null)
+    public Task LoadNonPlayingScene<T>(NonPlayingScene sceneID, Action onLoaded = null) where T : IGameState
     {
-        SceneManager.LoadSceneAsync(_loadingScene.ToString())
-            .completed += _ =>
+        return AsyncSceneLoad(
+            sceneID.ToString(),
+            () =>
             {
-                LoadTargetScene(sceneID, onLoaded);
-            };
+                _gameState.Enter<T>();
+                onLoaded?.Invoke();
+            }
+        );
     }
 
-    private void LoadTargetScene(Scene sceneID, Action onLoaded = null)
+    public Task LoadPlayingScene<T>(PlayingScene sceneID, Action onLoaded = null) where T : IGameState
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneID.ToString());
-        operation.allowSceneActivation = false;
-
-        CoroutineRunner.Instance.StartCoroutine(WaitForLoad(operation, onLoaded));
+        return AsyncSceneLoad(
+            sceneID.ToString(),
+            () =>
+            {
+                _gameState.Enter<T>();
+                onLoaded?.Invoke();
+            }
+        );
     }
 
-    private System.Collections.IEnumerator WaitForLoad(AsyncOperation operation, Action onLoaded)
+    private async Task AsyncSceneLoad(string sceneName, Action afterActivation = null)
     {
-      
-        while (operation.progress < 0.9f)
-        {
-            // I can send progress in loading scene
-            yield return null;
-        }
+        // load loading scene
+        await LoadSingleAsync(_loadingScene.ToString());
 
-        // small pause (not necessary)
-        yield return null;
+        // load target scene
+        var op = SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = false;
 
-        operation.allowSceneActivation = true;
+        while (op.progress < 0.9f)
+            await Task.Yield();
 
-        onLoaded?.Invoke();
+        // scene activation
+        op.allowSceneActivation = true;
+
+        while (!op.isDone)
+            await Task.Yield();
+
+        afterActivation?.Invoke();
     }
 
+    private async Task LoadSingleAsync(string sceneName)
+    {
+        var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        while (!op.isDone)
+            await Task.Yield();
+    }
 }
+
+    
+
+    
+

@@ -13,19 +13,22 @@ public class GameStateMachine
         _container = container;
     }
 
-    public void Enter<TState>() where TState : IGameState
+    // add returning of curr state;
+    public T Enter<T>() where T : IGameState
     {
         _activeState?.Exit();
 
-        var stateType = typeof(TState);
+        var stateType = typeof(T);
 
         if (!_states.TryGetValue(stateType, out var newState))
         {
-            newState = _container.Instantiate<TState>();
+            newState = _container.Instantiate<T>();    
             _states.Add(stateType, newState);
         }
 
         _activeState = newState;
         _activeState.Enter();
+
+        return (T) _activeState;
     }
 }

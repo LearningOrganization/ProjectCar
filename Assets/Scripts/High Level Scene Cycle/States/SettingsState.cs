@@ -8,6 +8,6 @@ public class SettingsState : IGameState
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        UnityEngine.Debug.Log("SettingsState exit");
     }
 }
