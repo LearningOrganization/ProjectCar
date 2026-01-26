@@ -111,7 +111,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Acceleration"",
+                    ""name"": ""ThrottleInput"",
                     ""type"": ""Value"",
                     ""id"": ""0d796f8f-9833-4712-9afa-dd00d6aee37e"",
                     ""expectedControlType"": """",
@@ -186,7 +186,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceleration"",
+                    ""action"": ""ThrottleInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -820,7 +820,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_WheelsRotating = m_Player.FindAction("WheelsRotating", throwIfNotFound: true);
-        m_Player_Acceleration = m_Player.FindAction("Acceleration", throwIfNotFound: true);
+        m_Player_ThrottleInput = m_Player.FindAction("ThrottleInput", throwIfNotFound: true);
         m_Player_Break = m_Player.FindAction("Break", throwIfNotFound: true);
         m_Player_HandBrake = m_Player.FindAction("HandBrake", throwIfNotFound: true);
         m_Player_ShiftUp = m_Player.FindAction("ShiftUp", throwIfNotFound: true);
@@ -920,7 +920,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_WheelsRotating;
-    private readonly InputAction m_Player_Acceleration;
+    private readonly InputAction m_Player_ThrottleInput;
     private readonly InputAction m_Player_Break;
     private readonly InputAction m_Player_HandBrake;
     private readonly InputAction m_Player_ShiftUp;
@@ -945,9 +945,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @WheelsRotating => m_Wrapper.m_Player_WheelsRotating;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Acceleration".
+        /// Provides access to the underlying input action "Player/ThrottleInput".
         /// </summary>
-        public InputAction @Acceleration => m_Wrapper.m_Player_Acceleration;
+        public InputAction @ThrottleInput => m_Wrapper.m_Player_ThrottleInput;
         /// <summary>
         /// Provides access to the underlying input action "Player/Break".
         /// </summary>
@@ -996,9 +996,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @WheelsRotating.started += instance.OnWheelsRotating;
             @WheelsRotating.performed += instance.OnWheelsRotating;
             @WheelsRotating.canceled += instance.OnWheelsRotating;
-            @Acceleration.started += instance.OnAcceleration;
-            @Acceleration.performed += instance.OnAcceleration;
-            @Acceleration.canceled += instance.OnAcceleration;
+            @ThrottleInput.started += instance.OnThrottleInput;
+            @ThrottleInput.performed += instance.OnThrottleInput;
+            @ThrottleInput.canceled += instance.OnThrottleInput;
             @Break.started += instance.OnBreak;
             @Break.performed += instance.OnBreak;
             @Break.canceled += instance.OnBreak;
@@ -1028,9 +1028,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @WheelsRotating.started -= instance.OnWheelsRotating;
             @WheelsRotating.performed -= instance.OnWheelsRotating;
             @WheelsRotating.canceled -= instance.OnWheelsRotating;
-            @Acceleration.started -= instance.OnAcceleration;
-            @Acceleration.performed -= instance.OnAcceleration;
-            @Acceleration.canceled -= instance.OnAcceleration;
+            @ThrottleInput.started -= instance.OnThrottleInput;
+            @ThrottleInput.performed -= instance.OnThrottleInput;
+            @ThrottleInput.canceled -= instance.OnThrottleInput;
             @Break.started -= instance.OnBreak;
             @Break.performed -= instance.OnBreak;
             @Break.canceled -= instance.OnBreak;
@@ -1358,12 +1358,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnWheelsRotating(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Acceleration" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ThrottleInput" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAcceleration(InputAction.CallbackContext context);
+        void OnThrottleInput(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Break" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

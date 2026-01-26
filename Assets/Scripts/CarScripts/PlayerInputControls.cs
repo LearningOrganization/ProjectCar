@@ -3,13 +3,13 @@ using UnityEngine;
 public struct PlayerInput
 {
     public Vector2 Look;
-    public Vector2 WheelsRotating; 
-    public float Acceleration;
-    public float Break;
+    public Vector2 WheelsRotatingInput; 
+    public float ThrottleInput;
+    public float BrakeInput;
     public bool Handbrake;
 
-    public bool ShiftUp;
-    public bool ShiftDown;
+    public bool ShiftUpRequested;
+    public bool ShiftDownRequested;
 
 }
 
@@ -42,14 +42,15 @@ public class PlayerInputControls : MonoBehaviour
     {
         PlayerInput = new PlayerInput
         {
-            
             Look = _controls.Player.Look.ReadValue<Vector2>(),
-            WheelsRotating = _controls.Player.WheelsRotating.ReadValue<Vector2>(),
+            WheelsRotatingInput = _controls.Player.WheelsRotating.ReadValue<Vector2>(),
 
-            Acceleration = _controls.Player.Acceleration.ReadValue<float>(),
-            Break = _controls.Player.Break.ReadValue<float>(),
+            ThrottleInput = _controls.Player.ThrottleInput.ReadValue<float>(),
+            BrakeInput = _controls.Player.Break.ReadValue<float>(),
             Handbrake = _controls.Player.HandBrake.ReadValue<float>() > 0.5f,
 
+            ShiftUpRequested = _controls.Player.ShiftUp.triggered,
+            ShiftDownRequested = _controls.Player.ShiftDown.triggered
         };
     }
 }

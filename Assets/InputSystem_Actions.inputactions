@@ -25,7 +25,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Acceleration",
+                    "name": "ThrottleInput",
                     "type": "Value",
                     "id": "0d796f8f-9833-4712-9afa-dd00d6aee37e",
                     "expectedControlType": "",
@@ -100,7 +100,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceleration",
+                    "action": "ThrottleInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

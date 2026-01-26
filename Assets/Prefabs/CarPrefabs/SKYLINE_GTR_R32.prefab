@@ -320,9 +320,7 @@ GameObject:
   - component: {fileID: 2522161669612531324}
   - component: {fileID: 2141497456286716867}
   - component: {fileID: 3413466517510974718}
-  - component: {fileID: 7037107028739816597}
-  - component: {fileID: 7975376931157627435}
-  - component: {fileID: 1231491225689200463}
+  - component: {fileID: 2383779934582706892}
   m_Layer: 0
   m_Name: SKYLINE_GTR_R32
   m_TagString: Untagged
@@ -395,7 +393,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.859437, y: 0.67289746, z: 4.6468444}
   m_Center: {x: -0.010313183, y: 0.692483, z: 0.30622315}
---- !u!114 &7037107028739816597
+--- !u!114 &2383779934582706892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -404,86 +402,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8410764582100792745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bee82e070f542748937e9316295d591, type: 3}
+  m_Script: {fileID: 11500000, guid: 584f0f92b36a36946b2c41364ef60c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SteeringWheels:
-  - {fileID: 2726400608929047840}
-  - {fileID: 153771793678754010}
-  SteeringRange: 30
-  SteerSpeed: 180
-  SteeringRangeAtMaxSpeed: 5
---- !u!114 &7975376931157627435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8410764582100792745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c521968708fe834297f40f5dd913c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Engine: {fileID: 1231491225689200463}
-  Wheels: []
-  GearRatios:
-  - 0
-  - 3.214
-  - 1.925
-  - 1.302
-  - 1
-  - 0.752
-  FinalGearRatio: 4.111
-  TransmissionEfficiency: 0.85
-  IsAutomatic: 1
-  UpshiftRPM: 0
-  DownshiftRPM: 0
-  ShiftingTime: 0.1
-  WheelRadius: 0
-  CurrentGear: 0
-  SpeedMS: 0
-  SpeedKmH: 0
-  WheelRPM: 0
-  PrimaryShaftRPM: 0
-  ShiftCooldown: 10
---- !u!114 &1231491225689200463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8410764582100792745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc27b2c83c06cf34d8a610086fcb8155, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TorqueCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  PowerCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  MinRPM: 0
-  MaxRPM: 0
-  IdleRPM: 0
-  CurrentRPM: 0
-  MaxTorque: 0
-  CurrentTorque: 0
-  MaxPower: 0
-  CurrentPower: 0
-  ThrottleResponse: 0
-  BasicEngineInertia: 1
-  EngineBraking: 0
-  InertiaMultiplier: 0
-  ThrottleInput: 0
+  CarPhysicData:
+    EngineRPM: 0
+    EngineTorque: 0
+    ThrottleInput: 0
+    EngineBraking: 0
 --- !u!1 &8913577731704461961
 GameObject:
   m_ObjectHideFlags: 0
