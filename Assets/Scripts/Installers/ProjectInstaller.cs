@@ -17,6 +17,7 @@ namespace PawnShop.Installers
             Container.Bind<GameBootstrapper>().FromComponentInHierarchy().AsSingle();
             Container.Bind<GameStateMachine>().AsSingle();
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
+            Container.Bind<WalletService>().AsSingle().WithArguments(Currency.Cash, 10000);
 
             // --- Game States ---
             Container.Bind<GamePlayState>().AsSingle();

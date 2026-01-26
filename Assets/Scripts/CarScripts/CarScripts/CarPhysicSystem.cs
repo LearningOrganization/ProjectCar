@@ -9,9 +9,9 @@ public class CarPhysicSystem : MonoBehaviour
     public SteeringSimulation steeringControl;
 
     [Header("Debug")]
-    public bool ShowDebugInfo = true;
+    public bool ShowDebugInfo = false;
 
-    private CarPhysicData _carPhysicData;
+    private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
 
@@ -19,21 +19,41 @@ public class CarPhysicSystem : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        _carPhysicData.Mass = _rb.mass;
-        _carPhysicData.CurrentGear = 0;
+        _carPhysicsData.Mass = _rb.mass;
+        _carPhysicsData.CurrentGear = 0;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        // input reading
-        
-
+       
     }
 
     void FixedUpdate()
     {
-        
+        _carPhysicsData.DeltaTime = Time.deltaTime;
+        _carPhysicsData.Velocity = _rb.linearVelocity;
+
+        // brakes 
+
+        // wheels and transmission 
+
+        // engine 
+
+        // steering
+
+        if(ShowDebugInfo)
+        {
+            ShowDebug();
+        }
+    }
+
+    private void ShowDebug()
+    {
+         Debug.Log($"RPM: {_carPhysicsData.EngineRPM:F0} | " +
+                  $"Gear: {_carPhysicsData.CurrentGear} | " +
+                  $"Speed: {_carPhysicsData.SpeedKmH:F1} km/h | " +
+                  $"Torque: {_carPhysicsData.EngineTorque:F0} Nm");
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public struct CarPhysicData
+public struct CarPhysicsData
 {
     // ===== ENGINE DATA =====
     public float EngineRPM;
@@ -21,7 +21,6 @@ public struct CarPhysicData
     // ===== BRAKE DATA =====
     public float BrakeTorque;
 
-
     // ===== STEERING DATA =====
     public float SteeringAngle;
 
@@ -35,14 +34,12 @@ public struct CarPhysicData
 
     // ===== SYSTEM =====
     public float DeltaTime;
-
-    
 }
 
 [System.Serializable]
 public class EngineSimulation
 {
-    public void UpdatePhysics(ref CarPhysicData data, ref PlayerInput playerInput)
+    public void UpdatePhysics(ref CarPhysicsData data, ref PlayerInput playerInput)
     {
         
     }
@@ -51,7 +48,7 @@ public class EngineSimulation
 [System.Serializable]
 public class TransmissionSimulation
 {
-    public void UpdatePhysics(ref CarPhysicData data, ref PlayerInput playerInput)
+    public void UpdatePhysics(ref CarPhysicsData data, ref PlayerInput playerInput)
     {
         
     }
@@ -60,7 +57,7 @@ public class TransmissionSimulation
 [System.Serializable]
 public class BreakingSimulation
 {
-    public void UpdatePhysics(ref CarPhysicData data, ref PlayerInput playerInput)
+    public void UpdatePhysics(ref CarPhysicsData data, ref PlayerInput playerInput)
     {
         
     }
@@ -77,7 +74,7 @@ public class SteeringSimulation
     public float SteerSpeed = 180f;
     public float SteeringRangeAtMaxSpeed = 5f;
 
-    public void UpdatePhysics(ref CarPhysicData data, ref PlayerInput playerInput)
+    public void UpdatePhysics(ref CarPhysicsData data, ref PlayerInput playerInput)
     {
         
     }
