@@ -3,14 +3,19 @@ using UnityEngine;
 public class CarPhysicSystem : MonoBehaviour
 {
     [Header("Physic Components")]
-    public EngineSimulation EngineSimulation;
-    public TransmissionSimulation TransmissionSimulation;
-    public  BreakingSimulation BreakingSimulation;
-    public SteeringSimulation steeringControl;
+    [SerializeField] private EngineSimulation EngineSimulation;
+    [SerializeField] private TransmissionSimulation TransmissionSimulation;
+    [SerializeField] private BreakingSimulation BreakingSimulation;
+    [SerializeField] private SteeringSimulation SteeringSimulation;
+
+    [Header("Steer wheels")]
+    [SerializeField] private WheelCollider[] SteeringWheels;
+    [Header("Motorized wheels")]
+    [SerializeField] private WheelCollider[] MotorizedWheels;
 
     [Header("Debug")]
-    public bool ShowDebugInfo = false;
-
+    [SerializeField] private bool ShowDebugInfo = false;
+    
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
@@ -21,7 +26,11 @@ public class CarPhysicSystem : MonoBehaviour
 
         _carPhysicsData.Mass = _rb.mass;
         _carPhysicsData.CurrentGear = 0;
+    }
 
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
@@ -32,8 +41,12 @@ public class CarPhysicSystem : MonoBehaviour
 
     void FixedUpdate()
     {
+        _playerInput = PlayerManager.Instance.Input.PlayerInput;
+
         _carPhysicsData.DeltaTime = Time.deltaTime;
         _carPhysicsData.Velocity = _rb.linearVelocity;
+
+        SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref _playerInput);
 
         // brakes 
 
@@ -41,11 +54,24 @@ public class CarPhysicSystem : MonoBehaviour
 
         // engine 
 
-        // steering
+        //application of all forces 
+        ApplySteering();
+
 
         if(ShowDebugInfo)
         {
             ShowDebug();
+        }
+    }
+
+    private void ApplySteering()
+    {
+        foreach(WheelCollider wheel in SteeringWheels)
+        {
+            if(wheel != null)
+            {
+                wheel.steerAngle = _carPhysicsData.CurrentSteeringAngle;
+            }
         }
     }
 

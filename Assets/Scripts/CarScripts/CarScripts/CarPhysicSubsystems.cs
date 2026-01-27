@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -22,7 +23,9 @@ public struct CarPhysicsData
     public float BrakeTorque;
 
     // ===== STEERING DATA =====
-    public float SteeringAngle;
+    public float CurrentSteeringAngle ; 
+    // public float TargetSteerAngle; // target steering angle
+    // public float MaxSteerAngle; // at current speed
 
     // ===== VEHICLE DATA =====
     public float SpeedKmH;
@@ -66,17 +69,35 @@ public class BreakingSimulation
 [System.Serializable]
 public class SteeringSimulation
 {
-    [Header("Steer wheels")]
-    public WheelCollider[] SteeringWheels;
-
-    [Header("Steering params")]
-    public float SteeringRange = 30f;
-    public float SteerSpeed = 180f;
-    public float SteeringRangeAtMaxSpeed = 5f;
-
+    [Header("Steering Range")]
+    [SerializeField] private float SteeringRangeAtZeroSpeed = 35f;
+    [SerializeField] private float SteeringRangeAtMaxSpeed = 5f;
+    [SerializeField] private float MaxSpeedForSteering = 200f; 
+    
+    [Header("Steering Response")]
+    [SerializeField] private float SteerSpeed = 180f; 
+    [Tooltip("Returning to center obviously faster")]
+    [SerializeField] private float ReturnSpeed = 240f;
+    
+    [Header("Deadzone (optional)")]
+    [SerializeField] private float InputDeadzone = 0.1f;
+    
+    private float _currentSteerAngle = 0f;
+    
     public void UpdatePhysics(ref CarPhysicsData data, ref PlayerInput playerInput)
     {
+        float steeringInput = playerInput.WheelsRotatingInput.x;
         
+        float speedFactor = Mathf.Clamp01(data.SpeedKmH / MaxSpeedForSteering);
+        float currentMaxAngle = Mathf.Lerp(SteeringRangeAtZeroSpeed, SteeringRangeAtMaxSpeed, speedFactor);
+    
+        float targetAngle = steeringInput * currentMaxAngle;
+        
+        float speed = Mathf.Abs(steeringInput) > 0.01f ? SteerSpeed : ReturnSpeed;
+        _currentSteerAngle = Mathf.MoveTowards(_currentSteerAngle, targetAngle, speed * data.DeltaTime);
+        
+        data.CurrentSteeringAngle = _currentSteerAngle;
     }
+
 }
 
