@@ -7,12 +7,14 @@ public class LoadingState : IGameState
 {
     private ISceneLoader _sceneLoader;
     private GameStateMachine _fsm;
+    private IWalletService _walletService;
 
     [Inject]
-    public void Construct(ISceneLoader sceneLoader, GameStateMachine gameStateMachine)
+    public void Construct(ISceneLoader sceneLoader, GameStateMachine gameStateMachine, IWalletService walletService)
     {
         _sceneLoader = sceneLoader;
         _fsm = gameStateMachine;
+        _walletService = walletService;
     }
 
 
@@ -31,7 +33,8 @@ public class LoadingState : IGameState
     public void Enter()
     {
         UnityEngine.Debug.Log("LoadingState is running");
-
+        _walletService.TransactionTry(Currency.Cash, 1000);
+        _walletService.TransactionTry(Currency.Tokens, 10);
         // should be replaced and adapted for all game and non-game scenes
         // _sceneLoader.AsyncSceneLoad(Scene.UtahTrackScene, ()=>
         // {
