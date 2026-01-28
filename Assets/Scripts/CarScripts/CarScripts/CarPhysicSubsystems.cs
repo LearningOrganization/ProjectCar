@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 [System.Serializable]
 public struct CarPhysicsData
@@ -12,7 +13,7 @@ public struct CarPhysicsData
     // ===== TRANSMISSION DATA =====
     public int CurrentGear;
     public float CurrentGearRatio;
-    public float FinalDriveRatio;
+    //public float FinalDriveRatio;
     public float ClutchEngagement;
 
     // ===== WHEEL DATA =====
@@ -51,7 +52,50 @@ public class EngineSimulation
 [System.Serializable]
 public class TransmissionSimulation
 {
+
+    [Header("Gear specs")]
+    public float[] ForwardGearRatios = { 3.214f, 1.925f, 1.302f, 1.000f, 0.752f };
+    public float[] ReverseRatio =  {-3.2f};
+    public float FinalGearRatio = 4.111f;
+    public float TransmissionEfficiency = 0.85f;
+        
+    [Header("Shift Settings")]
+    public float ShiftTime = 0.3f;
+
+    private float _shiftTimer = 0f;
+
+
     public void UpdatePhysics(ref CarPhysicsData data, ref PlayerInput playerInput)
+    {
+        
+    }
+
+    private void UpdateGearRatio(ref CarPhysicsData data, ref PlayerInput playerInput)
+    {
+        if(data.CurrentGear == 0)
+        {
+            data.CurrentGearRatio = 0f;
+        }
+        else if (data.CurrentGear == -1)
+        {
+            data.CurrentGearRatio = ReverseRatio[0];
+        }
+        else if(data.CurrentGear > 0 && data.CurrentGear <= ForwardGearRatios.Length)
+        {
+            data.CurrentGearRatio = ForwardGearRatios[data.CurrentGear - 1];
+        }
+    }
+
+    private void CalculateTransmissionTorque(ref CarPhysicsData data, ref PlayerInput playerInput)
+    {
+        
+    }
+
+    public void ShiftUp(ref CarPhysicsData data, ref PlayerInput playerInput)
+    {
+        
+    }
+    public void ShiftDown(ref CarPhysicsData data, ref PlayerInput playerInput)
     {
         
     }

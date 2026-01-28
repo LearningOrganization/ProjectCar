@@ -810,7 +810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sensitivity: 100
   TopClamp: 40
-  BottomClamp: -5
+  BottomClamp: 5
   Radius: 4
   _targetObject: {fileID: 364262929}
 --- !u!4 &520520867
