@@ -1,3 +1,4 @@
+using Unity.Splines.Examples;
 using UnityEngine;
 
 public struct PlayerInput
@@ -52,6 +53,16 @@ public class PlayerInputControls : MonoBehaviour
             ShiftUpRequested = _controls.Player.ShiftUp.triggered,
             ShiftDownRequested = _controls.Player.ShiftDown.triggered
         };
+    }
+
+     public void ConsumeShiftInputs()
+    {
+        var input = PlayerInput;
+
+        input.ShiftUpRequested = false;
+        input.ShiftDownRequested = false;
+
+        PlayerInput = input;
     }
 }
 

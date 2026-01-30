@@ -469,11 +469,6 @@ MonoBehaviour:
   ShowDebugInfo: 1
   ShowEdgeWeights: 1
   DistanceFactor: 1000
---- !u!4 &364262929 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-  m_PrefabInstance: {fileID: 2031694158}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &376057049
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +807,7 @@ MonoBehaviour:
   TopClamp: 40
   BottomClamp: 5
   Radius: 4
-  _targetObject: {fileID: 364262929}
+  _targetObject: {fileID: 0}
 --- !u!4 &520520867
 Transform:
   m_ObjectHideFlags: 0
@@ -2818,6 +2813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf38c20132548d84fbecb886eab1eec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currency: 0
   _label: {fileID: 1412865137}
   _depositMoney: {fileID: 168517505}
   _withdrawMoney: {fileID: 1037088775}
@@ -2933,115 +2929,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2031694158
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2383779934582706892, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: SteeringWheels.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2383779934582706892, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: MotorizedWheels.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2383779934582706892, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: 'SteeringWheels.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2031694162}
-    - target: {fileID: 2383779934582706892, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: 'SteeringWheels.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2031694161}
-    - target: {fileID: 2383779934582706892, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: 'MotorizedWheels.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2031694160}
-    - target: {fileID: 2383779934582706892, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: 'MotorizedWheels.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2031694159}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 13.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 240.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522161669612531324, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7037107028739816597, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: SteerSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8410764582100792745, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-      propertyPath: m_Name
-      value: SKYLINE_GTR_R32
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7686026792737393050, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-    - {fileID: 2811945164114583071, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-    - {fileID: 153771793678754010, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-    - {fileID: 2726400608929047840, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e988614832cf4904d98c79900239e4d5, type: 3}
---- !u!146 &2031694159 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 913231328827107264, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-  m_PrefabInstance: {fileID: 2031694158}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &2031694160 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 129754112505549922, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-  m_PrefabInstance: {fileID: 2031694158}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &2031694161 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 6037347843873758146, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-  m_PrefabInstance: {fileID: 2031694158}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &2031694162 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 8407323554605760592, guid: e988614832cf4904d98c79900239e4d5, type: 3}
-  m_PrefabInstance: {fileID: 2031694158}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2048837401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3189,4 +3076,3 @@ SceneRoots:
   - {fileID: 1940099803}
   - {fileID: 520520867}
   - {fileID: 1352615905}
-  - {fileID: 2031694158}
