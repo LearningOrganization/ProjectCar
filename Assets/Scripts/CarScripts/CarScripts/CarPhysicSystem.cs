@@ -1,3 +1,4 @@
+using System.Data.Common;
 using UnityEngine;
 
 public class CarPhysicSystem : MonoBehaviour
@@ -27,11 +28,14 @@ public class CarPhysicSystem : MonoBehaviour
 
         _carPhysicsData.Mass = _rb.mass;
         _carPhysicsData.CurrentGear = 0;
+
+        _carPhysicsData.WheelInertia = MotorizedWheels[0].mass *
+        MotorizedWheels[0].radius * MotorizedWheels[0].radius * 2.0f;
     }
 
     void Start()
     {
-        
+        EngineSimulation.Init();
     }
 
     // Update is called once per frame
@@ -63,9 +67,9 @@ public class CarPhysicSystem : MonoBehaviour
         // engine 
         EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref _playerInput);
 
-        ApplyTorqueToWheels();
+        ApplyBrakes();
 
-        //brakes
+        ApplyTorqueToWheels();
 
         //application of all forces 
         ApplySteering();
@@ -110,29 +114,58 @@ public class CarPhysicSystem : MonoBehaviour
     {
         float totalTorque = _carPhysicsData.TransmissionTorque;
 
-        if (MotorizedWheels[0] != null)
-            MotorizedWheels[0].motorTorque = totalTorque / 2f;
-        if (MotorizedWheels[1] != null)
-            MotorizedWheels[1].motorTorque = totalTorque / 2f;
+        foreach(var wheel in MotorizedWheels)
+        {
+            if(wheel == null) continue;
+            float appliedTorque = totalTorque / MotorizedWheels.Length;
+            WheelHit hit;
+            wheel.GetGroundHit(out hit);
 
-         _carPhysicsData.GeneralWheelsTorque = totalTorque;
+            float forwardSlip = Mathf.Abs(hit.forwardSlip);
+
+            Debug.Log($"Forward slip: {forwardSlip}");
+
+            
+            if(forwardSlip < 0.1f) 
+            {
+                if(_carPhysicsData.CurrentGear > 1)
+                {
+                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    
+                    //appliedTorque += 5000;    
+
+                }
+            }
+
+            wheel.motorTorque = appliedTorque;
+        }
     }
+
 
     private void ReadWheelData()
     {
-        float leftRPM = 0f;
-        float rightRPM = 0f;
+       if(MotorizedWheels.Length == 0)
+        {
+            _carPhysicsData.GeneralWheelsRPM = 0f;
+            return;
+        }
 
-        leftRPM = MotorizedWheels[0] != null ? MotorizedWheels[0].rpm : 0f;
+        float totalRPM = 0f;
+        int validWheels = 0;
 
-        rightRPM = MotorizedWheels[1] != null ? MotorizedWheels[1].rpm : 0f;
-
-        _carPhysicsData.GeneralWheelsRPM = (leftRPM + rightRPM) / 2f;
+        foreach (var wheel in MotorizedWheels)
+        {
+            if (wheel != null)
+            {
+                totalRPM += wheel.rpm;
+                validWheels++;
+            }
+        }
+        _carPhysicsData.GeneralWheelsRPM = validWheels > 0 ? totalRPM / validWheels : 0f;
     }
 
     private void ApplyBrakes()
     {
-        
+        // should be implemented in fuure
     }
 
     private void UpdateVehicleSpeed()

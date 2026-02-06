@@ -667,7 +667,7 @@ MonoBehaviour:
   TopClamp: 40
   BottomClamp: 5
   Radius: 4
-  _targetObject: {fileID: 1958732466}
+  _targetObject: {fileID: 1756917610}
 --- !u!4 &520520867
 Transform:
   m_ObjectHideFlags: 0
@@ -1898,6 +1898,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1691130593}
   m_CullTransparentMesh: 1
+--- !u!1001 &1756917609
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_Name
+      value: Nissan R32 Skyline Autech GTS-4 (manual ver)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 13.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 11.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 240.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+--- !u!4 &1756917610 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+  m_PrefabInstance: {fileID: 1756917609}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1822299773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,68 +2161,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1958732465
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4513733743047315518, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_Name
-      value: SKYLINE_GTR_R32 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 13.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 240.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
---- !u!4 &1958732466 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8691706607117737071, guid: 237b02c04e18c844e98ebc6ce1457b69, type: 3}
-  m_PrefabInstance: {fileID: 1958732465}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2048837401
 GameObject:
   m_ObjectHideFlags: 0
@@ -2307,5 +2307,5 @@ SceneRoots:
   - {fileID: 1940099803}
   - {fileID: 520520867}
   - {fileID: 1352615905}
-  - {fileID: 1958732465}
   - {fileID: 651675378}
+  - {fileID: 1756917609}
