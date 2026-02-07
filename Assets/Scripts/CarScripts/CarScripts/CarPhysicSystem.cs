@@ -4,9 +4,8 @@ using UnityEngine;
 public class CarPhysicSystem : MonoBehaviour
 {
     [Header("Physic Components")]
-    [SerializeField] private EngineSimulation EngineSimulation;
+    [SerializeField] private AtmoEngineSimulation EngineSimulation;
     [SerializeField] private TransmissionSimulation TransmissionSimulation;
-    [SerializeField] private TorqueDistributionSimulation TorqueDistributionSimulation;
     [SerializeField] private BreakingSimulation BreakingSimulation;
     [SerializeField] private SteeringSimulation SteeringSimulation;
 
