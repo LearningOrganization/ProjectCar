@@ -137,8 +137,6 @@ public class CarPhysicSystem : MonoBehaviour
             wheel.motorTorque = appliedTorque;
         }
     }
-
-
     private void ReadWheelData()
     {
        if(MotorizedWheels.Length == 0)

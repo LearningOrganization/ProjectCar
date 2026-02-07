@@ -34,7 +34,7 @@ public class LoadingState : IGameState
     {
         UnityEngine.Debug.Log("LoadingState is running");
         _walletService.TransactionTry(Currency.Cash, 1000);
-        _walletService.TransactionTry(Currency.Tokens, 10);
+        _walletService.TransactionTry(Currency.RepairToken, 10);
         // should be replaced and adapted for all game and non-game scenes
         // _sceneLoader.AsyncSceneLoad(Scene.UtahTrackScene, ()=>
         // {

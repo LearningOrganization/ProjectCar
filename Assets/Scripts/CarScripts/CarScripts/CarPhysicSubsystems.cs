@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
+// should be decomposed on many structs
 [System.Serializable]
 public struct CarPhysicsData
 {
@@ -40,7 +41,6 @@ public struct CarPhysicsData
     // ===== SYSTEM =====
     public float DeltaTime;
 }
-
 
 [System.Serializable]
 public class EngineSimulation

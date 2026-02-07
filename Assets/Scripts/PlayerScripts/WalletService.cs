@@ -39,5 +39,7 @@ public class WalletService : IWalletService
 public enum Currency
 {
     Cash,
-    Tokens
+    RepairToken,
+    TotaledCarRepairingToken,
+    FreeCarToken
 }
