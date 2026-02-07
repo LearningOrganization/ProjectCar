@@ -20,9 +20,8 @@ public struct CarPhysicsData
 
     // ===== WHEEL DATA =====
     public float GeneralWheelsRPM;
-    public float GeneralWheelsTorque;
+    //public float GeneralWheelsTorque;
     public float WheelInertia;
-    public float[] WheelAngularVelocities;
     
     // ===== BRAKE DATA =====
     public float BrakeTorque;
@@ -142,7 +141,6 @@ public class EngineSimulation
         // ================= APPLY RPM ====================
         _currentRPM += rpmDelta * dt;
 
-        // RPM не должен падать ниже idle сам по себе
         if (_currentRPM < IdleRPM && throttle <= IdleThrottleBoost + 0.01f)
             _currentRPM = Mathf.Lerp(_currentRPM, IdleRPM, dt * 5f);
 
@@ -349,7 +347,7 @@ public class SteeringSimulation
 {
     [Header("Steering Range")]
     [SerializeField] private float SteeringRangeAtZeroSpeed = 35f;
-    [SerializeField] private float SteeringRangeAtMaxSpeed = 5f;
+    [SerializeField] private float SteeringRangeAtMaxSpeed = 1f;
     [SerializeField] private float MaxSpeedForSteering = 200f; 
     
     [Header("Steering Response")]

@@ -130,9 +130,7 @@ public class CarPhysicSystem : MonoBehaviour
             {
                 if(_carPhysicsData.CurrentGear > 1)
                 {
-                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    
-                    //appliedTorque += 5000;    
-
+                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    ;    
                 }
             }
 
