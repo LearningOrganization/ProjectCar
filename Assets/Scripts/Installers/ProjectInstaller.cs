@@ -18,6 +18,7 @@ namespace PawnShop.Installers
             Container.Bind<GameStateMachine>().AsSingle();
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
             Container.Bind<IWalletService>().To<WalletService>().AsSingle();
+            Container.Bind<ProfileManager>().AsSingle();
 
             // --- Game States ---
             Container.Bind<GamePlayState>().AsSingle();
