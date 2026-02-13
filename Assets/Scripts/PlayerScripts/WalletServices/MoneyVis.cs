@@ -70,7 +70,7 @@ public class MoneyVis : MonoBehaviour
 
     void OnDestroy()
     {
-        _walletService.OnBalanceChanged -= OnBalanceChanged;
+        //_walletService.OnBalanceChanged -= OnBalanceChanged;
         _depositMoney?.onClick.RemoveListener(OnDepositMoneyClicked);
         _withdrawMoney?.onClick.RemoveListener(OnWithdrawMoneyClicked);
     }
