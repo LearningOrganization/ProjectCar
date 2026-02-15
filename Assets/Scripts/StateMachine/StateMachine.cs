@@ -2,19 +2,20 @@ using System;
 using System.Collections.Generic;
 using Zenject;
 
-public class GameStateMachine
+
+public class StateMachine<TState> where TState : class, IState     
 {
     private readonly DiContainer _container;
-    private readonly Dictionary<Type, IGameState> _states = new();
-    private IGameState _activeState;
+    private readonly Dictionary<Type, TState> _states = new();
+    private TState _activeState;
 
-    public GameStateMachine(DiContainer container)
+    public StateMachine(DiContainer container)
     {
         _container = container;
     }
 
     // add returning of curr state;
-    public T Enter<T>() where T : IGameState
+    public T Enter<T>() where T : TState
     {
         _activeState?.Exit();
 

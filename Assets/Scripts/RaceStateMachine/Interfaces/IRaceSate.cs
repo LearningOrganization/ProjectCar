@@ -1,5 +1,1 @@
-public interface IRaceState
-{
-    void Enter();
-    void Exit();
-}
+public interface IRaceState : IState{}

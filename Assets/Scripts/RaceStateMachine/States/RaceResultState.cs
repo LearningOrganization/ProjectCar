@@ -1,5 +1,5 @@
 
-public class RaceInProgressState : IRaceState
+public class RaceResultState : IRaceState
 {
     public void Enter()
     {

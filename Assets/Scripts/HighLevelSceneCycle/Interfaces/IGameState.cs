@@ -1,7 +1,2 @@
 
-
-public interface IGameState
-{
-    void Enter();
-    void Exit();
-}
+public interface IGameState: IState{}

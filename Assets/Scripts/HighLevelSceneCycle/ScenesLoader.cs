@@ -8,7 +8,7 @@ using Zenject;
 public class SceneLoader : ISceneLoader
 {
     private static NonPlayingScene _loadingScene = NonPlayingScene.LoadingScene;
-    [Inject] private GameStateMachine _gameState;
+    [Inject] private StateMachine<IGameState> _gameState;
 
     public Task LoadNonPlayingScene<T>(NonPlayingScene sceneID, Action onLoaded = null) where T : IGameState
     {

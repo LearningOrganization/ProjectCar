@@ -7,10 +7,10 @@ using Zenject;
 public class GameBootstrapper : MonoBehaviour
 {
     
-    private GameStateMachine _fsm;
+    private StateMachine<IGameState> _fsm;
 
     [Inject]
-    public void Construct(GameStateMachine gameStateMachine)
+    public void Construct(StateMachine<IGameState> gameStateMachine)
     {
         _fsm = gameStateMachine;
     }

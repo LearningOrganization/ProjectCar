@@ -15,7 +15,7 @@ namespace PawnShop.Installers
         {
             // --- Core Game ---
             Container.Bind<GameBootstrapper>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<GameStateMachine>().AsSingle();
+            Container.Bind<StateMachine<IGameState>>().AsSingle();
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
             Container.Bind<IWalletService>().To<WalletService>().AsSingle();
             Container.Bind<ProfileManager>().AsSingle();
