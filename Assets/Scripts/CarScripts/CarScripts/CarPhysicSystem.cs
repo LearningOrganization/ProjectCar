@@ -121,9 +121,6 @@ public class CarPhysicSystem : MonoBehaviour
             wheel.GetGroundHit(out hit);
 
             float forwardSlip = Mathf.Abs(hit.forwardSlip);
-
-            Debug.Log($"Forward slip: {forwardSlip}");
-
             
             if(forwardSlip < 0.1f) 
             {

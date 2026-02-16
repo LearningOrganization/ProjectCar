@@ -1,13 +1,12 @@
 
-
 using Zenject;
 
 public class MainMenuState : IGameState
 {
-    private GameStateMachine _fsm;
+    private StateMachine<IGameState> _fsm;
 
     [Inject]
-    public void Construct(GameStateMachine gameStateMachine)
+    public void Construct(StateMachine<IGameState> gameStateMachine)
     {
         _fsm = gameStateMachine;
     }
@@ -20,6 +19,6 @@ public class MainMenuState : IGameState
 
     public void Exit()
     {
-         UnityEngine.Debug.Log("MainMenuState exit");
+        UnityEngine.Debug.Log("MainMenuState exit");
     }
 }

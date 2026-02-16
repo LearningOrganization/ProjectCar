@@ -170,14 +170,13 @@ MonoBehaviour:
     MaxSpeedForSteering: 200
     SteerSpeed: 180
     ReturnSpeed: 240
-    InputDeadzone: 0.1
   SteeringWheels:
   - {fileID: 1414618325600375803}
   - {fileID: 3132237500487747422}
   MotorizedWheels:
   - {fileID: 6793194944269406913}
   - {fileID: 5680039184605929993}
-  ShowDebugInfo: 1
+  ShowDebugInfo: 0
 --- !u!1 &633734797858954075
 GameObject:
   m_ObjectHideFlags: 0

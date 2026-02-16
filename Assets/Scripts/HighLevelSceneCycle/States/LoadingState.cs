@@ -7,10 +7,10 @@ using Zenject;
 public class LoadingState : IGameState
 {
     private ISceneLoader _sceneLoader;
-    private GameStateMachine _fsm;
+    private StateMachine<IGameState> _fsm;
     
     [Inject]
-    public void Construct(ISceneLoader sceneLoader, GameStateMachine gameStateMachine)
+    public void Construct(ISceneLoader sceneLoader, StateMachine<IGameState> gameStateMachine)
     {
         _sceneLoader = sceneLoader;
         _fsm = gameStateMachine;
