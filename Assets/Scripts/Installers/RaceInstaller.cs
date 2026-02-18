@@ -33,6 +33,8 @@ public class RaceInstaller : MonoInstaller
         //Race bootastrapper
         Container.BindInterfacesAndSelfTo<RaceBootstrapper>().AsSingle();
 
+        //UI elements
+
     }
 
 

@@ -16,6 +16,8 @@ public class CarPhysicSystem : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool ShowDebugInfo = false;
+
+    public InputPermissions CurrentPermissions = InputPermissions.All;
     
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
@@ -41,6 +43,9 @@ public class CarPhysicSystem : MonoBehaviour
     void Update()
     {
         _playerInput = PlayerManager.Instance.Input.PlayerInput;
+        
+        ApplyInputPermissions();
+
         UpdateGear();
     }
 
@@ -167,6 +172,35 @@ public class CarPhysicSystem : MonoBehaviour
         _carPhysicsData.SpeedKmH = _carPhysicsData.SpeedMS * 3.6f;
     }
 
+    private void ApplyInputPermissions()
+{
+    // Steering
+    if (!CurrentPermissions.HasFlag(InputPermissions.Steering))
+    {
+        _playerInput.WheelsRotatingInput = Vector2.zero;
+    }
+
+    // Driving
+    if (!CurrentPermissions.HasFlag(InputPermissions.Driving))
+    {
+        _playerInput.ThrottleInput = 0f;
+        _playerInput.BrakeInput = 0f;
+        _playerInput.Handbrake = false;
+    }
+
+    // Camera
+    if (!CurrentPermissions.HasFlag(InputPermissions.Camera))
+    {
+        _playerInput.Look = Vector2.zero;
+    }
+
+    // Gear shifting
+    if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
+    {
+        _playerInput.ShiftUpRequested = false;
+        _playerInput.ShiftDownRequested = false;
+    }
+}
 private void ShowDebug()
     {
         string gearName = _carPhysicsData.CurrentGear switch

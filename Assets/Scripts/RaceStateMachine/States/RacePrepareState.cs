@@ -1,9 +1,13 @@
 
+using UnityEngine;
+using Zenject;
+
 public class RacePrepareState : IRaceState
 {
+
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void Exit()

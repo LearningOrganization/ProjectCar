@@ -5,7 +5,6 @@ using Zenject;
 
 public class MoneyVis : MonoBehaviour
 {
-    private IWalletService _walletService;
     private ProfileManager _profileManager;
     [SerializeField] private Currency _currency;
     [SerializeField] private TextMeshProUGUI _label;
@@ -16,7 +15,7 @@ public class MoneyVis : MonoBehaviour
     [Inject]
     public void Construct(ProfileManager profileManager)
     {
-        //_walletService = walletService;
+
 
         _profileManager = profileManager;
 
@@ -32,14 +31,12 @@ public class MoneyVis : MonoBehaviour
             }
         }
 
-        //_walletService.OnBalanceChanged += OnBalanceChanged;
         _depositMoney?.onClick.AddListener(OnDepositMoneyClicked);
         _withdrawMoney?.onClick.AddListener(OnWithdrawMoneyClicked);
     }
 
     void Start()
     {
-        //var cash = _walletService.GetCurentMoneyByType(_currency);
     
         if (_profileManager == null)
         {
@@ -59,8 +56,6 @@ public class MoneyVis : MonoBehaviour
             return;
         }   
 
-        _profileManager.CurrentProfile.Wallet.TransactionTry(Currency.Cash, 10000L);
-
         var cash = _profileManager.CurrentProfile.Wallet.GetCurentMoneyByType(_currency);
         
 
@@ -77,13 +72,12 @@ public class MoneyVis : MonoBehaviour
 
     private void OnDepositMoneyClicked()
     {
-        _walletService.TransactionTry(_currency, 100);
+        
     }
 
     private void OnWithdrawMoneyClicked()
     {
-        if (!_walletService.TransactionTry(_currency, -100))
-            Debug.LogWarning($"Not enough {_currency}!");
+        
     }
 
     private void OnBalanceChanged(Currency currency, long cash)
