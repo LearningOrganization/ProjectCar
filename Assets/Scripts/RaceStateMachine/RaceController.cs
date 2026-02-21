@@ -29,11 +29,14 @@ public class RaceController : MonoBehaviour
     private Coroutine _coroutine;
 
     private StateMachine<IRaceState> _fsm;
+    private FinishScript _finishScript;
 
     [Inject]
-    public void Construct(StateMachine<IRaceState> fsm)
+    public void Construct(StateMachine<IRaceState> fsm, FinishScript finishScript)
     {
         _fsm = fsm;
+        _finishScript = finishScript;
+        _finishScript.OnFinishLineCrossed += OnPlayerCrossedFinish;
     }
 
     public void SetPlayerCar(GameObject car)
@@ -80,8 +83,16 @@ public class RaceController : MonoBehaviour
         IsRaceActive = false;
         DisableCarInput();
         OnRaceFinished?.Invoke();
-        _fsm.Enter<RaceFinishState>();
     }
+
+    // Calls by finish collider
+    #region Collider Finish
+    public void OnPlayerCrossedFinish()
+    {
+        if (IsRaceActive)
+            _fsm.Enter<RaceFinishState>();
+    }
+    #endregion
 
     void Update()
     {
@@ -112,14 +123,9 @@ public class RaceController : MonoBehaviour
         _fsm.Enter<RaceCountdownState>();
     }
 
-    // Calls by finish collider
-    #region Collider Finish
-    public void OnPlayerCrossedFinish()
+    private void OnDestroy()
     {
-        if (IsRaceActive)
-            FinishRace();
+        _finishScript.OnFinishLineCrossed -= OnPlayerCrossedFinish;
     }
-    #endregion
-
 
 }

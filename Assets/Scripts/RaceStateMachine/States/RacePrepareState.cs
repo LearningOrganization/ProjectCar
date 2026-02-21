@@ -1,12 +1,9 @@
-
 using UnityEngine;
 using Zenject;
 
 public class RacePrepareState : IRaceState
 {
-
     private readonly RaceController _controller;
-
     public RacePrepareState(RaceController controller)
     {
         _controller = controller;
@@ -14,11 +11,12 @@ public class RacePrepareState : IRaceState
 
     public void Enter()
     {
-        
+        Debug.Log("Prepare state running");
+        _controller.StartRacePreparing();
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Prepare state was finished");
     }
 }

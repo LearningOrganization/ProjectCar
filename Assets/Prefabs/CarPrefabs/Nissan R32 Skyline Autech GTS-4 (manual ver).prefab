@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 9042323603355529945}
   - component: {fileID: 3575552324576383755}
   - component: {fileID: 4440031552001257596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Nissan R32 Skyline Autech GTS-4 (manual ver)
-  m_TagString: Untagged
+  m_TagString: PlayableCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,6 +177,7 @@ MonoBehaviour:
   - {fileID: 6793194944269406913}
   - {fileID: 5680039184605929993}
   ShowDebugInfo: 0
+  CurrentPermissions: -1
 --- !u!1 &633734797858954075
 GameObject:
   m_ObjectHideFlags: 0

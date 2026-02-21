@@ -1,20 +1,24 @@
+using UnityEngine;
+using Zenject;
 
 public class RaceCountdownState : IRaceState
 {
 
     private readonly RaceController _controller;
 
+    [Inject]
     public RaceCountdownState(RaceController controller)
     {
         _controller = controller;
     }
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Countdown state running");
+        _controller.StartRaceCountdown();
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Countdown state was finished");
     }
 }
