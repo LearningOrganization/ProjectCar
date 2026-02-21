@@ -10,19 +10,22 @@ public class RaceBootstrapper : IInitializable
     private readonly GameObject _playerCamera;
     private readonly StateMachine<IRaceState> _raceStateMachine;
     private readonly DiContainer _container;
+    private RaceController _raceController;
     
     public RaceBootstrapper(
         [Inject(Id = "CarPrefab")] GameObject carPrefab,
         [Inject(Id = "CarStartPoint")] GameObject startPoint,
         [Inject(Id = "PlayerCamera")] GameObject playerCamera,
         StateMachine<IRaceState> RaceStateMachine,
-        DiContainer container)
+        DiContainer container,
+        RaceController raceController)
     {
         _carPrefab = carPrefab;
         _startPoint = startPoint;
         _playerCamera = playerCamera;
         _raceStateMachine = RaceStateMachine;
         _container = container;
+        _raceController = raceController;
     }
     public void Initialize()
     {
@@ -40,14 +43,10 @@ public class RaceBootstrapper : IInitializable
             _startPoint.transform.position,
             _startPoint.transform.rotation,
             null);
+        
+        _raceController.SetPlayerCar(car);
 
         Debug.Log("Player car spawned");
-
-        AttachCamera(car);
-    }
-
-    private void AttachCamera(GameObject car)
-    {
         
         var camera = _container.InstantiatePrefab(_playerCamera,
         _startPoint.transform.position,
