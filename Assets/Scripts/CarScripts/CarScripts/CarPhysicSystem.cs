@@ -23,6 +23,18 @@ public class CarPhysicSystem : MonoBehaviour
     private PlayerInput _playerInput;
     private Rigidbody _rb;
 
+    private bool disableCarEngineTorque = false;
+
+    public float GetCurrentCarSpeed()
+    {
+        return _carPhysicsData.SpeedKmH;
+    }
+
+    public void DisableCarEngineTorque()
+    {
+       _carPhysicsData.CurrentGear = 0;
+    }
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -201,7 +213,7 @@ public class CarPhysicSystem : MonoBehaviour
         _playerInput.ShiftDownRequested = false;
     }
 }
-private void ShowDebug()
+    private void ShowDebug()
     {
         string gearName = _carPhysicsData.CurrentGear switch
         {
@@ -218,4 +230,6 @@ private void ShowDebug()
                   $"Clutch: {_carPhysicsData.ClutchEngagement:F2} | " +
                   $"TransTorque: {_carPhysicsData.TransmissionTorque:F0} Nm");
     }
+
+
 }

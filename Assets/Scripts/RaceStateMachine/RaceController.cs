@@ -12,6 +12,7 @@ public class RaceController : MonoBehaviour
     
     // Events for FSM and another systems
     public event Action OnPreparePhaseStarted;
+    public event Action OnCountdownStarted;
     public event Action<int> OnCountdownTick; 
     public event Action OnRaceStarted;
     public event Action OnRaceFinished;
@@ -52,6 +53,7 @@ public class RaceController : MonoBehaviour
     public void StartRacePreparing()
     {
         DisableCarInput();
+        OnPreparePhaseStarted?.Invoke();
         if(_coroutine != null)
         {
             StopCoroutine(_coroutine);
@@ -61,6 +63,7 @@ public class RaceController : MonoBehaviour
 
     public void StartRaceCountdown()
     {
+        OnCountdownStarted?.Invoke();
         //make logic for DNF if you started in countdown 
         //EnableCarInput();
         if(_coroutine != null)
@@ -81,7 +84,9 @@ public class RaceController : MonoBehaviour
     public void FinishRace()
     {
         IsRaceActive = false;
+        _carPhysicSystem.DisableCarEngineTorque();
         DisableCarInput();
+    
         OnRaceFinished?.Invoke();
     }
 
