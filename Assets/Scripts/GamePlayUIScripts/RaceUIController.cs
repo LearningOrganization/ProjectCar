@@ -1,9 +1,10 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
-public class RaceHUDController : MonoBehaviour
+public class RaceUIController : MonoBehaviour
 {
     [SerializeField] private GameObject _preparePanel;
     [SerializeField] private TMP_Text _countdownText;
@@ -11,6 +12,11 @@ public class RaceHUDController : MonoBehaviour
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private GameObject _hudPanel;
     [SerializeField] private GameObject _finishPanel;
+    [SerializeField] private GameObject _resultPanel;
+
+    [SerializeField] private Button _resultButton;
+    [SerializeField] private TMP_Text _raceTime;
+    [SerializeField] private TMP_Text _feeText;
 
     private RaceController _raceController;
 
@@ -25,6 +31,12 @@ public class RaceHUDController : MonoBehaviour
         _raceController.OnRaceStarted += ShowHUD;
         _raceController.OnRaceFinished += ShowFinish;
         _raceController.OnTimerUpdated += UpdateTimer;
+        _raceController.OnRaceResultsShown += ShowResultPanel;
+    }
+
+    void Start()
+    {
+        _resultButton.onClick.AddListener(() => _raceController.RequestRaceResults());
     }
 
     private void ShowPrepare()
@@ -32,6 +44,7 @@ public class RaceHUDController : MonoBehaviour
         _preparePanel.SetActive(true);
         _countdownPanel.SetActive(false);
         _hudPanel.SetActive(false);
+        _resultPanel.SetActive(false);
     }
 
     private void ShowCountdown()
@@ -62,6 +75,15 @@ public class RaceHUDController : MonoBehaviour
         _timerText.text = TimeSpan.FromSeconds(time).ToString(@"mm\:ss\.ff");
     }
 
+    private void ShowResultPanel(int fee, float raceTime)
+    {
+        _finishPanel.SetActive(false);
+        _resultPanel.SetActive(true);
+
+        _raceTime.text = "Race Time: " + TimeSpan.FromSeconds(raceTime).ToString(@"mm\:ss\.ff");
+        _feeText.text = "Money: " + fee.ToString();
+    }
+
     private void OnDestroy()
     {
         _raceController.OnPreparePhaseStarted -= ShowPrepare;
@@ -70,5 +92,7 @@ public class RaceHUDController : MonoBehaviour
         _raceController.OnRaceStarted -= ShowHUD;
         _raceController.OnRaceFinished -= ShowFinish;
         _raceController.OnTimerUpdated -= UpdateTimer;
+        _raceController.OnRaceResultsShown -= ShowResultPanel;
+
     }
 }

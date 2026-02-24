@@ -14,7 +14,6 @@ public class StateMachine<TState> where TState : class, IState
         _container = container;
     }
 
-    // add returning of curr state;
     public T Enter<T>() where T : TState
     {
         _activeState?.Exit();

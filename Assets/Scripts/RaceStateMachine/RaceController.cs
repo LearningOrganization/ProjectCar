@@ -17,7 +17,10 @@ public class RaceController : MonoBehaviour
     public event Action OnRaceStarted;
     public event Action OnRaceFinished;
     public event Action<float> OnTimerUpdated;
+    public event Action<int, float> OnRaceResultsShown;
 
+
+    // not released
     public event Action OnFalseStart;
     public event Action OnRacePaused;
     public event Action OnRaceResumed;
@@ -88,6 +91,16 @@ public class RaceController : MonoBehaviour
         DisableCarInput();
     
         OnRaceFinished?.Invoke();
+    }
+
+    public void RequestRaceResults()
+    {
+        _fsm.Enter<RaceResultState>();
+    }
+
+    public void ShowRaceResults(int money)
+    {
+        OnRaceResultsShown?.Invoke(money, RaceTime);
     }
 
     // Calls by finish collider

@@ -1,13 +1,36 @@
 
+using Unity.Splines.Examples;
+using UnityEngine;
+
 public class RaceResultState : IRaceState
 {
+
+    private readonly RaceController _controller;
+
+  
+    public RaceResultState(RaceController controller)
+    {
+        _controller = controller;
+    }
+
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        var calc = new SimpleTestFeeCalculator();
+
+        _controller.ShowRaceResults(calc.MoneyCalc());
+        Debug.Log("Race result state running");
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        
+    }
+}
+
+public class SimpleTestFeeCalculator
+{
+    public int MoneyCalc()
+    {
+        return 10000;
     }
 }

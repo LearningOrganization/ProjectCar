@@ -37,7 +37,7 @@ public class RaceInstaller : MonoInstaller
         Container.Bind<RaceController>().FromComponentInHierarchy().AsSingle();
 
         //Race HUD
-        Container.Bind<RaceHUDController>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<RaceUIController>().FromComponentInHierarchy().AsSingle();
 
         Container.Bind<FinishScript>().FromComponentInHierarchy().AsSingle();
     }
