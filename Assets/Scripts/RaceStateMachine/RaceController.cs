@@ -19,7 +19,6 @@ public class RaceController : MonoBehaviour
     public event Action<float> OnTimerUpdated;
     public event Action<int, float> OnRaceResultsShown;
 
-
     // not released
     public event Action OnFalseStart;
     public event Action OnRacePaused;
@@ -33,14 +32,16 @@ public class RaceController : MonoBehaviour
     private Coroutine _coroutine;
 
     private StateMachine<IRaceState> _fsm;
+    private StateMachine<IGameState> _highLevelFSM;
     private FinishScript _finishScript;
 
     [Inject]
-    public void Construct(StateMachine<IRaceState> fsm, FinishScript finishScript)
+    public void Construct(StateMachine<IRaceState> fsm, FinishScript finishScript, StateMachine<IGameState> highLevelFSM)
     {
         _fsm = fsm;
         _finishScript = finishScript;
         _finishScript.OnFinishLineCrossed += OnPlayerCrossedFinish;
+        _highLevelFSM = highLevelFSM;
     }
 
     public void SetPlayerCar(GameObject car)
@@ -101,6 +102,11 @@ public class RaceController : MonoBehaviour
     public void ShowRaceResults(int money)
     {
         OnRaceResultsShown?.Invoke(money, RaceTime);
+    }
+
+    public void ToGarage()
+    {
+        _ = _highLevelFSM.Enter<LoadingState>().LoadAndEnterNonPlayingScene<GarageState>(NonPlayingScene.GarageScene, () => Debug.Log("Welcome to your garage!"));
     }
 
     // Calls by finish collider

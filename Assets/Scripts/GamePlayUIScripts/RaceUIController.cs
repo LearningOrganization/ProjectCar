@@ -18,6 +18,8 @@ public class RaceUIController : MonoBehaviour
     [SerializeField] private TMP_Text _raceTime;
     [SerializeField] private TMP_Text _feeText;
 
+    [SerializeField] private Button _toGarageButton;
+
     private RaceController _raceController;
 
     [Inject]
@@ -37,6 +39,7 @@ public class RaceUIController : MonoBehaviour
     void Start()
     {
         _resultButton.onClick.AddListener(() => _raceController.RequestRaceResults());
+        _toGarageButton.onClick.AddListener(() => _raceController.ToGarage());
     }
 
     private void ShowPrepare()

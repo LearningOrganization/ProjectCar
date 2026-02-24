@@ -16,13 +16,13 @@ public class LoadingState : IGameState
         _fsm = gameStateMachine;
     }
 
-
+    // should be replaced in future
     public async Task LoadAndEnterPlayingScene<T>(PlayingScene playingScene, Action action = null) where T : IGameState
     {
         UnityEngine.Debug.Log("Loading playing scene");
         await _sceneLoader.LoadPlayingScene<T>(playingScene, action);
     }
-
+    // should be replaced in future
     public async Task LoadAndEnterNonPlayingScene<T>(NonPlayingScene nonPlayingScene, Action action = null) where T : IGameState
     {
         UnityEngine.Debug.Log("Loading playing scene");
