@@ -26,6 +26,12 @@ public class RaceUIController : MonoBehaviour
     public void Construct(RaceController raceController)
     {
         _raceController = raceController;
+    }
+
+    void Awake()
+    {
+        _resultButton.onClick.AddListener(() => _raceController.RequestRaceResults());
+        _toGarageButton.onClick.AddListener(() => _raceController.ToGarage());
 
         _raceController.OnPreparePhaseStarted += ShowPrepare;
         _raceController.OnCountdownStarted += ShowCountdown;
@@ -34,12 +40,6 @@ public class RaceUIController : MonoBehaviour
         _raceController.OnRaceFinished += ShowFinish;
         _raceController.OnTimerUpdated += UpdateTimer;
         _raceController.OnRaceResultsShown += ShowResultPanel;
-    }
-
-    void Start()
-    {
-        _resultButton.onClick.AddListener(() => _raceController.RequestRaceResults());
-        _toGarageButton.onClick.AddListener(() => _raceController.ToGarage());
     }
 
     private void ShowPrepare()

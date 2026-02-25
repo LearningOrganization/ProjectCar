@@ -23,7 +23,7 @@ public class RaceResultState : IRaceState
 
     public void Exit()
     {
-        
+        Debug.Log("Race result state was finished");
     }
 }
 

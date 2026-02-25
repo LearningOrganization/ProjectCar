@@ -7,7 +7,6 @@ namespace PawnShop.Installers
 
         private void Awake()
         {
-            // Make this installer persist between scenes
             DontDestroyOnLoad(gameObject);
         }
 
@@ -25,7 +24,6 @@ namespace PawnShop.Installers
             Container.Bind<MainMenuState>().AsSingle();
             Container.Bind<SettingsState>().AsSingle();
 
-            
         }
     }
 }

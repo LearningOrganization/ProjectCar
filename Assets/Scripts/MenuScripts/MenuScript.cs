@@ -7,11 +7,11 @@ public class MenuScript : MonoBehaviour
     [Inject] private StateMachine<IGameState> _fsm;
     [SerializeField] private Button _button;
 
-    private void Start()
+    private void Awake()
     {
         _button.onClick.AddListener(() =>
         {
-            _ = _fsm.Enter<LoadingState>().LoadAndEnterPlayingScene<GamePlayState>(PlayingScene.UtahTrackScene,
+            _ = _fsm.Enter<LoadingState>().LoadScene<GamePlayState>(PlayingScene.UtahTrackScene,
             () => Debug.Log("UtahTrackScene was loaded"));
         });
     }

@@ -13,6 +13,11 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private WheelCollider[] SteeringWheels;
     [Header("Motorized wheels")]
     [SerializeField] private WheelCollider[] MotorizedWheels;
+    [Header("Wheels mesh")]
+    [SerializeField] private Transform LeftFrontWheelMesh;
+    [SerializeField] private Transform RightFrontWheelMesh;
+    [SerializeField] private Transform LeftRearWheelMesh;
+    [SerializeField] private Transform RightRearWheelMesh;
 
     [Header("Debug")]
     [SerializeField] private bool ShowDebugInfo = false;
@@ -59,6 +64,8 @@ public class CarPhysicSystem : MonoBehaviour
         ApplyInputPermissions();
 
         UpdateGear();
+
+        RenderdWheels();
     }
 
     void FixedUpdate()
@@ -129,9 +136,12 @@ public class CarPhysicSystem : MonoBehaviour
     private void ApplyTorqueToWheels()
     {
         float totalTorque = _carPhysicsData.TransmissionTorque;
+        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.SpeedKmH) < 1f;
+        bool inDrive = _carPhysicsData.CurrentGear > 0;
 
         foreach(var wheel in MotorizedWheels)
         {
+
             if(wheel == null) continue;
             float appliedTorque = totalTorque / MotorizedWheels.Length;
             WheelHit hit;
@@ -143,7 +153,7 @@ public class CarPhysicSystem : MonoBehaviour
             {
                 if(_carPhysicsData.CurrentGear > 1)
                 {
-                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    ;    
+                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    
                 }
             }
 
@@ -231,5 +241,18 @@ public class CarPhysicSystem : MonoBehaviour
                   $"TransTorque: {_carPhysicsData.TransmissionTorque:F0} Nm");
     }
 
+    private void RenderdWheels()
+    {
+        SetRenderWheel(SteeringWheels[0], LeftFrontWheelMesh);
+        SetRenderWheel(SteeringWheels[1], RightFrontWheelMesh);
+        SetRenderWheel(MotorizedWheels[0], LeftRearWheelMesh);
+        SetRenderWheel(MotorizedWheels[1], RightRearWheelMesh);
+    }
 
+    private void SetRenderWheel(WheelCollider collider, Transform mesh)
+    {
+        collider.GetWorldPose(out Vector3 position, out Quaternion rotation);
+        mesh.position = position;
+        mesh.rotation = rotation;
+    }
 }

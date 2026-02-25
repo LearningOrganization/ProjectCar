@@ -115,7 +115,7 @@ public class ProfileManager
         Array.Sort(files);
         string latestZip = files[files.Length - 1];
 
-        string tempjJson = Path.Combine(profilePath, "temp_save,zip");
+        string tempjJson = Path.Combine(profilePath, "temp_save.zip");
 
         try
         {
@@ -136,7 +136,7 @@ public class ProfileManager
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is IOException)
         {
             Debug.LogError("Failed to load wallet: " + ex.Message);
         }

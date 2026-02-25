@@ -3,7 +3,6 @@ using Zenject;
 
 public class RaceCountdownState : IRaceState
 {
-
     private readonly RaceController _controller;
 
     [Inject]

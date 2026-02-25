@@ -1,6 +1,3 @@
-
-
-
 public class RaceDNFState : IRaceState
 {
     public void Enter()

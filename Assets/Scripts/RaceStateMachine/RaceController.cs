@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +11,7 @@ public class RaceController : MonoBehaviour
     public float RaceTime { get; private set; }
     public bool IsRaceActive { get; private set; }
     
-    // Events for FSM and another systems
+    // Events for UI and another systems
     public event Action OnPreparePhaseStarted;
     public event Action OnCountdownStarted;
     public event Action<int> OnCountdownTick; 
@@ -18,15 +19,11 @@ public class RaceController : MonoBehaviour
     public event Action OnRaceFinished;
     public event Action<float> OnTimerUpdated;
     public event Action<int, float> OnRaceResultsShown;
-
     // not released
     public event Action OnFalseStart;
     public event Action OnRacePaused;
     public event Action OnRaceResumed;
 
-    private bool _timerRunning;
-
-    private GameObject _playerCar;
     private CarPhysicSystem _carPhysicSystem;
 
     private Coroutine _coroutine;
@@ -46,14 +43,12 @@ public class RaceController : MonoBehaviour
 
     public void SetPlayerCar(GameObject car)
     {
-        _playerCar = car;
         _carPhysicSystem = car.GetComponent<CarPhysicSystem>();
     }
 
     public void EnableCarInput() => _carPhysicSystem.CurrentPermissions = InputPermissions.All;
     public void DisableCarInput() => _carPhysicSystem.CurrentPermissions = InputPermissions.None;
 
-    // race preparation
     public void StartRacePreparing()
     {
         DisableCarInput();
@@ -106,7 +101,8 @@ public class RaceController : MonoBehaviour
 
     public void ToGarage()
     {
-        _ = _highLevelFSM.Enter<LoadingState>().LoadAndEnterNonPlayingScene<GarageState>(NonPlayingScene.GarageScene, () => Debug.Log("Welcome to your garage!"));
+        _ = _highLevelFSM.Enter<LoadingState>().LoadScene<GarageState>(NonPlayingScene.GarageScene, () => Debug.Log("Welcome to your garage!"));
+        //add saving
     }
 
     // Calls by finish collider

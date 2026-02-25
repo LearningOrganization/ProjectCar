@@ -10,19 +10,7 @@ public class SceneLoader : ISceneLoader
     private static NonPlayingScene _loadingScene = NonPlayingScene.LoadingScene;
     [Inject] private StateMachine<IGameState> _gameState;
 
-    public Task LoadNonPlayingScene<T>(NonPlayingScene sceneID, Action onLoaded = null) where T : IGameState
-    {
-        return AsyncSceneLoad(
-            sceneID.ToString(),
-            () =>
-            {
-                _gameState.Enter<T>();
-                onLoaded?.Invoke();
-            }
-        );
-    }
-
-    public Task LoadPlayingScene<T>(PlayingScene sceneID, Action onLoaded = null) where T : IGameState
+    public Task LoadScene<T>(SceneId sceneID, Action onLoaded = null) where T : IGameState
     {
         return AsyncSceneLoad(
             sceneID.ToString(),
@@ -36,7 +24,6 @@ public class SceneLoader : ISceneLoader
 
     private async Task AsyncSceneLoad(string sceneName, Action afterActivation = null)
     {
-        // load loading scene
         await LoadSingleAsync(_loadingScene.ToString());
 
         // load target scene

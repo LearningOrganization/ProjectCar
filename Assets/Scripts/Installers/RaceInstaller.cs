@@ -6,14 +6,13 @@ using Zenject;
 
 public class RaceInstaller : MonoInstaller
 {
-
     [SerializeField] private GameObject _carPrefab;
     [SerializeField] private GameObject _playerCamera; 
     [SerializeField] private GameObject _startPoint;
 
     public override void InstallBindings()
     {
-        // race states
+        // --- Race States ---
         Container.Bind<RacePrepareState>().AsSingle();
         Container.Bind<RaceCountdownState>().AsSingle();
         Container.Bind<RaceInProgressState>().AsSingle();
@@ -22,23 +21,23 @@ public class RaceInstaller : MonoInstaller
         Container.Bind<RaceFinishState>().AsSingle();
         Container.Bind<RaceResultState>().AsSingle();
 
-        //Race FSM
+        // --- Race FSM ---
         Container.Bind<StateMachine<IRaceState>>().AsSingle();
 
-        //scene objects
+        // --- Scene Objects ---
         Container.BindInstance(_carPrefab).WithId("CarPrefab");
         Container.BindInstance(_playerCamera).WithId("PlayerCamera");
         Container.BindInstance(_startPoint).WithId("CarStartPoint");
 
-        //Race bootastrapper
+        // --- Race Bootastrapper ---
         Container.BindInterfacesAndSelfTo<RaceBootstrapper>().AsSingle();
 
-        //Race Controller
+        // --- Race Controller ---
         Container.Bind<RaceController>().FromComponentInHierarchy().AsSingle();
 
-        //Race HUD
+        // --- Race HUD ---
         Container.Bind<RaceUIController>().FromComponentInHierarchy().AsSingle();
-
+        
         Container.Bind<FinishScript>().FromComponentInHierarchy().AsSingle();
     }
 
