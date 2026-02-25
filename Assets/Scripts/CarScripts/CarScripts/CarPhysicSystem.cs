@@ -13,13 +13,32 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private WheelCollider[] SteeringWheels;
     [Header("Motorized wheels")]
     [SerializeField] private WheelCollider[] MotorizedWheels;
+    [Header("Wheels mesh")]
+    [SerializeField] private Transform LeftFrontWheelMesh;
+    [SerializeField] private Transform RightFrontWheelMesh;
+    [SerializeField] private Transform LeftRearWheelMesh;
+    [SerializeField] private Transform RightRearWheelMesh;
 
     [Header("Debug")]
     [SerializeField] private bool ShowDebugInfo = false;
+
+    public InputPermissions CurrentPermissions = InputPermissions.All;
     
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
+
+    private bool disableCarEngineTorque = false;
+
+    public float GetCurrentCarSpeed()
+    {
+        return _carPhysicsData.SpeedKmH;
+    }
+
+    public void DisableCarEngineTorque()
+    {
+       _carPhysicsData.CurrentGear = 0;
+    }
 
     private void Awake()
     {
@@ -41,7 +60,12 @@ public class CarPhysicSystem : MonoBehaviour
     void Update()
     {
         _playerInput = PlayerManager.Instance.Input.PlayerInput;
+        
+        ApplyInputPermissions();
+
         UpdateGear();
+
+        RenderdWheels();
     }
 
     void FixedUpdate()
@@ -112,24 +136,24 @@ public class CarPhysicSystem : MonoBehaviour
     private void ApplyTorqueToWheels()
     {
         float totalTorque = _carPhysicsData.TransmissionTorque;
+        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.SpeedKmH) < 1f;
+        bool inDrive = _carPhysicsData.CurrentGear > 0;
 
         foreach(var wheel in MotorizedWheels)
         {
+
             if(wheel == null) continue;
             float appliedTorque = totalTorque / MotorizedWheels.Length;
             WheelHit hit;
             wheel.GetGroundHit(out hit);
 
             float forwardSlip = Mathf.Abs(hit.forwardSlip);
-
-            Debug.Log($"Forward slip: {forwardSlip}");
-
             
             if(forwardSlip < 0.1f) 
             {
                 if(_carPhysicsData.CurrentGear > 1)
                 {
-                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    ;    
+                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    
                 }
             }
 
@@ -170,7 +194,36 @@ public class CarPhysicSystem : MonoBehaviour
         _carPhysicsData.SpeedKmH = _carPhysicsData.SpeedMS * 3.6f;
     }
 
-private void ShowDebug()
+    private void ApplyInputPermissions()
+{
+    // Steering
+    if (!CurrentPermissions.HasFlag(InputPermissions.Steering))
+    {
+        _playerInput.WheelsRotatingInput = Vector2.zero;
+    }
+
+    // Driving
+    if (!CurrentPermissions.HasFlag(InputPermissions.Driving))
+    {
+        _playerInput.ThrottleInput = 0f;
+        _playerInput.BrakeInput = 0f;
+        _playerInput.Handbrake = false;
+    }
+
+    // Camera
+    if (!CurrentPermissions.HasFlag(InputPermissions.Camera))
+    {
+        _playerInput.Look = Vector2.zero;
+    }
+
+    // Gear shifting
+    if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
+    {
+        _playerInput.ShiftUpRequested = false;
+        _playerInput.ShiftDownRequested = false;
+    }
+}
+    private void ShowDebug()
     {
         string gearName = _carPhysicsData.CurrentGear switch
         {
@@ -186,5 +239,20 @@ private void ShowDebug()
                   $"WheelsRPM: {_carPhysicsData.GeneralWheelsRPM:F0} | " +
                   $"Clutch: {_carPhysicsData.ClutchEngagement:F2} | " +
                   $"TransTorque: {_carPhysicsData.TransmissionTorque:F0} Nm");
+    }
+
+    private void RenderdWheels()
+    {
+        SetRenderWheel(SteeringWheels[0], LeftFrontWheelMesh);
+        SetRenderWheel(SteeringWheels[1], RightFrontWheelMesh);
+        SetRenderWheel(MotorizedWheels[0], LeftRearWheelMesh);
+        SetRenderWheel(MotorizedWheels[1], RightRearWheelMesh);
+    }
+
+    private void SetRenderWheel(WheelCollider collider, Transform mesh)
+    {
+        collider.GetWorldPose(out Vector3 position, out Quaternion rotation);
+        mesh.position = position;
+        mesh.rotation = rotation;
     }
 }

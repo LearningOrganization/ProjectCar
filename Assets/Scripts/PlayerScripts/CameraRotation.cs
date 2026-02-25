@@ -8,7 +8,7 @@ public class CameraRotation : MonoBehaviour
     public float BottomClamp = -80;
     public float Radius;
 
-    [SerializeField] private Transform _targetObject;
+    public Transform TargetObject;
 
     private Vector2 _rotation = Vector2.zero;
     private PlayerInputControls _playerInputControls;
@@ -21,7 +21,7 @@ public class CameraRotation : MonoBehaviour
         _playerInputControls = PlayerManager.Instance.Input;
         // should be replaced by DI
         _playerCamera = GetComponentInChildren<Camera>();
-        if (_targetObject != null)
+        if (TargetObject != null)
         {
             InitializeCameraPosition();
         }
@@ -30,10 +30,10 @@ public class CameraRotation : MonoBehaviour
     private void InitializeCameraPosition()
     {
 
-        Vector3 offset = _targetObject.rotation * new Vector3(0, 0, -Radius);
+        Vector3 offset = TargetObject.rotation * new Vector3(0, 0, -Radius);
         
-        transform.position = _targetObject.position + offset;
-        transform.LookAt(_targetObject);
+        transform.position = TargetObject.position + offset;
+        transform.LookAt(TargetObject);
         
         Vector3 angles = transform.eulerAngles;
         _rotation.x = angles.y;
@@ -55,7 +55,7 @@ public class CameraRotation : MonoBehaviour
             }
         }
 
-        if (_targetObject == null || _playerInputControls == null)
+        if (TargetObject == null || _playerInputControls == null)
             return;
 
         // camera rotation for gamepad 
@@ -68,8 +68,8 @@ public class CameraRotation : MonoBehaviour
         Quaternion rotationQuat = Quaternion.Euler(_rotation.y, _rotation.x, 0);
         Vector3 offset = rotationQuat * new Vector3(0, 0, -Radius);
 
-        this.transform.position = _targetObject.position + offset;
-        this.transform.LookAt(_targetObject);
+        this.transform.position = TargetObject.position + offset;
+        this.transform.LookAt(TargetObject);
 
     }
 

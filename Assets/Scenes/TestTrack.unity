@@ -1910,6 +1910,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nissan R32 Skyline Autech GTS-4 (manual ver)
       objectReference: {fileID: 0}
+    - target: {fileID: 4440031552001257596, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+      propertyPath: ShowDebugInfo
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.33

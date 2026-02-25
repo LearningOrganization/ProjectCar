@@ -1,3 +1,4 @@
+using System;
 using Unity.Splines.Examples;
 using UnityEngine;
 
@@ -14,10 +15,28 @@ public struct PlayerInput
 
 }
 
+[Flags]
+public enum InputPermissions
+{
+    None = 0,
+    Steering = 1 << 0,
+    Driving = 1 << 1,
+    Camera = 1 << 2,
+    GearShift = 1 << 3,
+
+    All = ~0
+}
+
 public class PlayerInputControls : MonoBehaviour
 {
     public PlayerInput PlayerInput { get; private set; }
+    public InputPermissions Permissions { get; private set; } = InputPermissions.All;
     InputSystem_Actions _controls;
+
+    public void SetPermissions(InputPermissions permissions)
+    {
+        Permissions = permissions;
+    }
 
     void OnDestroy()
     {
@@ -41,21 +60,37 @@ public class PlayerInputControls : MonoBehaviour
 
     void Update()
     {
+        // not the best solution, but it works at now
         PlayerInput = new PlayerInput
         {
-            Look = _controls.Player.Look.ReadValue<Vector2>(),
-            WheelsRotatingInput = _controls.Player.WheelsRotating.ReadValue<Vector2>(),
+            Look = Permissions.HasFlag(InputPermissions.Camera)
+                ? _controls.Player.Look.ReadValue<Vector2>()
+                : Vector2.zero,
 
-            ThrottleInput = _controls.Player.ThrottleInput.ReadValue<float>(),
-            BrakeInput = _controls.Player.Break.ReadValue<float>(),
-            Handbrake = _controls.Player.HandBrake.ReadValue<float>() > 0.5f,
+            WheelsRotatingInput = Permissions.HasFlag(InputPermissions.Steering)
+                ? _controls.Player.WheelsRotating.ReadValue<Vector2>()
+                : Vector2.zero,
 
-            ShiftUpRequested = _controls.Player.ShiftUp.triggered,
-            ShiftDownRequested = _controls.Player.ShiftDown.triggered
+            ThrottleInput = Permissions.HasFlag(InputPermissions.Driving)
+                ? _controls.Player.ThrottleInput.ReadValue<float>()
+                : 0f,
+
+            BrakeInput = Permissions.HasFlag(InputPermissions.Driving)
+                ? _controls.Player.Break.ReadValue<float>()
+                : 0f,
+
+            Handbrake = Permissions.HasFlag(InputPermissions.Driving)
+                && _controls.Player.HandBrake.ReadValue<float>() > 0.5f,
+
+            ShiftUpRequested = Permissions.HasFlag(InputPermissions.GearShift)
+                && _controls.Player.ShiftUp.triggered,
+
+            ShiftDownRequested = Permissions.HasFlag(InputPermissions.GearShift)
+                && _controls.Player.ShiftDown.triggered
         };
     }
 
-     public void ConsumeShiftInputs()
+    public void ConsumeShiftInputs()
     {
         var input = PlayerInput;
 

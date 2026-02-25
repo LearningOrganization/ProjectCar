@@ -73,6 +73,7 @@ public class AtmoEngineSimulation
         if (drivetrainConnected)
         {
             targetRPM = Mathf.Abs(data.GeneralWheelsRPM * data.CurrentTotalGearRatio);
+            targetRPM = Mathf.Max(targetRPM, IdleRPM);
         }
 
         // ================= RPM DYNAMICS =================
@@ -118,7 +119,6 @@ public class AtmoEngineSimulation
         data.EngineBraking = engineBraking;
         data.EngineInertia = inertia;
     }
-
 
     private float ApplyRevLimiter(float requestedTorque, ref CarPhysicsData data)
     {

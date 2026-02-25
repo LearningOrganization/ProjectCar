@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 9042323603355529945}
   - component: {fileID: 3575552324576383755}
   - component: {fileID: 4440031552001257596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Nissan R32 Skyline Autech GTS-4 (manual ver)
-  m_TagString: Untagged
+  m_TagString: PlayableCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
     IdleRPM: 1000
     EngineInertiaAccel: 0.15
     EngineInertiaDecel: 0.2
-    BackTorque: 60
+    BackTorque: 40
     IdleThrottleBoost: 0.12
     CouplingStrength: 6
     UseRevLimiter: 1
@@ -170,14 +170,18 @@ MonoBehaviour:
     MaxSpeedForSteering: 200
     SteerSpeed: 180
     ReturnSpeed: 240
-    InputDeadzone: 0.1
   SteeringWheels:
-  - {fileID: 1414618325600375803}
   - {fileID: 3132237500487747422}
+  - {fileID: 1414618325600375803}
   MotorizedWheels:
-  - {fileID: 6793194944269406913}
   - {fileID: 5680039184605929993}
-  ShowDebugInfo: 1
+  - {fileID: 6793194944269406913}
+  LeftFrontWheelMesh: {fileID: 6328951529123360591}
+  RightFrontWheelMesh: {fileID: 4455535403209297006}
+  LeftRearWheelMesh: {fileID: 6542786835065204740}
+  RightRearWheelMesh: {fileID: 1232673148178259120}
+  ShowDebugInfo: 0
+  CurrentPermissions: -1
 --- !u!1 &633734797858954075
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -621,60 +625,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4258153120805544941}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
---- !u!1 &3935844238428198612 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
-  m_PrefabInstance: {fileID: 4206226445867608965}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &4258153120805544941
-WheelCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3935844238428198612}
-  serializedVersion: 2
-  m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
-  m_SuspensionSpring:
-    spring: 35000
-    damper: 4500
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_Enabled: 1
-  m_ProvidesContacts: 0
 --- !u!4 &4455535403209297006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
@@ -796,7 +753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -862,7 +819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
