@@ -19,6 +19,8 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private Transform LeftRearWheelMesh;
     [SerializeField] private Transform RightRearWheelMesh;
 
+    public CarConfigData CarConfigData;
+
     [Header("Debug")]
     [SerializeField] private bool ShowDebugInfo = false;
 
@@ -32,28 +34,26 @@ public class CarPhysicSystem : MonoBehaviour
 
     public float GetCurrentCarSpeed()
     {
-        return _carPhysicsData.SpeedKmH;
+        return _carPhysicsData.Vehicle.SpeedKmH;
     }
 
     public void DisableCarEngineTorque()
     {
-       _carPhysicsData.CurrentGear = 0;
+       _carPhysicsData.Transmission.CurrentGear = 0;
     }
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
 
-        _carPhysicsData.Mass = _rb.mass;
-        _carPhysicsData.CurrentGear = 0;
+        _carPhysicsData.Vehicle.Mass = _rb.mass;
+        _carPhysicsData.Transmission.CurrentGear = 0;
 
-        _carPhysicsData.WheelInertia = MotorizedWheels[0].mass *
-        MotorizedWheels[0].radius * MotorizedWheels[0].radius * 2.0f;
     }
 
     void Start()
     {
-        EngineSimulation.Init();
+        EngineSimulation.Init(ref CarConfigData.EngineConfig);
     }
 
     // Update is called once per frame
@@ -70,25 +70,23 @@ public class CarPhysicSystem : MonoBehaviour
 
     void FixedUpdate()
     {
-       
         _carPhysicsData.DeltaTime = Time.fixedDeltaTime;
-        _carPhysicsData.Velocity = _rb.linearVelocity;
+        _carPhysicsData.Vehicle.Velocity = _rb.linearVelocity;
 
         ReadWheelData();
         UpdateVehicleSpeed();
         
-
-        SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref _playerInput);
+        SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.SteeringConfig, ref _playerInput);
 
         // brakes 
 
         //wheels logic
 
         // transmission 
-        TransmissionSimulation.UpdatePhysics(ref _carPhysicsData);
+        TransmissionSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
 
         // engine 
-        EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref _playerInput);
+        EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.EngineConfig, ref _playerInput);
 
         ApplyBrakes();
 
@@ -96,7 +94,6 @@ public class CarPhysicSystem : MonoBehaviour
 
         //application of all forces 
         ApplySteering();
-
 
         if(ShowDebugInfo)
         {
@@ -110,7 +107,7 @@ public class CarPhysicSystem : MonoBehaviour
         {
             if(wheel != null)
             {
-                wheel.steerAngle = _carPhysicsData.CurrentSteeringAngle;
+                wheel.steerAngle = _carPhysicsData.Steering.CurrentSteeringAngle;
             }
         }
     }
@@ -119,15 +116,15 @@ public class CarPhysicSystem : MonoBehaviour
     {
         if(_playerInput.ShiftUpRequested)
         {
-            TransmissionSimulation.ShiftUp(ref _carPhysicsData);
+            TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
             PlayerManager.Instance.Input.ConsumeShiftInputs();
         }
         else if(_playerInput.ShiftDownRequested)
         {
-            TransmissionSimulation.ShiftDown(ref _carPhysicsData);
+            TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
 
-            if(_carPhysicsData.CurrentGear == 0)
-                TransmissionSimulation.ShiftToReverse(ref _carPhysicsData);
+            if(_carPhysicsData.Transmission.CurrentGear == 0)
+                TransmissionSimulation.ShiftToReverse(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
 
             PlayerManager.Instance.Input.ConsumeShiftInputs();
         }
@@ -135,9 +132,9 @@ public class CarPhysicSystem : MonoBehaviour
 
     private void ApplyTorqueToWheels()
     {
-        float totalTorque = _carPhysicsData.TransmissionTorque;
-        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.SpeedKmH) < 1f;
-        bool inDrive = _carPhysicsData.CurrentGear > 0;
+        float totalTorque = _carPhysicsData.Transmission.TransmissionTorque;
+        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.Vehicle.SpeedKmH) < 1f;
+        bool inDrive = _carPhysicsData.Transmission.CurrentGear > 0;
 
         foreach(var wheel in MotorizedWheels)
         {
@@ -151,9 +148,9 @@ public class CarPhysicSystem : MonoBehaviour
             
             if(forwardSlip < 0.1f) 
             {
-                if(_carPhysicsData.CurrentGear > 1)
+                if(_carPhysicsData.Transmission.CurrentGear > 1)
                 {
-                    appliedTorque *= _carPhysicsData.CurrentGear * 2;    
+                    appliedTorque *= _carPhysicsData.Transmission.CurrentGear * 2;    
                 }
             }
 
@@ -164,7 +161,7 @@ public class CarPhysicSystem : MonoBehaviour
     {
        if(MotorizedWheels.Length == 0)
         {
-            _carPhysicsData.GeneralWheelsRPM = 0f;
+            _carPhysicsData.WheelData.GeneralWheelsRPM = 0f;
             return;
         }
 
@@ -179,7 +176,7 @@ public class CarPhysicSystem : MonoBehaviour
                 validWheels++;
             }
         }
-        _carPhysicsData.GeneralWheelsRPM = validWheels > 0 ? totalRPM / validWheels : 0f;
+        _carPhysicsData.WheelData.GeneralWheelsRPM = validWheels > 0 ? totalRPM / validWheels : 0f;
     }
 
     private void ApplyBrakes()
@@ -190,55 +187,55 @@ public class CarPhysicSystem : MonoBehaviour
     private void UpdateVehicleSpeed()
     {
         Vector3 localVelocity = transform.InverseTransformDirection(_rb.linearVelocity);
-        _carPhysicsData.SpeedMS = localVelocity.z;
-        _carPhysicsData.SpeedKmH = _carPhysicsData.SpeedMS * 3.6f;
+        _carPhysicsData.Vehicle.SpeedMS = localVelocity.z;
+        _carPhysicsData.Vehicle.SpeedKmH = _carPhysicsData.Vehicle.SpeedMS * 3.6f;
     }
 
     private void ApplyInputPermissions()
-{
-    // Steering
-    if (!CurrentPermissions.HasFlag(InputPermissions.Steering))
     {
-        _playerInput.WheelsRotatingInput = Vector2.zero;
-    }
+        // Steering
+        if (!CurrentPermissions.HasFlag(InputPermissions.Steering))
+        {
+            _playerInput.WheelsRotatingInput = Vector2.zero;
+        }
 
-    // Driving
-    if (!CurrentPermissions.HasFlag(InputPermissions.Driving))
-    {
-        _playerInput.ThrottleInput = 0f;
-        _playerInput.BrakeInput = 0f;
-        _playerInput.Handbrake = false;
-    }
+        // Driving
+        if (!CurrentPermissions.HasFlag(InputPermissions.Driving))
+        {
+            _playerInput.ThrottleInput = 0f;
+            _playerInput.BrakeInput = 0f;
+            _playerInput.Handbrake = false;
+        }
 
-    // Camera
-    if (!CurrentPermissions.HasFlag(InputPermissions.Camera))
-    {
-        _playerInput.Look = Vector2.zero;
-    }
+        // Camera
+        if (!CurrentPermissions.HasFlag(InputPermissions.Camera))
+        {
+            _playerInput.Look = Vector2.zero;
+        }
 
-    // Gear shifting
-    if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
-    {
-        _playerInput.ShiftUpRequested = false;
-        _playerInput.ShiftDownRequested = false;
+        // Gear shifting
+        if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
+        {
+            _playerInput.ShiftUpRequested = false;
+            _playerInput.ShiftDownRequested = false;
+        }
     }
-}
     private void ShowDebug()
     {
-        string gearName = _carPhysicsData.CurrentGear switch
+        string gearName = _carPhysicsData.Transmission.CurrentGear switch
         {
             -1 => "R",
             0 => "N",
-            _ => _carPhysicsData.CurrentGear.ToString()
+            _ => _carPhysicsData.Transmission.CurrentGear.ToString()
         };
         
-        Debug.Log($"RPM: {_carPhysicsData.EngineRPM:F0} | " +
+        Debug.Log($"RPM: {_carPhysicsData.Engine.EngineRPM:F0} | " +
                   $"Gear: {gearName} | " +
-                  $"Speed: {_carPhysicsData.SpeedKmH:F1} km/h | " +
-                  $"Torque: {_carPhysicsData.EngineTorque:F0} Nm | " +
-                  $"WheelsRPM: {_carPhysicsData.GeneralWheelsRPM:F0} | " +
-                  $"Clutch: {_carPhysicsData.ClutchEngagement:F2} | " +
-                  $"TransTorque: {_carPhysicsData.TransmissionTorque:F0} Nm");
+                  $"Speed: {_carPhysicsData.Vehicle.SpeedKmH:F1} km/h | " +
+                  $"Torque: {_carPhysicsData.Engine.EngineTorque:F0} Nm | " +
+                  $"WheelsRPM: {_carPhysicsData.WheelData.GeneralWheelsRPM:F0} | " +
+                  $"Clutch: {_carPhysicsData.Transmission.ClutchEngagement:F2} | " +
+                  $"TransTorque: {_carPhysicsData.Transmission.TransmissionTorque:F0} Nm");
     }
 
     private void RenderdWheels()

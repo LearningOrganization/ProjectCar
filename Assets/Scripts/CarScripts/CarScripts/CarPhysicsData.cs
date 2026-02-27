@@ -1,43 +1,77 @@
-using System;
 using UnityEngine;
-using Zenject;
 
-// should be decomposed on many structs
 [System.Serializable]
 public struct CarPhysicsData
 {
-    // ===== ENGINE DATA =====
+    // dynamic system data
+    public EngineData Engine;
+    public TransmissionData Transmission;
+    public WheelData WheelData; 
+    public SteeringData Steering;
+    public BrakeData Brake;
+    public AerodynamicData Aerodynamic;
+    public VehicleData Vehicle;
+    public TurboData Turbo;
+    public float DeltaTime;
+}
+
+// === Dynamic Systems ===
+[System.Serializable]
+public struct EngineData
+{
     public float EngineRPM;
     public float EngineTorque;
     public float EngineBraking;
     public float EngineInertia;
-
-    // ===== TRANSMISSION DATA =====
+}
+[System.Serializable]
+public struct TransmissionData
+{
     public int CurrentGear;
     public float CurrentGearRatio;
     public float CurrentTotalGearRatio;
     public float ClutchEngagement;
-    public float TransmissionTorque;
-
-    // ===== WHEEL DATA =====
-    public float GeneralWheelsRPM;
-    //public float GeneralWheelsTorque;
-    public float WheelInertia;
-    
-    // ===== BRAKE DATA =====
+    public float TransmissionTorque; 
+}
+[System.Serializable]
+public struct BrakeData
+{
     public float BrakeTorque;
-
-    // ===== STEERING DATA =====
-    public float CurrentSteeringAngle ; 
-
-    // ===== VEHICLE DATA =====
+    public bool IsBrakeLocked;
+}
+[System.Serializable]
+public struct SteeringData
+{
+    public float CurrentSteeringAngle; 
+}
+[System.Serializable]
+public struct WheelData
+{
+    public float GeneralWheelsRPM;
+}
+[System.Serializable]
+public struct AerodynamicData
+{
+    
+}
+[System.Serializable]
+public struct VehicleData
+{
     public float SpeedKmH;
     public float SpeedMS;
     public Vector3 Velocity;
     public float Mass;
-
-    // ===== AERODYNAMICS ===== i hope for future
-
-    // ===== SYSTEM =====
-    public float DeltaTime;
 }
+[System.Serializable]
+public struct TurboData
+{
+    
+}
+
+
+
+
+
+
+
+

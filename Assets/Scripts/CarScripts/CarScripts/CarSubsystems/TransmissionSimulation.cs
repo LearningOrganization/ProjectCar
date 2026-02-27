@@ -1,133 +1,118 @@
-using System;
 using UnityEngine;
-using Zenject;
 
 [System.Serializable]
 public class TransmissionSimulation
 {
-    [Header("Gear specs")]
-    [SerializeField] private float[] ForwardGearRatios = { 3.214f, 1.925f, 1.302f, 1.000f, 0.752f };
-    [SerializeField] private float[] ReverseRatio =  {-3.2f};
-    [SerializeField] private float FinalDriveRatio = 4.111f;
-    [SerializeField] private float TransmissionEfficiency = 0.90f;
-        
-    [Header("Shift Settings")]
-    [SerializeField] private float ShiftTime = 0.5f;
-    [SerializeField] private float ReverseMaxSpeed = 2.0f; //km/h
-
     private float _shiftTimer = 0f;
 
-
-    public void UpdatePhysics(ref CarPhysicsData data)
+    public void UpdatePhysics(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        UpdateClutch(ref data);
+        UpdateClutch(ref data, ref transmissionConfig);
 
-        UpdateGearRatio(ref data);
+        UpdateGearRatio(ref data, ref transmissionConfig);
 
-        CalculateTransmissionTorque(ref data);
-
-        //Debug.Log($"Gear: {data.CurrentGear}; Gear ratio: {data.CurrentGearRatio}; ClutchEngagement: {data.ClutchEngagement}; TransmissionTorque: {data.TransmissionTorque}");
+        CalculateTransmissionTorque(ref data, ref transmissionConfig);
     }
 
-    private void UpdateClutch(ref CarPhysicsData data)
+    private void UpdateClutch(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
         if(_shiftTimer > 0f)
         {
             _shiftTimer -= data.DeltaTime;
-            float progress = 1f - (_shiftTimer / ShiftTime);
-            data.ClutchEngagement = Mathf.SmoothStep(0f, 1f, progress);
+            float progress = 1f - (_shiftTimer / transmissionConfig.ShiftTime);
+            data.Transmission.ClutchEngagement = Mathf.SmoothStep(0f, 1f, progress);
         }
         else
         {
-            data.ClutchEngagement = 1f;
+            data.Transmission.ClutchEngagement = 1f;
         }
     }
-    private void UpdateGearRatio(ref CarPhysicsData data)
+    private void UpdateGearRatio(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if(data.CurrentGear == 0)
+        if(data.Transmission.CurrentGear == 0)
         {
-            data.CurrentGearRatio = 0f;
+            data.Transmission.CurrentGearRatio = 0f;
         }
-        else if (data.CurrentGear == -1)
+        else if (data.Transmission.CurrentGear == -1)
         {
-            data.CurrentGearRatio = ReverseRatio[0];
+            data.Transmission.CurrentGearRatio = transmissionConfig.ReverseRatio[0];
         }
-        else if(data.CurrentGear > 0 && data.CurrentGear <= ForwardGearRatios.Length)
+        else if(data.Transmission.CurrentGear > 0 && data.Transmission.CurrentGear <= transmissionConfig.ForwardGearRatios.Length)
         {
-            data.CurrentGearRatio = ForwardGearRatios[data.CurrentGear - 1];
+            data.Transmission.CurrentGearRatio = transmissionConfig.ForwardGearRatios[data.Transmission.CurrentGear - 1];
         }
 
-        data.CurrentTotalGearRatio = data.CurrentGearRatio * FinalDriveRatio;
+        data.Transmission.CurrentTotalGearRatio = data.Transmission.CurrentGearRatio * transmissionConfig.FinalDriveRatio;
     }
-    private void CalculateTransmissionTorque(ref CarPhysicsData data)
+    private void CalculateTransmissionTorque(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if (data.CurrentGear == 0)
+        if (data.Transmission.CurrentGear == 0)
         {
-            data.TransmissionTorque = 0f;
+            data.Transmission.TransmissionTorque = 0f;
             return;
         }
 
-        float totalRatio = Mathf.Abs(data.CurrentTotalGearRatio);
+        float totalRatio = Mathf.Abs(data.Transmission.CurrentTotalGearRatio);
         // torque which transmission gets from engine
-        float engineTorqueToWheels = data.EngineTorque * data.ClutchEngagement;
+        float engineTorqueToWheels = data.Engine.EngineTorque * data.Transmission.ClutchEngagement;
 
-        float transmittedTorque = engineTorqueToWheels * TransmissionEfficiency * totalRatio;
+        float transmittedTorque = engineTorqueToWheels * transmissionConfig.TransmissionEfficiency * totalRatio;
         
-        transmittedTorque -= data.EngineBraking * totalRatio;
+        transmittedTorque -= data.Engine.EngineBraking * totalRatio;
 
-        if(data.CurrentGear == -1)
+        if(data.Transmission.CurrentGear == -1)
         {
             transmittedTorque = -Mathf.Abs(transmittedTorque);
         }
         
-        data.TransmissionTorque = transmittedTorque;
+        data.Transmission.TransmissionTorque = transmittedTorque;
     }
 
     // shifting funcs
-    public void ShiftUp(ref CarPhysicsData data)
+    public void ShiftUp(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if (data.CurrentGear < ForwardGearRatios.Length && _shiftTimer <= 0f)
+        if (data.Transmission.CurrentGear < transmissionConfig.ForwardGearRatios.Length && _shiftTimer <= 0f)
         {
-            data.CurrentGear++;
-            _shiftTimer = ShiftTime;
+            data.Transmission.CurrentGear++;
+            _shiftTimer = transmissionConfig.ShiftTime;
         }
     }
-    public void ShiftDown(ref CarPhysicsData data)
+    public void ShiftDown(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if (data.CurrentGear >= 1 && _shiftTimer <= 0f)
+        if (data.Transmission.CurrentGear >= 1 && _shiftTimer <= 0f)
         {
-            data.CurrentGear--;
-            _shiftTimer = ShiftTime;
+            data.Transmission.CurrentGear--;
+            _shiftTimer = transmissionConfig.ShiftTime;
         }
     }
-    public void ShiftToReverse(ref CarPhysicsData data)
+    public void ShiftToReverse(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
         if (_shiftTimer > 0f)
             return;
-        if (data.CurrentGear == -1)
+        if (data.Transmission.CurrentGear == -1)
             return;
         
-        float speedKmh = data.SpeedKmH;
+        float speedKmh = data.Vehicle.SpeedKmH;
         float absSpeed = Mathf.Abs(speedKmh);
 
         // you can not reverse car on big speed (you can easily brake your transmission)
-        if(absSpeed > ReverseMaxSpeed)
+        if(absSpeed > transmissionConfig.ReverseMaxSpeed)
         {
             // add sound of braking gears
             return;
         }
 
-        data.CurrentGear = -1; // Reverse
+        data.Transmission.CurrentGear = -1; // Reverse
 
-        _shiftTimer = ShiftTime;
+        _shiftTimer = transmissionConfig.ShiftTime;
     }
-    public void ShiftToNeutral(ref CarPhysicsData data)
+    public void ShiftToNeutral(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
         if(_shiftTimer > 0f)
             return;
         
-        data.CurrentGear = 0;
+        data.Transmission.CurrentGear = 0;
 
-        _shiftTimer = ShiftTime;
+        _shiftTimer = transmissionConfig.ShiftTime;
     }
 }
