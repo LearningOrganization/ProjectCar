@@ -1,5 +1,7 @@
+using System;
 using System.Data.Common;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CarPhysicSystem : MonoBehaviour
 {
@@ -25,12 +27,17 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private bool ShowDebugInfo = false;
 
     public InputPermissions CurrentPermissions = InputPermissions.All;
-    
+
+    [HideInInspector]
+    public event Action<CarTelemetry> CarTelemetry; 
+
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
 
     private bool disableCarEngineTorque = false;
+    private float _uiTimer;
+    private float _uiUpdateStep = 0.05f; // 20 hz upadte
 
     public float GetCurrentCarSpeed()
     {
@@ -95,6 +102,22 @@ public class CarPhysicSystem : MonoBehaviour
 
         //application of all forces 
         ApplySteering();
+
+        _uiTimer += Time.deltaTime;
+
+        if(_uiTimer > _uiUpdateStep)
+        {
+            _uiTimer = 0f;
+            CarTelemetry?.Invoke(new CarTelemetry
+            {
+                Speed = _carPhysicsData.Vehicle.SpeedKmH,
+                RPM = _carPhysicsData.Engine.EngineRPM,
+                MinRPM = 0,
+                MaxRPM = CarConfigData.EngineConfig.MaxRPM,
+                Gear = _carPhysicsData.Transmission.CurrentGear,
+                
+            });
+        }
 
         if(ShowDebugInfo)
         {

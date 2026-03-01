@@ -146,7 +146,7 @@ MonoBehaviour:
       IdleRPM: 1250
       EngineInertiaAccel: 0.15
       EngineInertiaDecel: 0.2
-      BackTorque: 30
+      BackTorque: 40
       IdleThrottleBoost: 0.12
       CouplingStrength: 6
       UseRevLimiter: 1

@@ -11,6 +11,7 @@ public class RaceBootstrapper : IInitializable
     private readonly StateMachine<IRaceState> _raceStateMachine;
     private readonly DiContainer _container;
     private RaceController _raceController;
+    private CarUI _carUI;
     
     public RaceBootstrapper(
         [Inject(Id = "CarPrefab")] GameObject carPrefab,
@@ -18,7 +19,8 @@ public class RaceBootstrapper : IInitializable
         [Inject(Id = "PlayerCamera")] GameObject playerCamera,
         StateMachine<IRaceState> RaceStateMachine,
         DiContainer container,
-        RaceController raceController)
+        RaceController raceController,
+        CarUI carUI)
     {
         _carPrefab = carPrefab;
         _startPoint = startPoint;
@@ -26,6 +28,7 @@ public class RaceBootstrapper : IInitializable
         _raceStateMachine = RaceStateMachine;
         _container = container;
         _raceController = raceController;
+        _carUI = carUI;
     }
     public void Initialize()
     {
@@ -45,6 +48,7 @@ public class RaceBootstrapper : IInitializable
             null);
         
         _raceController.SetPlayerCar(car);
+        _carUI._carPhysicSystem = car.GetComponent<CarPhysicSystem>();
 
         Debug.Log("Player car spawned");
         
