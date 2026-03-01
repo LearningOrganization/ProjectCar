@@ -6,7 +6,7 @@ public struct CarConfigData
     public EngineConfig EngineConfig;
     public SteeringConfig SteeringConfig;
     public TransmissionConfig TransmissionConfig;
-
+    public BrakeConfig BreakConfig;
     public bool IsTurbo;
 }
 
@@ -48,9 +48,20 @@ public struct SteeringConfig
 }
 
 [System.Serializable]
-public struct BreakConfig
+public struct BrakeConfig
 {
+    [Header("Service Brake")]
+    public float MaxBrakeTorque;
+    [Range(0f, 1f)]
+    public float FrontBrakeBias;
     
+    [Header("Handbrake")]
+    public float HandbrakeTorque;
+    public float HandbrakeEngagement;
+
+    [Header("ABS (simple)")]
+    public bool UseABS;
+    public float ABSSlipThreshold;
 }
 
 [System.Serializable]
@@ -65,6 +76,7 @@ public struct TransmissionConfig
     [Header("Shift Settings")]
     public float ShiftTime;
     public float ReverseMaxSpeed; //km/h
+
 }
 
 [System.Serializable]

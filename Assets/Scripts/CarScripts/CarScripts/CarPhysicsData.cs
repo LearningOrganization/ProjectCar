@@ -36,8 +36,11 @@ public struct TransmissionData
 [System.Serializable]
 public struct BrakeData
 {
-    public float BrakeTorque;
-    public bool IsBrakeLocked;
+    public float FrontBrakeTorque;
+    public float RearBrakeTorque;
+    public float HandbrakeEngagement;
+    public bool IsFrontLocked;
+    public bool IsRearLocked;
 }
 [System.Serializable]
 public struct SteeringData

@@ -6,7 +6,7 @@ public class CarPhysicSystem : MonoBehaviour
     [Header("Physic Components")]
     [SerializeField] private AtmoEngineSimulation EngineSimulation;
     [SerializeField] private TransmissionSimulation TransmissionSimulation;
-    [SerializeField] private BreakingSimulation BreakingSimulation;
+    [SerializeField] private BrakeSimulation BrakeSimulation;
     [SerializeField] private SteeringSimulation SteeringSimulation;
 
     [Header("Steer wheels")]
@@ -78,8 +78,6 @@ public class CarPhysicSystem : MonoBehaviour
         
         SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.SteeringConfig, ref _playerInput);
 
-        // brakes 
-
         //wheels logic
 
         // transmission 
@@ -87,6 +85,9 @@ public class CarPhysicSystem : MonoBehaviour
 
         // engine 
         EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.EngineConfig, ref _playerInput);
+
+        // brakes 
+        BrakeSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.BreakConfig, ref _playerInput);
 
         ApplyBrakes();
 
@@ -133,8 +134,15 @@ public class CarPhysicSystem : MonoBehaviour
     private void ApplyTorqueToWheels()
     {
         float totalTorque = _carPhysicsData.Transmission.TransmissionTorque;
-        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.Vehicle.SpeedKmH) < 1f;
+        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.Vehicle.SpeedKmH) < 0.3f;
         bool inDrive = _carPhysicsData.Transmission.CurrentGear > 0;
+
+        bool inForwardGear = _carPhysicsData.Transmission.CurrentGear > 0;
+
+        if (inForwardGear && _carPhysicsData.Vehicle.SpeedMS < -0.5f && _playerInput.ThrottleInput < 0.01f)
+        {
+            totalTorque = 0f;
+        }
 
         foreach(var wheel in MotorizedWheels)
         {
@@ -157,6 +165,7 @@ public class CarPhysicSystem : MonoBehaviour
             wheel.motorTorque = appliedTorque;
         }
     }
+    
     private void ReadWheelData()
     {
        if(MotorizedWheels.Length == 0)
@@ -181,7 +190,20 @@ public class CarPhysicSystem : MonoBehaviour
 
     private void ApplyBrakes()
     {
-        // should be implemented in fuure
+        float frontTorque = _carPhysicsData.Brake.FrontBrakeTorque;
+        float rearTorque  = _carPhysicsData.Brake.RearBrakeTorque;
+
+        foreach (var wheel in SteeringWheels)
+        {
+            if (wheel != null)
+                wheel.brakeTorque = frontTorque;
+        }
+
+        foreach (var wheel in MotorizedWheels)
+        {
+            if (wheel != null)
+                wheel.brakeTorque = rearTorque;
+        }
     }
 
     private void UpdateVehicleSpeed()
@@ -245,7 +267,6 @@ public class CarPhysicSystem : MonoBehaviour
         SetRenderWheel(MotorizedWheels[0], LeftRearWheelMesh);
         SetRenderWheel(MotorizedWheels[1], RightRearWheelMesh);
     }
-
     private void SetRenderWheel(WheelCollider collider, Transform mesh)
     {
         collider.GetWorldPose(out Vector3 position, out Quaternion rotation);

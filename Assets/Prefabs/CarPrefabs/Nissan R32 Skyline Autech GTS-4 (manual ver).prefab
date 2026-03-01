@@ -171,6 +171,13 @@ MonoBehaviour:
       TransmissionEfficiency: 0.92
       ShiftTime: 0.2
       ReverseMaxSpeed: 2
+    BreakConfig:
+      MaxBrakeTorque: 12000
+      FrontBrakeBias: 0.6
+      HandbrakeTorque: 3000
+      HandbrakeEngagement: 0.3
+      UseABS: 0
+      ABSSlipThreshold: 0.03
     IsTurbo: 0
   ShowDebugInfo: 0
   CurrentPermissions: -1
