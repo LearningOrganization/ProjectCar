@@ -138,19 +138,20 @@ public class CarPhysicSystem : MonoBehaviour
 
     private void UpdateGear()
     {
-        if(_playerInput.ShiftUpRequested)
-        {
-            TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
-            PlayerManager.Instance.Input.ConsumeShiftInputs();
-        }
-        else if(_playerInput.ShiftDownRequested)
-        {
-            TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+        if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
+            return;
 
-            if(_carPhysicsData.Transmission.CurrentGear == 0)
-                TransmissionSimulation.ShiftToReverse(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+        _playerInput.ShiftCommand = PlayerManager.Instance.Input.ConsumeShiftCommand();
 
-            PlayerManager.Instance.Input.ConsumeShiftInputs();
+        switch ( _playerInput.ShiftCommand)
+        {
+            case GearShiftCommand.Up:
+                TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+                break;
+
+            case GearShiftCommand.Down:
+                TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+                break;
         }
     }
 
@@ -258,12 +259,11 @@ public class CarPhysicSystem : MonoBehaviour
             _playerInput.Look = Vector2.zero;
         }
 
-        // Gear shifting
-        if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
-        {
-            _playerInput.ShiftUpRequested = false;
-            _playerInput.ShiftDownRequested = false;
-        }
+        // // Gear shifting
+        // if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
+        // {
+        //     _playerInput.ShiftCommand = GearShiftCommand.None;
+        // }
     }
     private void ShowDebug()
     {

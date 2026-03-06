@@ -10,9 +10,15 @@ public struct PlayerInput
     public float BrakeInput;
     public bool Handbrake;
 
-    public bool ShiftUpRequested;
-    public bool ShiftDownRequested;
+    public GearShiftCommand ShiftCommand;
 
+}
+
+public enum GearShiftCommand
+{
+    None,
+    Up,
+    Down
 }
 
 [Flags]
@@ -60,6 +66,17 @@ public class PlayerInputControls : MonoBehaviour
 
     void Update()
     {
+
+        GearShiftCommand shiftCommand = GearShiftCommand.None;
+
+        if (Permissions.HasFlag(InputPermissions.GearShift))
+        {
+            if (_controls.Player.ShiftUp.triggered)
+                shiftCommand = GearShiftCommand.Up;
+            else if (_controls.Player.ShiftDown.triggered)
+                shiftCommand = GearShiftCommand.Down;
+        }
+
         // not the best solution, but it works at now
         PlayerInput = new PlayerInput
         {
@@ -82,22 +99,22 @@ public class PlayerInputControls : MonoBehaviour
             Handbrake = Permissions.HasFlag(InputPermissions.Driving)
                 && _controls.Player.HandBrake.ReadValue<float>() > 0.5f,
 
-            ShiftUpRequested = Permissions.HasFlag(InputPermissions.GearShift)
-                && _controls.Player.ShiftUp.triggered,
-
-            ShiftDownRequested = Permissions.HasFlag(InputPermissions.GearShift)
-                && _controls.Player.ShiftDown.triggered
+            ShiftCommand = shiftCommand
         };
     }
 
-    public void ConsumeShiftInputs()
+    public GearShiftCommand ConsumeShiftCommand()
     {
+        var cmd = PlayerInput.ShiftCommand;
+
+        if (cmd == GearShiftCommand.None)
+            return cmd;
+
         var input = PlayerInput;
-
-        input.ShiftUpRequested = false;
-        input.ShiftDownRequested = false;
-
+        input.ShiftCommand = GearShiftCommand.None;
         PlayerInput = input;
+
+        return cmd;
     }
 }
 
