@@ -96,80 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584f0f92b36a36946b2c41364ef60c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EngineSimulation:
-    TorqueCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 980.75555
-        value: 110.818115
-        inSlope: 0.0806097
-        outSlope: 0.0806097
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.055562105
-      - serializedVersion: 3
-        time: 5253.361
-        value: 246.51793
-        inSlope: -0.0010062223
-        outSlope: -0.0010062223
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.8290772
-        outWeight: 0.6951113
-      - serializedVersion: 3
-        time: 6500.327
-        value: 232.80037
-        inSlope: -0.022152092
-        outSlope: -0.022152092
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.22425309
-        outWeight: 0.5743192
-      - serializedVersion: 3
-        time: 7263.5825
-        value: 206.46812
-        inSlope: -0.055702187
-        outSlope: -0.055702187
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.17978041
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    MinRPM: 800
-    MaxRPM: 7250
-    IdleRPM: 1000
-    EngineInertiaAccel: 0.15
-    EngineInertiaDecel: 0.2
-    BackTorque: 40
-    IdleThrottleBoost: 0.12
-    CouplingStrength: 6
-    UseRevLimiter: 1
-    RevLimiterRPM: 7000
-    limiterType: 1
-    _currentRPM: 0
-  TransmissionSimulation:
-    ForwardGearRatios:
-    - 3.214
-    - 1.925
-    - 1.302
-    - 1
-    - 0.752
-    ReverseRatio:
-    - -3.2
-    FinalDriveRatio: 4.111
-    TransmissionEfficiency: 0.92
-    ShiftTime: 0.2
-    ReverseMaxSpeed: 2
-  SteeringSimulation:
-    SteeringRangeAtZeroSpeed: 35
-    SteeringRangeAtMaxSpeed: 5
-    MaxSpeedForSteering: 200
-    SteerSpeed: 180
-    ReturnSpeed: 240
   SteeringWheels:
   - {fileID: 3132237500487747422}
   - {fileID: 1414618325600375803}
@@ -180,6 +106,79 @@ MonoBehaviour:
   RightFrontWheelMesh: {fileID: 4455535403209297006}
   LeftRearWheelMesh: {fileID: 6542786835065204740}
   RightRearWheelMesh: {fileID: 1232673148178259120}
+  CarConfigData:
+    EngineConfig:
+      TorqueCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 1000
+          value: 115
+          inSlope: 0.08296714
+          outSlope: 0.08296714
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09966787
+        - serializedVersion: 3
+          time: 5250
+          value: 245
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 7250
+          value: 200
+          inSlope: -0.040482707
+          outSlope: -0.040482707
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.13909522
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      MinRPM: 1000
+      MaxRPM: 7250
+      IdleRPM: 1250
+      EngineInertiaAccel: 0.15
+      EngineInertiaDecel: 0.2
+      BackTorque: 40
+      IdleThrottleBoost: 0.12
+      CouplingStrength: 6
+      UseRevLimiter: 1
+      RevLimiterRPM: 7000
+      limiterType: 1
+    SteeringConfig:
+      SteeringRangeAtZeroSpeed: 35
+      SteeringRangeAtMaxSpeed: 2
+      MaxSpeedForSteering: 300
+      SteerSpeed: 180
+      ReturnSpeed: 240
+    TransmissionConfig:
+      ForwardGearRatios:
+      - 3.214
+      - 1.925
+      - 1.302
+      - 1
+      - 0.752
+      ReverseRatio:
+      - -3.2
+      FinalDriveRatio: 4.111
+      TransmissionEfficiency: 0.92
+      ShiftTime: 0.2
+      ReverseMaxSpeed: 2
+    BreakConfig:
+      MaxBrakeTorque: 12000
+      FrontBrakeBias: 0.6
+      HandbrakeTorque: 3000
+      HandbrakeEngagement: 0.3
+      UseABS: 0
+      ABSSlipThreshold: 0.03
+    IsTurbo: 0
   ShowDebugInfo: 0
   CurrentPermissions: -1
 --- !u!1 &633734797858954075

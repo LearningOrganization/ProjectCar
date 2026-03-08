@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using Unity.Splines.Examples;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
@@ -24,6 +25,8 @@ public class RaceController : MonoBehaviour
     public event Action OnRacePaused;
     public event Action OnRaceResumed;
 
+    public event Action<CarTelemetry> OnTelemetryUpdated;
+
     private CarPhysicSystem _carPhysicSystem;
 
     private Coroutine _coroutine;
@@ -41,13 +44,20 @@ public class RaceController : MonoBehaviour
         _highLevelFSM = highLevelFSM;
     }
 
-    public void SetPlayerCar(GameObject car)
+    public void SetPlayerCar(CarPhysicSystem carPhysicSystem)
     {
-        _carPhysicSystem = car.GetComponent<CarPhysicSystem>();
+        _carPhysicSystem = carPhysicSystem;
+
+        _carPhysicSystem.OnTelemetryUpdated += HandleTelemetry;
     }
 
     public void EnableCarInput() => _carPhysicSystem.CurrentPermissions = InputPermissions.All;
     public void DisableCarInput() => _carPhysicSystem.CurrentPermissions = InputPermissions.None;
+
+    public void HandleTelemetry(CarTelemetry carTelemetry)
+    {
+        OnTelemetryUpdated?.Invoke(carTelemetry);
+    }
 
     public void StartRacePreparing()
     {
