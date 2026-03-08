@@ -4,7 +4,6 @@ using Zenject;
 
 public class RaceBootstrapper : IInitializable
 {
-
     private readonly GameObject _carPrefab;
     private readonly GameObject _startPoint;
     private readonly GameObject _playerCamera;
@@ -47,8 +46,7 @@ public class RaceBootstrapper : IInitializable
             _startPoint.transform.rotation,
             null);
         
-        _raceController.SetPlayerCar(car);
-        _carUI._carPhysicSystem = car.GetComponent<CarPhysicSystem>();
+        _raceController.SetPlayerCar(car.GetComponent<CarPhysicSystem>());
 
         Debug.Log("Player car spawned");
         

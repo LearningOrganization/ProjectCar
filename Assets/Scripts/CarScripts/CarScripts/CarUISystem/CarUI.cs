@@ -10,18 +10,23 @@ public class CarUI : MonoBehaviour
     [SerializeField] private TMP_Text CurrentGear;
     [SerializeField] private TMP_Text CurrentSpeed;
 
-    [HideInInspector]
-    public CarPhysicSystem _carPhysicSystem;
+    private RaceController _raceController;
 
-    void Start()
+    [Inject]
+    public void Construct(RaceController raceController)
     {
-        _carPhysicSystem.CarTelemetry += UpdateCarTelemetry;
-        RPMSlider.minValue = 0;
-        RPMSlider.maxValue = _carPhysicSystem.CarConfigData.EngineConfig.MaxRPM;
+        _raceController = raceController;
+    }
+
+    void Awake()
+    {
+        _raceController.OnTelemetryUpdated += UpdateCarTelemetry;
     }
 
     private void UpdateCarTelemetry(CarTelemetry carTelemetry)
     {
+        // not the best solution
+        RPMSlider.maxValue = carTelemetry.MaxRPM;
 
         RPMSlider.value = carTelemetry.RPM;
 
@@ -29,9 +34,9 @@ public class CarUI : MonoBehaviour
 
         string gearName = carTelemetry.Gear switch
         {
-            -1 => "R",
-            0 => "N",
-            _ => carTelemetry.Gear.ToString()
+            Gear.Reverse => "R",
+            Gear.Neutral => "N",
+            _ => ((int)carTelemetry.Gear).ToString()
         };
 
         CurrentGear.text = gearName;
@@ -41,7 +46,7 @@ public class CarUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_carPhysicSystem != null)
-            _carPhysicSystem.CarTelemetry -= UpdateCarTelemetry;
+        if (_raceController != null)
+            _raceController.OnTelemetryUpdated -= UpdateCarTelemetry;
     }
 }

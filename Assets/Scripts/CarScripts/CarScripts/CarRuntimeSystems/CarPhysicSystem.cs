@@ -29,7 +29,7 @@ public class CarPhysicSystem : MonoBehaviour
     public InputPermissions CurrentPermissions = InputPermissions.All;
 
     [HideInInspector]
-    public event Action<CarTelemetry> CarTelemetry; 
+    public event Action<CarTelemetry> OnTelemetryUpdated; 
 
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
@@ -108,13 +108,13 @@ public class CarPhysicSystem : MonoBehaviour
         if(_uiTimer > _uiUpdateStep)
         {
             _uiTimer = 0f;
-            CarTelemetry?.Invoke(new CarTelemetry
+            OnTelemetryUpdated?.Invoke(new CarTelemetry
             {
                 Speed = _carPhysicsData.Vehicle.SpeedKmH,
                 RPM = _carPhysicsData.Engine.EngineRPM,
                 MinRPM = 0,
                 MaxRPM = CarConfigData.EngineConfig.MaxRPM,
-                Gear = _carPhysicsData.Transmission.CurrentGear,
+                Gear = (Gear)_carPhysicsData.Transmission.CurrentGear,
                 
             });
         }
@@ -149,9 +149,27 @@ public class CarPhysicSystem : MonoBehaviour
                 TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
                 break;
 
+            // case GearShiftCommand.Down:
+            //     TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+            //     break;
+
             case GearShiftCommand.Down:
+            if (_carPhysicsData.Vehicle.SpeedKmH < CarConfigData.TransmissionConfig.ReverseMaxSpeed)
+            {
+                if (_carPhysicsData.Transmission.CurrentGear == 0)
+                {
+                    _carPhysicsData.Transmission.CurrentGear = -1; // переключаем в Reverse
+                }
+                else
+                {
+                    TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+                }
+            }
+            else
+            {
                 TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
-                break;
+            }
+            break;
         }
     }
 
