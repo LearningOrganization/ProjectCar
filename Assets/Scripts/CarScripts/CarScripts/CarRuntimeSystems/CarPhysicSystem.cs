@@ -158,7 +158,7 @@ public class CarPhysicSystem : MonoBehaviour
             {
                 if (_carPhysicsData.Transmission.CurrentGear == 0)
                 {
-                    _carPhysicsData.Transmission.CurrentGear = -1; // переключаем в Reverse
+                    _carPhysicsData.Transmission.CurrentGear = -1;
                 }
                 else
                 {
@@ -195,12 +195,17 @@ public class CarPhysicSystem : MonoBehaviour
             wheel.GetGroundHit(out hit);
 
             float forwardSlip = Mathf.Abs(hit.forwardSlip);
-            
+            Debug.Log($"Slip: {forwardSlip}");
             if(forwardSlip < 0.1f) 
             {
+                
+
                 if(_carPhysicsData.Transmission.CurrentGear > 1)
                 {
-                    appliedTorque *= _carPhysicsData.Transmission.CurrentGear * 2;    
+                    // I have to solve this shit 
+                    appliedTorque *= _carPhysicsData.Transmission.CurrentGear ;   
+                    //appliedTorque += 5000; 
+                    //hit.forwardSlip = 0.2f;
                 }
             }
 

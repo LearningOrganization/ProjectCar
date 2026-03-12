@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0567ad6fe73dec047baf825d2d78afd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carPrefab: {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+  _carPrefab: {fileID: 4731383039542245258, guid: e3cbb800b3441664aaeba0eaccce9b95, type: 3}
   _playerCamera: {fileID: 8126687921717604271, guid: 9c7831aa38c1956419184e71a11ce5fc, type: 3}
   _startPoint: {fileID: 6004824641724532161, guid: 4ed078e525ed2124086a615c186f0865, type: 3}
