@@ -405,7 +405,7 @@ Transform:
   m_GameObject: {fileID: 264573207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 10000, y: 10000, z: 10000}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3912,67 +3912,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661851433}
   m_CullTransparentMesh: 1
---- !u!1001 &1709372546
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_Name
-      value: Nissan R32 Skyline Autech GTS-4 (manual ver)
-      objectReference: {fileID: 0}
-    - target: {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 16.646793
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.74
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 242.00703
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 5524195778094368650, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
 --- !u!1 &1834091425
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,6 +4615,5 @@ SceneRoots:
   - {fileID: 1873053831}
   - {fileID: 1289303688}
   - {fileID: 1584311250407254852}
-  - {fileID: 1709372546}
   - {fileID: 673044250}
   - {fileID: 1381803264}

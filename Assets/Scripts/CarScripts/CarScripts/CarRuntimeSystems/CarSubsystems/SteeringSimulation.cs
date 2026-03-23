@@ -1,26 +1,25 @@
-using System;
+using Unity.Mathematics;
 using UnityEngine;
-using Zenject;
+
 
 [System.Serializable]
-public class SteeringSimulation
+public struct SteeringSimulation
 {
   
-    private float _currentSteerAngle = 0f;
+    //private float _currentSteerAngle = 0f;
     
     public void UpdatePhysics(ref CarPhysicsData data, ref SteeringConfig steeringConfig, ref PlayerInput playerInput)
     {
         float steeringInput = playerInput.WheelsRotatingInput.x;
         
-        float speedFactor = Mathf.Clamp01(data.Vehicle.SpeedKmH / steeringConfig.MaxSpeedForSteering);
-        float currentMaxAngle = Mathf.Lerp(steeringConfig.SteeringRangeAtZeroSpeed, steeringConfig.SteeringRangeAtMaxSpeed, speedFactor);
+        float speedFactor = math.clamp(data.Vehicle.SpeedKmH / steeringConfig.MaxSpeedForSteering, 0, 1);
+        float currentMaxAngle = math.lerp(steeringConfig.SteeringRangeAtZeroSpeed, steeringConfig.SteeringRangeAtMaxSpeed, speedFactor);
     
         float targetAngle = steeringInput * currentMaxAngle;
         
-        float speed = Mathf.Abs(steeringInput) > 0.01f ? steeringConfig.SteerSpeed : steeringConfig.ReturnSpeed;
-        _currentSteerAngle = Mathf.MoveTowards(_currentSteerAngle, targetAngle, speed * data.DeltaTime);
+        float speed = math.abs(steeringInput) > 0.01f ? steeringConfig.SteerSpeed : steeringConfig.ReturnSpeed;
+        data.Steering.CurrentSteeringAngle = Mathf.MoveTowards(data.Steering.CurrentSteeringAngle, targetAngle, speed * data.DeltaTime);
         
-        data.Steering.CurrentSteeringAngle = _currentSteerAngle;
     }
 
 }
