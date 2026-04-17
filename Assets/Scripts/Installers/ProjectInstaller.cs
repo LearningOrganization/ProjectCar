@@ -1,10 +1,11 @@
+using UnityEngine;
 using Zenject;
 
-namespace PawnShop.Installers
+namespace SpawnShop.Installers
 {
     public class ProjectInstaller : MonoInstaller
     {
-
+        [SerializeField] private ScriptableObject CarContainer;
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -24,6 +25,10 @@ namespace PawnShop.Installers
             Container.Bind<MainMenuState>().AsSingle();
             Container.Bind<SettingsState>().AsSingle();
 
+            // --- Car Container ---
+            Container.BindInstance(CarContainer).WithId("CarContainer").AsSingle();
         }
+
     }
+    
 }

@@ -12,6 +12,7 @@ public class RaceController : MonoBehaviour
     public float RaceTime { get; private set; }
     public bool IsRaceActive { get; private set; }
     
+    #region RaceControllerEvents
     // Events for UI and another systems
     public event Action OnPreparePhaseStarted;
     public event Action OnCountdownStarted;
@@ -24,6 +25,7 @@ public class RaceController : MonoBehaviour
     public event Action OnFalseStart;
     public event Action OnRacePaused;
     public event Action OnRaceResumed;
+    #endregion
 
     public event Action<CarTelemetry> OnTelemetryUpdated;
 

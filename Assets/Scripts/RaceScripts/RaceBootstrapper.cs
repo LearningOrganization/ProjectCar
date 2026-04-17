@@ -48,7 +48,7 @@ public class RaceBootstrapper : IInitializable
         
         _raceController.SetPlayerCar(car.GetComponent<CarPhysicSystem>());
 
-        Debug.Log("Player car spawned");
+        //Debug.Log("Player car spawned");
         
         var camera = _container.InstantiatePrefab(_playerCamera,
         _startPoint.transform.position,
