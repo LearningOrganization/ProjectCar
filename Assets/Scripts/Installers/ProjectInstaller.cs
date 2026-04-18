@@ -5,7 +5,7 @@ namespace SpawnShop.Installers
 {
     public class ProjectInstaller : MonoInstaller
     {
-        [SerializeField] private ScriptableObject CarContainer;
+        [SerializeField] private CarContainer CarContainer;
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);

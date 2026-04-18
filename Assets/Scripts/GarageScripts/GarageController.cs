@@ -5,13 +5,13 @@ using Zenject;
 public class GarageController : MonoBehaviour
 {
 
-    [HideInInspector] public event Action OnCarChanged;
+    [HideInInspector] public event Action<int> OnCarChanged;
 
     private CarContainer _carContainer;
     private CarsDatabase _carDatabase;
 
     [Inject]
-    public void Construct(CarContainer carContainer, CarsDatabase carsDatabase)
+    public void Construct([Inject(Id = "CarContainer")]CarContainer carContainer, [Inject(Id = "CarDatabase")]CarsDatabase carsDatabase)
     {
         _carContainer = carContainer;
         _carDatabase = carsDatabase;
@@ -19,7 +19,7 @@ public class GarageController : MonoBehaviour
 
     private void Awake()
     {
-        _carContainer.Car = _carDatabase.Cars[1];
+        _carContainer.Car = _carDatabase.Cars[0];
     }
 
     void Start()

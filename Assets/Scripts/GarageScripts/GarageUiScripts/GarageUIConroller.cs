@@ -4,8 +4,8 @@ using Zenject;
 
 public class GarageUIConroller : MonoBehaviour
 {
-
     private GarageController _garageController;
+
     [Inject]
     public void Construct(GarageController garageController)
     {
@@ -17,7 +17,7 @@ public class GarageUIConroller : MonoBehaviour
         _garageController.OnCarChanged += ChangeCar;
     }
 
-    private void ChangeCar()
+    private void ChangeCar(int carID)
     {
         
     }

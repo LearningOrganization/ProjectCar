@@ -8,12 +8,12 @@ public class GarageInstaller : MonoInstaller
     public override void InstallBindings()
     {
         // not the best solution, should be replaced by dynamic loading
-        Container.BindInstance(_carDatabase).WithId("CarDatabase");
+        Container.BindInstance(_carDatabase).WithId("CarDatabase").AsSingle();
 
         // -- Garage Controller --
-        Container.Bind<GarageController>().AsSingle();
+        Container.Bind<GarageController>().FromComponentInHierarchy().AsSingle();
         // -- Garage UI -- 
-        Container.Bind<GarageUIConroller>().AsSingle();
+        Container.Bind<GarageUIConroller>().FromComponentInHierarchy().AsSingle();
 
     }
 }
