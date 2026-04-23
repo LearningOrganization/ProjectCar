@@ -4,14 +4,12 @@ using Zenject;
 
 public class RaceBootstrapper : IInitializable
 {
-    private readonly GameObject _carPrefab;
     private readonly GameObject _startPoint;
     private readonly GameObject _playerCamera;
     private readonly CarContainer _carContainer;
     private readonly StateMachine<IRaceState> _raceStateMachine;
     private readonly DiContainer _container;
     private RaceController _raceController;
-    private CarUI _carUI;
     
     public RaceBootstrapper(
         [Inject(Id = "CarContainer")] CarContainer carContainer,
@@ -28,7 +26,6 @@ public class RaceBootstrapper : IInitializable
         _raceStateMachine = RaceStateMachine;
         _container = container;
         _raceController = raceController;
-        _carUI = carUI;
     }
     public void Initialize()
     {
@@ -41,12 +38,6 @@ public class RaceBootstrapper : IInitializable
 
     private void SpawnPlayerCar()
     {
-        // var car = _container.InstantiatePrefab(
-        //     _carPrefab,
-        //     _startPoint.transform.position,
-        //     _startPoint.transform.rotation,
-        //     null);
-
 
         if(_carContainer.Car != null)
         {
@@ -71,9 +62,7 @@ public class RaceBootstrapper : IInitializable
                 camera.GetComponent<CameraRotation>().TargetObject = car.transform;
             }
         }else
-            Debug.Log("car was not spawned");
-
-        
+            Debug.Log("car was not spawned"); 
         
     }
 }

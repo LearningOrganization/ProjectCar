@@ -14,6 +14,8 @@ public class GarageInstaller : MonoInstaller
         Container.Bind<GarageController>().FromComponentInHierarchy().AsSingle();
         // -- Garage UI -- 
         Container.Bind<GarageUIConroller>().FromComponentInHierarchy().AsSingle();
+        // Patform Controller
+        Container.Bind<PlatformController>().FromComponentInHierarchy().AsSingle();
 
     }
 }

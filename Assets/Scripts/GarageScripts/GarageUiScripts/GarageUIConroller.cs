@@ -1,25 +1,33 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class GarageUIConroller : MonoBehaviour
 {
+
+    [SerializeField] private Button RightButton;
+    [SerializeField] private Button LeftButton;
+    [SerializeField] private TMP_Text CarIdText;
+    [SerializeField] private TMP_Text CarPrefabName;
+
+
     private GarageController _garageController;
 
     [Inject]
     public void Construct(GarageController garageController)
     {
         _garageController = garageController;
+
     }
 
     void Awake()
     {
-        _garageController.OnCarChanged += ChangeCar;
-    }
+        RightButton.onClick.AddListener(() => _garageController.ChangeCar(true));
+        LeftButton.onClick.AddListener(() => _garageController.ChangeCar(false));
 
-    private void ChangeCar(int carID)
-    {
-        
+        _garageController.OnCarChanged += OnChangeCar;
     }
 
     void Start()
@@ -31,8 +39,14 @@ public class GarageUIConroller : MonoBehaviour
         
     }
 
-    void OnDestroy()
+    private void OnChangeCar(int carId, string carPrefabName)
     {
-        _garageController.OnCarChanged -= ChangeCar;
+        CarIdText.text = carId.ToString();
+        CarPrefabName.text = carPrefabName;
+    }
+
+    private void OnDestroy()
+    {
+        _garageController.OnCarChanged -= OnChangeCar;
     }
 }
