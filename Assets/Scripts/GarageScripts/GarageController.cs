@@ -6,10 +6,15 @@ public class GarageController : MonoBehaviour
 {
 
     [HideInInspector] public event Action<int, string> OnCarChanged;
-
+    [HideInInspector] public event Action<int> ChangeCarPlatform;
     private CarContainer _carContainer;
     private CarsDatabase _carDatabase;
-    private int _currCarID;
+    private int _currCarID = 0;
+    private float _timer;
+    
+    private Vector3 _targetPos;
+    private bool _isMoving;
+
 
     [Inject]
     public void Construct(
@@ -18,20 +23,13 @@ public class GarageController : MonoBehaviour
     {
         _carContainer = carContainer;
         _carDatabase = carsDatabase;
-        _currCarID = 0;
-    }
-
-    private void Awake()
-    {
-        //_carContainer.Car = _carDatabase.Cars[1];
     }
 
     public void ChangeCar(bool toNext)
     {
-
         if(toNext)
         {
-            if(_currCarID < _carDatabase.Cars.Length)
+            if(_currCarID < _carDatabase.Cars.Length - 1)
             {
                 _currCarID ++;
             }
@@ -44,16 +42,29 @@ public class GarageController : MonoBehaviour
             }
         }
         _carContainer.Car = _carDatabase.Cars[_currCarID];
+
         OnCarChanged?.Invoke(_currCarID, _carContainer.Car.name);
+        ChangeCarPlatform?.Invoke(_currCarID);
 
     }
 
-    void Start()
+    private void GarageInitCall()
     {
-        
+        _currCarID = 0;
+        _carContainer.Car = _carDatabase.Cars[_currCarID];
+
+        OnCarChanged?.Invoke(_currCarID, _carContainer.Car.name);
+        ChangeCarPlatform?.Invoke(_currCarID);
     }
 
-    void Update()
+    private void Start()
+    {
+        GarageInitCall();
+    }
+
+    //private void 
+
+    private void Update()
     {
         
     }

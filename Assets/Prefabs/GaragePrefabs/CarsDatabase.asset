@@ -15,3 +15,5 @@ MonoBehaviour:
   Cars:
   - {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
   - {fileID: 4731383039542245258, guid: e3cbb800b3441664aaeba0eaccce9b95, type: 3}
+  - {fileID: 4731383039542245258, guid: e3cbb800b3441664aaeba0eaccce9b95, type: 3}
+  - {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}

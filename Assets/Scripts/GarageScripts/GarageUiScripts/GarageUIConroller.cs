@@ -11,15 +11,13 @@ public class GarageUIConroller : MonoBehaviour
     [SerializeField] private Button LeftButton;
     [SerializeField] private TMP_Text CarIdText;
     [SerializeField] private TMP_Text CarPrefabName;
-
-
+    
     private GarageController _garageController;
 
     [Inject]
     public void Construct(GarageController garageController)
     {
         _garageController = garageController;
-
     }
 
     void Awake()

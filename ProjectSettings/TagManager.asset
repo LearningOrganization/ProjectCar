@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - PlayableCar
+  - CarSpawnPoint
   layers:
   - Default
   - TransparentFX

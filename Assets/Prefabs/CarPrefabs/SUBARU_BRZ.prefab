@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1680304179141571497}
   - component: {fileID: 6738799657231116550}
   - component: {fileID: 6986028384728607799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SUBARU_BRZ
-  m_TagString: Untagged
+  m_TagString: PlayableCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2060701554207827331}
   - component: {fileID: 2925856437938887569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RareLeftWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9041843294273077018}
   - component: {fileID: 5256070966402827658}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RareRightWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6918454344689529780}
   - component: {fileID: 6380652531842987626}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontLeftWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6638096039302121184}
   - component: {fileID: 4642136956541420936}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontRightWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3995607636864383365}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WheelColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,6 +576,10 @@ PrefabInstance:
       value: RareLeftWheel
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -640,6 +644,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_Name
       value: RareRightWheel
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_IsActive
@@ -707,6 +715,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SUBARU_BRZ
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c10ef92b32564f3459e029d40b3d489e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -768,6 +780,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_Name
       value: FrontLeftWheel
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_IsActive
@@ -834,6 +850,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_Name
       value: FrontRightWheel
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_IsActive

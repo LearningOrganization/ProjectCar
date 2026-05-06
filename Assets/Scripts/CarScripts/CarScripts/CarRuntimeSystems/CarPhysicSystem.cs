@@ -10,7 +10,7 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private TransmissionSimulation TransmissionSimulation;
     [SerializeField] private BrakeSimulation BrakeSimulation;
     [SerializeField] private SteeringSimulation SteeringSimulation;
-
+    // reorganize for more soa 
     [Header("Steer wheels")]
     [SerializeField] private WheelCollider[] SteeringWheels;
     [Header("Motorized wheels")]
@@ -85,8 +85,6 @@ public class CarPhysicSystem : MonoBehaviour
         
         SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.SteeringConfig, ref _playerInput);
 
-        //wheels logic
-
         // transmission 
         TransmissionSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
 
@@ -100,7 +98,6 @@ public class CarPhysicSystem : MonoBehaviour
 
         ApplyTorqueToWheels();
 
-        //application of all forces 
         ApplySteering();
 
         _uiTimer += Time.deltaTime;
@@ -203,7 +200,7 @@ public class CarPhysicSystem : MonoBehaviour
                 if(_carPhysicsData.Transmission.CurrentGear > 1)
                 {
                     // I have to solve this shit 
-                    appliedTorque *= _carPhysicsData.Transmission.CurrentGear ;   
+                    appliedTorque += 3000f ;   
                     //appliedTorque += 5000; 
                     //hit.forwardSlip = 0.2f;
                 }

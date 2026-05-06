@@ -7,7 +7,6 @@ public enum NonPlayingScene
     GarageScene
     
 }
-
 public enum PlayingScene
 {
     //Game scenes
