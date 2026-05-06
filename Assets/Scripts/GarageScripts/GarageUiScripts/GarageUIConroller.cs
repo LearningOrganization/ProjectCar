@@ -6,12 +6,10 @@ using Zenject;
 
 public class GarageUIConroller : MonoBehaviour
 {
-
     [SerializeField] private Button RightButton;
     [SerializeField] private Button LeftButton;
     [SerializeField] private TMP_Text CarIdText;
     [SerializeField] private TMP_Text CarPrefabName;
-    
     private GarageController _garageController;
 
     [Inject]

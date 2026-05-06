@@ -4,7 +4,6 @@ using Zenject;
 
 public class GarageController : MonoBehaviour
 {
-
     [HideInInspector] public event Action<int, string> OnCarChanged;
     [HideInInspector] public event Action<int> ChangeCarPlatform;
     private CarContainer _carContainer;
@@ -14,7 +13,6 @@ public class GarageController : MonoBehaviour
     
     private Vector3 _targetPos;
     private bool _isMoving;
-
 
     [Inject]
     public void Construct(
@@ -61,8 +59,6 @@ public class GarageController : MonoBehaviour
     {
         GarageInitCall();
     }
-
-    //private void 
 
     private void Update()
     {
