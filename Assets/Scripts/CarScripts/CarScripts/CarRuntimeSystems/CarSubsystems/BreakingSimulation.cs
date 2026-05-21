@@ -1,11 +1,10 @@
-using System;
-using Unity.VisualScripting;
+using Unity.Burst;
 using UnityEngine;
-using UnityEngine.Rendering;
-using Zenject;
+using Unity.Mathematics;
+
 
 [System.Serializable]
-public class BrakeSimulation
+public struct BrakeSimulation
 {
     public void UpdatePhysics(ref CarPhysicsData data, ref BrakeConfig brakeConfig, ref PlayerInput input)
     {
@@ -40,7 +39,7 @@ public class BrakeSimulation
         if (engagement < 0.05f) engagement = 0f;
 
         float handbrakeTorque = engagement * brakeConfig.HandbrakeTorque;
-        data.Brake.RearBrakeTorque = Mathf.Max(rearServiceBrake, handbrakeTorque);
+        data.Brake.RearBrakeTorque = math.max(rearServiceBrake, handbrakeTorque);
     }
 
     private float ApplyABS(float brakeInput, ref BrakeConfig breakConfig, ref CarPhysicsData data)

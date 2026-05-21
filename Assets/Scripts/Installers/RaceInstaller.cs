@@ -25,9 +25,9 @@ public class RaceInstaller : MonoInstaller
         Container.Bind<StateMachine<IRaceState>>().AsSingle();
 
         // --- Scene Objects ---
-        Container.BindInstance(_carPrefab).WithId("CarPrefab");
+        //Container.BindInstance(_carPrefab).WithId("CarPrefab"); // should be replaced bys more dynamic solution
         Container.BindInstance(_playerCamera).WithId("PlayerCamera");
-        Container.BindInstance(_startPoint).WithId("CarStartPoint");
+        Container.BindInstance(_startPoint).WithId("CarStartPoint"); // also should be replaced to FromComponentInHierarchy as a list of start points
 
         // --- Race Bootastrapper ---
         Container.BindInterfacesAndSelfTo<RaceBootstrapper>().AsSingle();

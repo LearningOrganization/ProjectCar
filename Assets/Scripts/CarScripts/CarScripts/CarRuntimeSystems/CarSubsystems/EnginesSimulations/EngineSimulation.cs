@@ -46,7 +46,7 @@ public class AtmoEngineSimulation
         if (drivetrainConnected)
         {
             //targetRPM = Mathf.Abs(data.WheelData.GeneralWheelsRPM * data.Transmission.CurrentTotalGearRatio);
-             targetRPM = data.WheelData.GeneralWheelsRPM * data.Transmission.CurrentTotalGearRatio;
+            targetRPM = data.WheelData.GeneralWheelsRPM * data.Transmission.CurrentTotalGearRatio;
             targetRPM = Mathf.Max(targetRPM, engineConfig.IdleRPM);
         }
 

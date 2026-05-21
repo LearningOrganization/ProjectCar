@@ -174,9 +174,9 @@ MonoBehaviour:
     BreakConfig:
       MaxBrakeTorque: 12000
       FrontBrakeBias: 0.6
-      HandbrakeTorque: 3000
+      HandbrakeTorque: 30000
       HandbrakeEngagement: 0.3
-      UseABS: 0
+      UseABS: 1
       ABSSlipThreshold: 0.03
     IsTurbo: 0
   ShowDebugInfo: 0

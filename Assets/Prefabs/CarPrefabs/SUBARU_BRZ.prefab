@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3745484328447381198}
   - component: {fileID: 1680304179141571497}
   - component: {fileID: 6738799657231116550}
-  m_Layer: 0
+  - component: {fileID: 6986028384728607799}
+  m_Layer: 6
   m_Name: SUBARU_BRZ
-  m_TagString: Untagged
+  m_TagString: PlayableCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +47,7 @@ Rigidbody:
   m_Mass: 1300
   m_Drag: 0.1
   m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: -0.3, z: 0}
+  m_CenterOfMass: {x: 0, y: -0.1, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -81,8 +82,124 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.813016, y: 1.1135831, z: 4.3297787}
-  m_Center: {x: 0.005978048, y: 0.1165722, z: 0.11059427}
+  m_Size: {x: 1.813016, y: 0.86190087, z: 4.3297787}
+  m_Center: {x: 0.005978048, y: 0.24241325, z: 0.11059427}
+--- !u!114 &6986028384728607799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731383039542245258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584f0f92b36a36946b2c41364ef60c0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SteeringWheels:
+  - {fileID: 6380652531842987626}
+  - {fileID: 4642136956541420936}
+  MotorizedWheels:
+  - {fileID: 2925856437938887569}
+  - {fileID: 5256070966402827658}
+  LeftFrontWheelMesh: {fileID: 5684108659115388139}
+  RightFrontWheelMesh: {fileID: 7091569845929600546}
+  LeftRearWheelMesh: {fileID: 294039802619152458}
+  RightRearWheelMesh: {fileID: 2935380580572406245}
+  CarConfigData:
+    EngineConfig:
+      TorqueCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 1000
+          value: 144
+          inSlope: 0.066068776
+          outSlope: 0.066068776
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.07641156
+        - serializedVersion: 3
+          time: 5000
+          value: 250
+          inSlope: 0.0023160905
+          outSlope: 0.0023160905
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.07462915
+          outWeight: 0.23227993
+        - serializedVersion: 3
+          time: 6400
+          value: 250
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 6600
+          value: 250
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 7497.3276
+          value: 232
+          inSlope: -0.030128876
+          outSlope: -0.030128876
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.26499203
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      MinRPM: 1000
+      MaxRPM: 7500
+      IdleRPM: 1000
+      EngineInertiaAccel: 0.15
+      EngineInertiaDecel: 0.2
+      BackTorque: 40
+      IdleThrottleBoost: 0.1
+      CouplingStrength: 6
+      UseRevLimiter: 1
+      RevLimiterRPM: 7000
+      limiterType: 1
+    SteeringConfig:
+      SteeringRangeAtZeroSpeed: 35
+      SteeringRangeAtMaxSpeed: 2
+      MaxSpeedForSteering: 300
+      SteerSpeed: 180
+      ReturnSpeed: 240
+    TransmissionConfig:
+      ForwardGearRatios:
+      - 3.626
+      - 2.188
+      - 1.541
+      - 1.213
+      - 1
+      - 0.767
+      ReverseRatio:
+      - -3.44
+      FinalDriveRatio: 4.1
+      TransmissionEfficiency: 0.92
+      ShiftTime: 0.3
+      ReverseMaxSpeed: 2
+    BreakConfig:
+      MaxBrakeTorque: 12000
+      FrontBrakeBias: 0.605
+      HandbrakeTorque: 3000
+      HandbrakeEngagement: 0.3
+      UseABS: 0
+      ABSSlipThreshold: 0.03
+    IsTurbo: 0
+  ShowDebugInfo: 1
+  CurrentPermissions: -1
 --- !u!1 &5354671604471384351
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2060701554207827331}
   - component: {fileID: 2925856437938887569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RareLeftWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +226,7 @@ Transform:
   m_GameObject: {fileID: 5354671604471384351}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.77, y: -0.173, z: -1.174}
+  m_LocalPosition: {x: -0.77, y: -0.241, z: -1.174}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -129,21 +246,21 @@ WheelCollider:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.15
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.2
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.13
+    m_ExtremumValue: 1.05
+    m_AsymptoteSlip: 0.4
+    m_AsymptoteValue: 0.65
     m_Stiffness: 1
   m_IncludeLayers:
     serializedVersion: 2
@@ -164,8 +281,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9041843294273077018}
   - component: {fileID: 5256070966402827658}
-  m_Layer: 0
-  m_Name: FrontLeftWheelCollider
+  m_Layer: 6
+  m_Name: RareRightWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 6508447843237138992}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.77, y: -0.173, z: -1.1740001}
+  m_LocalPosition: {x: 0.77, y: -0.241, z: -1.1740001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -200,21 +317,21 @@ WheelCollider:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.15
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.2
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.13
+    m_ExtremumValue: 1.05
+    m_AsymptoteSlip: 0.4
+    m_AsymptoteValue: 0.65
     m_Stiffness: 1
   m_IncludeLayers:
     serializedVersion: 2
@@ -235,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6918454344689529780}
   - component: {fileID: 6380652531842987626}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontLeftWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +368,7 @@ Transform:
   m_GameObject: {fileID: 7819351850354966096}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.77, y: -0.173, z: 1.35}
+  m_LocalPosition: {x: -0.77, y: -0.241, z: 1.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -271,22 +388,22 @@ WheelCollider:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.15
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.2
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.15
+    m_ExtremumValue: 1.1
+    m_AsymptoteSlip: 0.4
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -306,7 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6638096039302121184}
   - component: {fileID: 4642136956541420936}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontRightWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -322,7 +439,7 @@ Transform:
   m_GameObject: {fileID: 7853992118955324118}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.77, y: -0.173, z: 1.35}
+  m_LocalPosition: {x: 0.77, y: -0.241, z: 1.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -342,22 +459,22 @@ WheelCollider:
     spring: 35000
     damper: 4500
     targetPosition: 0.5
-  m_SuspensionDistance: 0.3
+  m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.15
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.2
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.15
+    m_ExtremumValue: 1.1
+    m_AsymptoteSlip: 0.4
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -376,7 +493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3995607636864383365}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WheelColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,8 +576,12 @@ PrefabInstance:
       value: RareLeftWheel
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -525,8 +646,12 @@ PrefabInstance:
       value: RareRightWheel
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -589,6 +714,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c10ef92b32564f3459e029d40b3d489e, type: 3}
       propertyPath: m_Name
       value: SUBARU_BRZ
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c10ef92b32564f3459e029d40b3d489e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -653,8 +782,12 @@ PrefabInstance:
       value: FrontLeftWheel
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a0e5a2ded9fb434d9b936dd5ca434ed, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -719,8 +852,12 @@ PrefabInstance:
       value: FrontRightWheel
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 35ab350c3677ef44182cce55b9b899dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
