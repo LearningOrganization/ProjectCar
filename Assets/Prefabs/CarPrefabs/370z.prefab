@@ -467,8 +467,8 @@ MonoBehaviour:
       MinRPM: 1000
       MaxRPM: 7500
       IdleRPM: 1000
-      EngineInertiaAccel: 0.1
-      EngineInertiaDecel: 2
+      EngineInertiaAccel: 0.05
+      EngineInertiaDecel: 0.02
       BackTorque: 30
       IdleThrottleBoost: 0.1
       CouplingStrength: 6
