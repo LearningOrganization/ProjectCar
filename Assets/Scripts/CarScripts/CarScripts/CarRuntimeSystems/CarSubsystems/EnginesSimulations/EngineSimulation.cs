@@ -73,19 +73,6 @@ public class AtmoEngineSimulation
 
         rpmDelta += engineTorque / Mathf.Max(0.001f, inertia);
         rpmDelta -= engineBraking / Mathf.Max(0.001f, inertia);
-        // float netTorque = engineTorque - engineBraking;
-
-        // float inertia;
-        // if (drivetrainConnected)
-        // {
-        //     inertia = netTorque >= 0f ? engineConfig.EngineInertiaAccel : engineConfig.EngineInertiaDecel;
-        // }
-        // else
-        // {
-        //     inertia = 0.06f;
-        // }
-
-        // rpmDelta += netTorque / Mathf.Max(0.001f, inertia);
 
         // ================= APPLY RPM ====================
         _currentRPM += rpmDelta * dt;

@@ -21,8 +21,6 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private Transform LeftRearWheelMesh;
     [SerializeField] private Transform RightRearWheelMesh;
 
-    public CarConfigData CarConfigData;
-
     [Header("Debug")]
     [SerializeField] private bool ShowDebugInfo = false;
 
@@ -31,11 +29,11 @@ public class CarPhysicSystem : MonoBehaviour
     [HideInInspector]
     public event Action<CarTelemetry> OnTelemetryUpdated; 
 
+    // replace all of this into another mono beh
+    public CarConfigData CarConfigData;
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
-
-    private bool disableCarEngineTorque = false;
     private float _uiTimer;
     private float _uiUpdateStep = 0.05f; // 20 hz upadte
 
@@ -100,6 +98,7 @@ public class CarPhysicSystem : MonoBehaviour
 
         ApplySteering();
 
+        // uodate ui in update
         _uiTimer += Time.deltaTime;
 
         if(_uiTimer > _uiUpdateStep)
@@ -145,10 +144,6 @@ public class CarPhysicSystem : MonoBehaviour
             case GearShiftCommand.Up:
                 TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
                 break;
-
-            // case GearShiftCommand.Down:
-            //     TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
-            //     break;
 
             case GearShiftCommand.Down:
             if (_carPhysicsData.Vehicle.SpeedKmH < CarConfigData.TransmissionConfig.ReverseMaxSpeed)
@@ -278,12 +273,6 @@ public class CarPhysicSystem : MonoBehaviour
         {
             _playerInput.Look = Vector2.zero;
         }
-
-        // // Gear shifting
-        // if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
-        // {
-        //     _playerInput.ShiftCommand = GearShiftCommand.None;
-        // }
     }
     private void ShowDebug()
     {

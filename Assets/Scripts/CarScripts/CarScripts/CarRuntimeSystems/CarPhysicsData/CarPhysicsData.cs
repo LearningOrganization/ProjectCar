@@ -12,5 +12,8 @@ public struct CarPhysicsData
     public AerodynamicData Aerodynamic;
     public VehicleData Vehicle;
     public TurboData Turbo;
+    
+    public ManagedObjectsSctruct managedObjectsSctruct;
+
     public float DeltaTime;
 }

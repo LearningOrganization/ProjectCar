@@ -10,6 +10,7 @@ public class RaceBootstrapper : IInitializable
     private readonly StateMachine<IRaceState> _raceStateMachine;
     private readonly DiContainer _container;
     private RaceController _raceController;
+    //private Race
     
     public RaceBootstrapper(
         [Inject(Id = "CarContainer")] CarContainer carContainer,
@@ -61,7 +62,8 @@ public class RaceBootstrapper : IInitializable
             {
                 camera.GetComponent<CameraRotation>().TargetObject = car.transform;
             }
-        }else
+        }
+        else
             Debug.Log("car was not spawned"); 
         
     }

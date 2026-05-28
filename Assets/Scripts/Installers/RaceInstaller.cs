@@ -31,6 +31,8 @@ public class RaceInstaller : MonoInstaller
 
         // --- Race Bootastrapper ---
         Container.BindInterfacesAndSelfTo<RaceBootstrapper>().AsSingle();
+        Container.Bind<CarDataBaker>().AsSingle();
+
 
         // --- Race Controller ---
         Container.Bind<RaceController>().FromComponentInHierarchy().AsSingle();
