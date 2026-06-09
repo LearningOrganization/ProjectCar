@@ -1,10 +1,11 @@
 using UnityEngine;
+using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Burst;
 
 [System.Serializable]
-public class TransmissionSimulation
+public struct TransmissionSimulation
 {
-    private float _shiftTimer = 0f;
-
     public void UpdatePhysics(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
         UpdateClutch(ref data, ref transmissionConfig);
@@ -16,11 +17,11 @@ public class TransmissionSimulation
 
     private void UpdateClutch(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if(_shiftTimer > 0f)
+        if(data.Transmission.ShiftTimer > 0f)
         {
-            _shiftTimer -= data.DeltaTime;
-            float progress = 1f - (_shiftTimer / transmissionConfig.ShiftTime);
-            data.Transmission.ClutchEngagement = Mathf.SmoothStep(0f, 1f, progress);
+            data.Transmission.ShiftTimer -= data.DeltaTime;
+            float progress = 1f - (data.Transmission.ShiftTimer / transmissionConfig.ShiftTime);
+            data.Transmission.ClutchEngagement = math.smoothstep(0f, 1f, progress);
         }
         else
         {
@@ -52,7 +53,7 @@ public class TransmissionSimulation
             return;
         }
 
-        float totalRatio = Mathf.Abs(data.Transmission.CurrentTotalGearRatio);
+        float totalRatio = math.abs(data.Transmission.CurrentTotalGearRatio);
         // torque which transmission gets from engine
         float engineTorqueToWheels = data.Engine.EngineTorque * data.Transmission.ClutchEngagement;
 
@@ -62,7 +63,7 @@ public class TransmissionSimulation
 
         if(data.Transmission.CurrentGear == -1)
         {
-            transmittedTorque = -Mathf.Abs(transmittedTorque);
+            transmittedTorque = -math.abs(transmittedTorque);
         }
         
         data.Transmission.TransmissionTorque = transmittedTorque;
@@ -71,31 +72,31 @@ public class TransmissionSimulation
     // shifting funcs
     public void ShiftUp(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if (data.Transmission.CurrentGear < transmissionConfig.ForwardGearRatios.Length && _shiftTimer <= 0f)
+        if (data.Transmission.CurrentGear < transmissionConfig.ForwardGearRatios.Length && data.Transmission.ShiftTimer <= 0f)
         {
             data.Transmission.CurrentGear++;
-            _shiftTimer = transmissionConfig.ShiftTime;
+            data.Transmission.ShiftTimer = transmissionConfig.ShiftTime;
         }
     }
     public void ShiftDown(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if (data.Transmission.CurrentGear >= 1 && _shiftTimer <= 0f)
+        if (data.Transmission.CurrentGear >= 1 && data.Transmission.ShiftTimer <= 0f)
         {
             data.Transmission.CurrentGear--;
-            _shiftTimer = transmissionConfig.ShiftTime;
+            data.Transmission.ShiftTimer = transmissionConfig.ShiftTime;
         }
     }
     public void ShiftToReverse(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if (_shiftTimer > 0f)
+        if (data.Transmission.ShiftTimer > 0f)
             return;
         if (data.Transmission.CurrentGear == -1)
             return;
         
         float speedKmh = data.Vehicle.SpeedKmH;
-        float absSpeed = Mathf.Abs(speedKmh);
+        float absSpeed = math.abs(speedKmh);
 
-        // you can not reverse car on big speed (you can easily brake your transmission)
+        // player can not reverse car on big speed (you can easily brake your transmission)
         if(absSpeed > transmissionConfig.ReverseMaxSpeed)
         {
             // add sound of braking gears
@@ -104,15 +105,15 @@ public class TransmissionSimulation
 
         data.Transmission.CurrentGear = -1; // Reverse
 
-        _shiftTimer = transmissionConfig.ShiftTime;
+        data.Transmission.ShiftTimer = transmissionConfig.ShiftTime;
     }
     public void ShiftToNeutral(ref CarPhysicsData data, ref TransmissionConfig transmissionConfig)
     {
-        if(_shiftTimer > 0f)
+        if(data.Transmission.ShiftTimer > 0f)
             return;
         
         data.Transmission.CurrentGear = 0;
 
-        _shiftTimer = transmissionConfig.ShiftTime;
+        data.Transmission.ShiftTimer = transmissionConfig.ShiftTime;
     }
 }

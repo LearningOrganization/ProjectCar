@@ -7,4 +7,8 @@ public struct EngineData
     public float EngineTorque;
     public float EngineBraking;
     public float EngineInertia;
+
+    public float CurrentRPM;
+    public float RevLimiterTimer;
+
 }

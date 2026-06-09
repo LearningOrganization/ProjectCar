@@ -9,4 +9,6 @@ public struct TransmissionData
     public float CurrentTotalGearRatio;
     public float ClutchEngagement;
     public float TransmissionTorque; 
+
+    public float ShiftTimer;
 }

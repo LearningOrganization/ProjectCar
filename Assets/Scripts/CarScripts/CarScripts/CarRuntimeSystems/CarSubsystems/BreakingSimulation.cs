@@ -2,7 +2,7 @@ using Unity.Burst;
 using UnityEngine;
 using Unity.Mathematics;
 
-
+// TODO: make burst compilable
 [System.Serializable]
 public struct BrakeSimulation
 {
@@ -27,7 +27,7 @@ public struct BrakeSimulation
         float brakeInput = input.BrakeInput;
         if (brakeConfig.UseABS)
         {
-            brakeInput = ApplyABS(brakeInput, ref brakeConfig, ref data);
+            brakeInput = ApplyABS(brakeInput, ref data);
         }
 
         float totalTorque = brakeInput * brakeConfig.MaxBrakeTorque;
@@ -42,11 +42,11 @@ public struct BrakeSimulation
         data.Brake.RearBrakeTorque = math.max(rearServiceBrake, handbrakeTorque);
     }
 
-    private float ApplyABS(float brakeInput, ref BrakeConfig breakConfig, ref CarPhysicsData data)
+    private float ApplyABS(float brakeInput,  ref CarPhysicsData data)
     {
         if(data.Brake.IsFrontLocked || data.Brake.IsRearLocked)
         {
-            brakeInput *= 0.6f;
+            brakeInput *= 0.6f; // yes this is magic number but it works 
         }
         return brakeInput;
     }

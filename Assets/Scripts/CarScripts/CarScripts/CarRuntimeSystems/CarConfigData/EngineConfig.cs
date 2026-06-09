@@ -4,6 +4,7 @@ using UnityEngine;
 public struct EngineConfig
 {
     [Header("Engine Specifications")]
+    // replace by Vector2 array 
     public AnimationCurve TorqueCurve; // should be replaced by another system in future for clearer dod 
     public float MinRPM;
     public float MaxRPM ;

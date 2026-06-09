@@ -13,7 +13,6 @@ public struct CarPhysicsData
     public VehicleData Vehicle;
     public TurboData Turbo;
     
-    public ManagedObjectsSctruct managedObjectsSctruct;
-
+    public  int managedObjectsIndex;
     public float DeltaTime;
 }

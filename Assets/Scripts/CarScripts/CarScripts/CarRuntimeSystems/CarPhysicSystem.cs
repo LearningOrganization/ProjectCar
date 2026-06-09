@@ -1,8 +1,7 @@
 using System;
-using System.Data.Common;
 using UnityEngine;
-using UnityEngine.AI;
 
+// i want to left it for comparison reasons
 public class CarPhysicSystem : MonoBehaviour
 {
     [Header("Physic Components")]
@@ -15,6 +14,7 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private WheelCollider[] SteeringWheels;
     [Header("Motorized wheels")]
     [SerializeField] private WheelCollider[] MotorizedWheels;
+
     [Header("Wheels mesh")]
     [SerializeField] private Transform LeftFrontWheelMesh;
     [SerializeField] private Transform RightFrontWheelMesh;
@@ -58,7 +58,9 @@ public class CarPhysicSystem : MonoBehaviour
 
     void Start()
     {
-        EngineSimulation.Init(ref CarConfigData.EngineConfig);
+        EngineSimulation.Init(ref _carPhysicsData.Engine, ref CarConfigData.EngineConfig);
+
+        _carPhysicsData.Transmission.ShiftTimer = 0f;
     }
 
     // Update is called once per frame
