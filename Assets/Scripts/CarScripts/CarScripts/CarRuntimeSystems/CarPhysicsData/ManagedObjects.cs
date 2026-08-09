@@ -2,7 +2,7 @@ using UnityEngine;
 
 // this class of special heap managed objects, which i can not use in dod paradigm
 [System.Serializable]
-public class ManagedObjectsSctruct
+public class ManagedObjects
 {
     
     public WheelCollider FRCollider;

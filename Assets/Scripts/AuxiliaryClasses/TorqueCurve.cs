@@ -11,4 +11,10 @@ public struct TorqueCurve
         return 0;
     }
 
+    private  float Interpolate ()
+    {
+        return 0; 
+    }
+
+
 }
