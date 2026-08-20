@@ -19,6 +19,7 @@ public struct TorqueCurvePoint
 public struct TorqueCurve
 {
     public FixedList512Bytes<TorqueCurvePoint> Points;
+    public int Length => Points.Length;
 
     public float Evaluate (float currentRPM)
     {
@@ -32,36 +33,43 @@ public struct TorqueCurve
 
         if(currentRPM <= Points[0].RPM)
             return 0;
+
+         // Above curve
+        if (currentRPM >= Points[count - 1].RPM)
+            return Points[count - 1].Torque;
         
-        for (int i = 0; i < count -1; i++)
-        {
-            TorqueCurvePoint a = Points[i];
-            TorqueCurvePoint b = Points[i+1];
+        int index = FindSegment(currentRPM);
 
-            if(currentRPM <= b.RPM)
-            {
-                return Interpolate(
-                    currentRPM,
-                    a.RPM,
-                    a.Torque,
-                    b.RPM,
-                    b.Torque
-                );
-            }
-        }
+        TorqueCurvePoint a = Points[index];
+        TorqueCurvePoint b = Points[index + 1];
 
-        return Points[count - 1].Torque;
+        float range = b.RPM - a.RPM;
+
+        if(range <= 0f)
+            return a.Torque;
+
+        float t = (currentRPM - a.RPM) / range;
+
+        return math.lerp(a.Torque, b.Torque, t);
+
     }
 
-    private static float Interpolate(
-        float x,
-        float x1,
-        float y1,
-        float x2,
-        float y2)
+    private int FindSegment(float rpm)
     {
-        float t = (x - x1) / (x2 - x1);
+        int head = 0;
+        int tail = Points.Length - 1;
 
-        return y1 + (y2 - y1) * t;
+        while (head <= tail)
+        {
+            int middle = (head + tail) >> 1; // fast divide for 2
+
+            if(Points[middle].RPM <= rpm)
+                head = middle + 1;
+            else 
+                tail = middle - 1;
+        }
+
+        return tail;
+
     }
 }
