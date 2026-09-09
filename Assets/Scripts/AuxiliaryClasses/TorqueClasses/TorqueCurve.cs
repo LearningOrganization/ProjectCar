@@ -31,10 +31,10 @@ public struct TorqueCurve
         if(count == 1)
             return Points[0].Torque;
 
-        if(currentRPM <= Points[0].RPM)
+        if(currentRPM < Points[0].RPM)
             return 0;
 
-         // Above curve
+        //Above curve
         if (currentRPM >= Points[count - 1].RPM)
             return Points[count - 1].Torque;
         
@@ -51,7 +51,6 @@ public struct TorqueCurve
         float t = (currentRPM - a.RPM) / range;
 
         return math.lerp(a.Torque, b.Torque, t);
-
     }
 
     private int FindSegment(float rpm)

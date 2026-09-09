@@ -385,7 +385,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!65 &2330258742800584446
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -402,7 +402,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.6945887, y: 1.0416965, z: 4.23843}
@@ -429,6 +429,8 @@ MonoBehaviour:
   RightFrontWheelMesh: {fileID: 8070901882912713011}
   LeftRearWheelMesh: {fileID: 1848762806511727679}
   RightRearWheelMesh: {fileID: 3884888144760693667}
+  ShowDebugInfo: 0
+  CurrentPermissions: -1
   CarConfigData:
     EngineConfig:
       TorqueCurve:
@@ -461,6 +463,15 @@ MonoBehaviour:
           weightedMode: 0
           inWeight: 0.11999356
           outWeight: 0
+        - serializedVersion: 3
+          time: 7614.467
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -470,11 +481,11 @@ MonoBehaviour:
       EngineInertiaAccel: 0.05
       EngineInertiaDecel: 0.02
       BackTorque: 30
-      IdleThrottleBoost: 0.1
+      IdleThrottleBoost: 0.12
       CouplingStrength: 6
       UseRevLimiter: 1
       RevLimiterRPM: 7000
-      limiterType: 1
+      limiterType: 0
     SteeringConfig:
       SteeringRangeAtZeroSpeed: 35
       SteeringRangeAtMaxSpeed: 2
@@ -498,13 +509,11 @@ MonoBehaviour:
     BreakConfig:
       MaxBrakeTorque: 5000
       FrontBrakeBias: 0.603
-      HandbrakeTorque: 15000
+      HandbrakeTorque: 30000
       HandbrakeEngagement: 0.3
-      UseABS: 1
+      UseABS: 0
       ABSSlipThreshold: 0.03
     IsTurbo: 0
-  ShowDebugInfo: 0
-  CurrentPermissions: -1
 --- !u!1001 &2171481070349358036
 PrefabInstance:
   m_ObjectHideFlags: 0

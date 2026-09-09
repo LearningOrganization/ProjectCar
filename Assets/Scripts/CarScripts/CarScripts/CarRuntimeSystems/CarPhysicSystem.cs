@@ -31,16 +31,16 @@ public class CarPhysicSystem : MonoBehaviour
 
     // replace all of this into another mono beh
     public CarConfigData CarConfigData;
+    [SerializeField]
+    public EngineBatchConfig _engineBatchConfig;
+    [SerializeField]
+    public TransmissionBatchConfig _transmissionBatchConfig;
+
     private CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
     private float _uiTimer;
     private float _uiUpdateStep = 0.05f; // 20 hz upadte
-
-    public float GetCurrentCarSpeed()
-    {
-        return _carPhysicsData.Vehicle.SpeedKmH;
-    }
 
     public void DisableCarEngineTorque()
     {
@@ -54,11 +54,15 @@ public class CarPhysicSystem : MonoBehaviour
         _carPhysicsData.Vehicle.Mass = _rb.mass;
         _carPhysicsData.Transmission.CurrentGear = 0;
 
+        _engineBatchConfig = ToBatchConfig(CarConfigData.EngineConfig);
+
+        _transmissionBatchConfig = ToBatchConfig(CarConfigData.TransmissionConfig);
+
     }
 
     void Start()
     {
-        EngineSimulation.Init(ref _carPhysicsData.Engine, ref CarConfigData.EngineConfig);
+        EngineSimulation.Init(ref _carPhysicsData.Engine, ref _engineBatchConfig);
 
         _carPhysicsData.Transmission.ShiftTimer = 0f;
     }
@@ -75,21 +79,22 @@ public class CarPhysicSystem : MonoBehaviour
         RenderdWheels();
     }
 
-    void FixedUpdate()
+    void FixedUpdate()  
     {
         _carPhysicsData.DeltaTime = Time.fixedDeltaTime;
         _carPhysicsData.Vehicle.Velocity = _rb.linearVelocity;
 
         ReadWheelData();
+
         UpdateVehicleSpeed();
         
         SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.SteeringConfig, ref _playerInput);
 
         // transmission 
-        TransmissionSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+        TransmissionSimulation.UpdatePhysics(ref _carPhysicsData, ref _transmissionBatchConfig);
 
         // engine 
-        EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.EngineConfig, ref _playerInput);
+        EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref _engineBatchConfig, ref _playerInput);
 
         // brakes 
         BrakeSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.BreakConfig, ref _playerInput);
@@ -144,7 +149,7 @@ public class CarPhysicSystem : MonoBehaviour
         switch ( _playerInput.ShiftCommand)
         {
             case GearShiftCommand.Up:
-                TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+                TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref _transmissionBatchConfig);
                 break;
 
             case GearShiftCommand.Down:
@@ -156,12 +161,12 @@ public class CarPhysicSystem : MonoBehaviour
                 }
                 else
                 {
-                    TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+                    TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref _transmissionBatchConfig);
                 }
             }
             else
             {
-                TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref CarConfigData.TransmissionConfig);
+                TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref _transmissionBatchConfig);
             }
             break;
         }
@@ -189,7 +194,7 @@ public class CarPhysicSystem : MonoBehaviour
             wheel.GetGroundHit(out hit);
 
             float forwardSlip = Mathf.Abs(hit.forwardSlip);
-            Debug.Log($"Slip: {forwardSlip}");
+            //Debug.Log($"Slip: {forwardSlip}");
             if(forwardSlip < 0.1f) 
             {
                 
@@ -285,13 +290,13 @@ public class CarPhysicSystem : MonoBehaviour
             _ => _carPhysicsData.Transmission.CurrentGear.ToString()
         };
         
-        Debug.Log($"RPM: {_carPhysicsData.Engine.EngineRPM:F0} | " +
-                  $"Gear: {gearName} | " +
-                  $"Speed: {_carPhysicsData.Vehicle.SpeedKmH:F1} km/h | " +
-                  $"Torque: {_carPhysicsData.Engine.EngineTorque:F0} Nm | " +
-                  $"WheelsRPM: {_carPhysicsData.WheelData.GeneralWheelsRPM:F0} | " +
-                  $"Clutch: {_carPhysicsData.Transmission.ClutchEngagement:F2} | " +
-                  $"TransTorque: {_carPhysicsData.Transmission.TransmissionTorque:F0} Nm");
+        // Debug.Log($"RPM: {_carPhysicsData.Engine.EngineRPM:F0} | " +
+        //           $"Gear: {gearName} | " +
+        //           $"Speed: {_carPhysicsData.Vehicle.SpeedKmH:F1} km/h | " +
+        //           $"Torque: {_carPhysicsData.Engine.EngineTorque:F0} Nm | " +
+        //           $"WheelsRPM: {_carPhysicsData.WheelData.GeneralWheelsRPM:F0} | " +
+        //           $"Clutch: {_carPhysicsData.Transmission.ClutchEngagement:F2} | " +
+        //           $"TransTorque: {_carPhysicsData.Transmission.TransmissionTorque:F0} Nm");
     }
 
     private void RenderdWheels()
@@ -307,4 +312,48 @@ public class CarPhysicSystem : MonoBehaviour
         mesh.position = position;
         mesh.rotation = rotation;
     }
+
+
+    private  EngineBatchConfig ToBatchConfig(EngineConfig config)
+    {
+
+        EngineBatchConfig batch = new EngineBatchConfig
+        {
+            TorqueCurve = CarConfigConverter.FromAnimationCurve(config.TorqueCurve),
+            MinRPM = config.MinRPM,
+            MaxRPM = config.MaxRPM,
+            IdleRPM = config.IdleRPM,
+            EngineInertiaAccel = config.EngineInertiaAccel,
+            EngineInertiaDecel = config.EngineInertiaDecel,
+
+            BackTorque = config.BackTorque,
+            IdleThrottleBoost = config.IdleThrottleBoost,
+
+            CouplingStrength = config.CouplingStrength,
+
+            UseRevLimiter = config.UseRevLimiter,
+            RevLimiterRPM = config.RevLimiterRPM,
+            limiterType = config.limiterType
+        };
+        Debug.Log("Engine was batched");
+        return batch;
+    }
+
+    private  TransmissionBatchConfig ToBatchConfig(TransmissionConfig config)
+    {
+        TransmissionBatchConfig batch = new TransmissionBatchConfig
+        {
+            ForwardGearRatios = CarConfigConverter.ConvertFloatArray(config.ForwardGearRatios, nameof(config.ForwardGearRatios)),
+            ForwardGearsCount = config.ForwardGearRatios?.Length ?? 0,
+            ReverseRatio = CarConfigConverter.ConvertFloatArray(config.ReverseRatio, nameof(config.ReverseRatio)),
+            FinalDriveRatio = config.FinalDriveRatio,
+            TransmissionEfficiency = config.TransmissionEfficiency,
+
+            ShiftTime = config.ShiftTime,
+            ReverseMaxSpeed = config.ReverseMaxSpeed
+        };
+
+        return batch;
+    }
+
 }

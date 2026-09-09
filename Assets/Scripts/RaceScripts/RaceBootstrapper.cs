@@ -30,7 +30,6 @@ public class RaceBootstrapper : IInitializable
     }
     public void Initialize()
     {
-        Debug.Log("RaceBootstrapper Initialize");
 
         SpawnPlayerCar();
 

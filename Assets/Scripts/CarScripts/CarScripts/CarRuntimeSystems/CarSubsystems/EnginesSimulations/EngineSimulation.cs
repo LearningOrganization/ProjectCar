@@ -7,12 +7,12 @@ using UnityEngine;
 public struct AtmoEngineSimulation
 {
  
-    public void Init(ref EngineData engineData, ref EngineConfig engineConfig)
+    public void Init(ref EngineData engineData, ref EngineBatchConfig engineConfig)
     {
         engineData.CurrentRPM = engineConfig.IdleRPM;
     }
 
-    public void UpdatePhysics(ref CarPhysicsData data, ref EngineConfig engineConfig,  ref PlayerInput input)
+    public void UpdatePhysics(ref CarPhysicsData data, ref EngineBatchConfig engineConfig,  ref PlayerInput input)
     {
         float dt = data.DeltaTime;
         float throttle = math.clamp(input.ThrottleInput, 0, 1);
@@ -93,7 +93,7 @@ public struct AtmoEngineSimulation
         data.Engine.EngineInertia = inertia;
     }
 
-    private float ApplyRevLimiter(float requestedTorque, ref EngineConfig engineConfig, ref CarPhysicsData data)
+    private float ApplyRevLimiter(float requestedTorque, ref EngineBatchConfig engineConfig, ref CarPhysicsData data)
     {
         float rpm = data.Engine.CurrentRPM;
 

@@ -106,6 +106,8 @@ MonoBehaviour:
   RightFrontWheelMesh: {fileID: 7091569845929600546}
   LeftRearWheelMesh: {fileID: 294039802619152458}
   RightRearWheelMesh: {fileID: 2935380580572406245}
+  ShowDebugInfo: 1
+  CurrentPermissions: -1
   CarConfigData:
     EngineConfig:
       TorqueCurve:
@@ -148,7 +150,7 @@ MonoBehaviour:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 7497.3276
+          time: 7523.034
           value: 232
           inSlope: -0.030128876
           outSlope: -0.030128876
@@ -165,11 +167,11 @@ MonoBehaviour:
       EngineInertiaAccel: 0.05
       EngineInertiaDecel: 0.02
       BackTorque: 40
-      IdleThrottleBoost: 0.1
+      IdleThrottleBoost: 0.12
       CouplingStrength: 6
       UseRevLimiter: 1
       RevLimiterRPM: 7000
-      limiterType: 1
+      limiterType: 0
     SteeringConfig:
       SteeringRangeAtZeroSpeed: 35
       SteeringRangeAtMaxSpeed: 2
@@ -188,7 +190,7 @@ MonoBehaviour:
       - -3.44
       FinalDriveRatio: 4.1
       TransmissionEfficiency: 0.92
-      ShiftTime: 0.3
+      ShiftTime: 0.5
       ReverseMaxSpeed: 2
     BreakConfig:
       MaxBrakeTorque: 12000
@@ -198,8 +200,6 @@ MonoBehaviour:
       UseABS: 0
       ABSSlipThreshold: 0.03
     IsTurbo: 0
-  ShowDebugInfo: 1
-  CurrentPermissions: -1
 --- !u!1 &5354671604471384351
 GameObject:
   m_ObjectHideFlags: 0

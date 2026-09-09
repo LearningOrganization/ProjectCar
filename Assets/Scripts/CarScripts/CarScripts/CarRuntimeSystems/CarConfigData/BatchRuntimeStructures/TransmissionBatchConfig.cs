@@ -1,6 +1,6 @@
 using Unity.Collections;
 
-public struct TransmissionConfigBatch
+public struct TransmissionBatchConfig
 {
     public FixedList128Bytes<float> ForwardGearRatios;
     public int ForwardGearsCount;

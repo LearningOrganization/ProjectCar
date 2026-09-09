@@ -62,7 +62,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!65 &3575552324576383755
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -106,6 +106,8 @@ MonoBehaviour:
   RightFrontWheelMesh: {fileID: 4455535403209297006}
   LeftRearWheelMesh: {fileID: 6542786835065204740}
   RightRearWheelMesh: {fileID: 1232673148178259120}
+  ShowDebugInfo: 1
+  CurrentPermissions: -1
   CarConfigData:
     EngineConfig:
       TorqueCurve:
@@ -138,6 +140,15 @@ MonoBehaviour:
           weightedMode: 0
           inWeight: 0.13909522
           outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 7633.2803
+          value: 191.45236
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -151,7 +162,7 @@ MonoBehaviour:
       CouplingStrength: 6
       UseRevLimiter: 1
       RevLimiterRPM: 7000
-      limiterType: 1
+      limiterType: 0
     SteeringConfig:
       SteeringRangeAtZeroSpeed: 35
       SteeringRangeAtMaxSpeed: 2
@@ -176,11 +187,9 @@ MonoBehaviour:
       FrontBrakeBias: 0.6
       HandbrakeTorque: 30000
       HandbrakeEngagement: 0.3
-      UseABS: 1
+      UseABS: 0
       ABSSlipThreshold: 0.03
     IsTurbo: 0
-  ShowDebugInfo: 0
-  CurrentPermissions: -1
 --- !u!1 &633734797858954075
 GameObject:
   m_ObjectHideFlags: 0

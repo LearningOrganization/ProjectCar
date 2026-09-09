@@ -13,7 +13,7 @@ public class MenuScript : MonoBehaviour
         _button.onClick.AddListener(() =>
         {
             _ = _fsm.Enter<LoadingState>().LoadScene<GamePlayState>(NonPlayingScene.GarageScene,
-            () => Debug.Log("Garage is downloading..."));
+            () => Debug.Log("Garage is out"));
         });
     }
 }

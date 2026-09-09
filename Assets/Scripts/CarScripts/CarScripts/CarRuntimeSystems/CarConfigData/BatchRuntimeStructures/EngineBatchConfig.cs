@@ -1,7 +1,6 @@
 
-public struct EngineConfigBatch
+public struct EngineBatchConfig
 {
-
     public TorqueCurve TorqueCurve; // should be replaced by another system in future for clearer dod 
     public float MinRPM;
     public float MaxRPM ;
