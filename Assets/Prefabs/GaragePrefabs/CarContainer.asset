@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f11f91cd274372541a6c747223bd528d, type: 3}
   m_Name: CarContainer
   m_EditorClassIdentifier: 
-  Car: {fileID: 8736223107357202135, guid: 469765e196400c940a0d16c4ae807868, type: 3}
+  Car: {fileID: 376880082435472827, guid: 747f82e572c49a14aa85f683cc8d2c69, type: 3}
+  IsBatchProcessing: 1
+  CarsAmounts: 0

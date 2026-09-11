@@ -4,4 +4,7 @@ using UnityEngine;
 public class CarContainer : ScriptableObject
 {
     public GameObject Car; 
+    public bool IsBatchProcessing;
+    public int CarsAmounts;
+
 }

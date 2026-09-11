@@ -6,6 +6,9 @@ public class GarageController : MonoBehaviour
 {
     [HideInInspector] public event Action<int, string> OnCarChanged;
     [HideInInspector] public event Action<int> ChangeCarPlatform;
+
+    [HideInInspector] public event Action<int> OnChangeCarAmount;
+
     private CarContainer _carContainer;
     private CarsDatabase _carDatabase;
     private int _currCarID = 0;
@@ -44,6 +47,18 @@ public class GarageController : MonoBehaviour
         OnCarChanged?.Invoke(_currCarID, _carContainer.Car.name);
         ChangeCarPlatform?.Invoke(_currCarID);
 
+    }
+
+    public void ChangeProcessingType(bool isBatchProcessing)
+    {
+        _carContainer.IsBatchProcessing = isBatchProcessing;
+    }
+
+    public void ChangeCarAmount(int carAmount)
+    {
+        _carContainer.CarsAmounts = carAmount;
+
+        OnChangeCarAmount?.Invoke(carAmount);
     }
 
     private void GarageInitCall()
