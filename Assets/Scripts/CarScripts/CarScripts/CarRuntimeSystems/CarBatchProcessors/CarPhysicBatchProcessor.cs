@@ -8,7 +8,7 @@ public class CarPhysicBatchProcessor : MonoBehaviour
 
     private NativeArray<CarPhysicsData> _carsPhysicsData;
     private NativeArray<CarConfigData>  _carsConfigData;
-    private ManagedObjects[] _managedObjects;
+    //private ManagedObjects[] _managedObjects;
     private int _carAmount; 
 
     private AtmoEngineSimulation _atmoEngineSimulation;

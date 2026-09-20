@@ -30,40 +30,55 @@ public class RaceBootstrapper : IInitializable
     }
     public void Initialize()
     {
-
         SpawnPlayerCar();
 
         _raceStateMachine.Enter<RacePrepareState>();
+
     }
 
     private void SpawnPlayerCar()
     {
-
-        if(_carContainer.Car != null)
+        if(!_carContainer.IsBatchProcessing)
         {
-            var car = _container.InstantiatePrefab(
-                _carContainer.Car,
-                _startPoint.transform.position,
-                _startPoint.transform.rotation,
-                null
-            );
-
-            _raceController.SetPlayerCar(car.GetComponent<CarPhysicSystem>());
-
-            Debug.Log("Player car spawned");
-            
-            var camera = _container.InstantiatePrefab(_playerCamera,
-            _startPoint.transform.position,
-            _startPoint.transform.rotation,
-            null);
-
-            if(camera != null)
+            if(_carContainer.Car != null)
             {
-                camera.GetComponent<CameraRotation>().TargetObject = car.transform;
+                for(int i = 0; i < _carContainer.CarsAmounts; i++)
+                {   
+                    var car = _container.InstantiatePrefab(
+                        _carContainer.Car,
+                        new Vector3(_startPoint.transform.position.x, _startPoint.transform.position.y, _startPoint.transform.position.z + 2.5f*i),
+                        _startPoint.transform.rotation,
+                        null
+                    );
+
+                    Debug.Log($"Car  spawned: {i}");
+                    
+                    if ( i == 0)
+                    {
+                        // check later
+                        _raceController.SetPlayerCar(car.GetComponent<CarPhysicSystem>());
+
+                        var camera = _container.InstantiatePrefab(_playerCamera,
+                        _startPoint.transform.position,
+                        _startPoint.transform.rotation,
+                        null);
+
+                        if(camera != null)
+                        {
+                            camera.GetComponent<CameraRotation>().TargetObject = car.transform;
+                        }
+                    }
+                }
             }
+            else
+            {
+                Debug.Log("car was not spawned");
+            } 
         }
         else
-            Debug.Log("car was not spawned"); 
+        {
+            Debug.Log("Batch processing was turned on"); 
+        }
         
     }
 }

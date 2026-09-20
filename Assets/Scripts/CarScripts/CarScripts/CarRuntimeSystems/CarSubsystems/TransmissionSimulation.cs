@@ -6,94 +6,94 @@ using Unity.Burst;
 [System.Serializable]
 public struct TransmissionSimulation
 {
-    public void UpdatePhysics(ref CarPhysicsData data, ref TransmissionBatchConfig transmissionBatchConfig)
+    public void UpdatePhysics(ref TransmissionData transmissionData, ref EngineData engineData, ref TransmissionBatchConfig transmissionBatchConfig, ref float deltaTime)
     {
-        UpdateClutch(ref data, ref transmissionBatchConfig);
+        UpdateClutch(ref transmissionData, ref transmissionBatchConfig, ref deltaTime);
 
-        UpdateGearRatio(ref data, ref transmissionBatchConfig);
+        UpdateGearRatio(ref transmissionData, ref transmissionBatchConfig);
 
-        CalculateTransmissionTorque(ref data, ref transmissionBatchConfig);
+        CalculateTransmissionTorque(ref transmissionData, ref engineData, ref transmissionBatchConfig);
     }
 
-    private void UpdateClutch(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    private void UpdateClutch(ref TransmissionData transmissionData, ref TransmissionBatchConfig TransmissionBatchConfig, ref float deltaTime)
     {
-        if(data.Transmission.ShiftTimer > 0f)
+        if(transmissionData.ShiftTimer > 0f)
         {
-            data.Transmission.ShiftTimer -= data.DeltaTime;
-            float progress = 1f - (data.Transmission.ShiftTimer / TransmissionBatchConfig.ShiftTime);
-            data.Transmission.ClutchEngagement = math.smoothstep(0f, 1f, progress);
+            transmissionData.ShiftTimer -= deltaTime;
+            float progress = 1f - (transmissionData.ShiftTimer / TransmissionBatchConfig.ShiftTime);
+            transmissionData.ClutchEngagement = math.smoothstep(0f, 1f, progress);
         }
         else
         {
-            data.Transmission.ClutchEngagement = 1f;
+            transmissionData.ClutchEngagement = 1f;
         }
     }
-    private void UpdateGearRatio(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    private void UpdateGearRatio(ref TransmissionData transmissionData, ref TransmissionBatchConfig TransmissionBatchConfig)
     {
-        if(data.Transmission.CurrentGear == 0)
+        if(transmissionData.CurrentGear == 0)
         {
-            data.Transmission.CurrentGearRatio = 0f;
+            transmissionData.CurrentGearRatio = 0f;
         }
-        else if (data.Transmission.CurrentGear == -1)
+        else if (transmissionData.CurrentGear == -1)
         {
-            data.Transmission.CurrentGearRatio = TransmissionBatchConfig.ReverseRatio[0];
+            transmissionData.CurrentGearRatio = TransmissionBatchConfig.ReverseRatio[0];
         }
-        else if(data.Transmission.CurrentGear > 0 && data.Transmission.CurrentGear <= TransmissionBatchConfig.ForwardGearRatios.Length)
+        else if(transmissionData.CurrentGear > 0 && transmissionData.CurrentGear <= TransmissionBatchConfig.ForwardGearRatios.Length)
         {
-            data.Transmission.CurrentGearRatio = TransmissionBatchConfig.ForwardGearRatios[data.Transmission.CurrentGear - 1];
+            transmissionData.CurrentGearRatio = TransmissionBatchConfig.ForwardGearRatios[transmissionData.CurrentGear - 1];
         }
 
-        data.Transmission.CurrentTotalGearRatio = data.Transmission.CurrentGearRatio * TransmissionBatchConfig.FinalDriveRatio;
+        transmissionData.CurrentTotalGearRatio = transmissionData.CurrentGearRatio * TransmissionBatchConfig.FinalDriveRatio;
     }
-    private void CalculateTransmissionTorque(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    private void CalculateTransmissionTorque(ref TransmissionData transmissionData, ref EngineData engineData, ref TransmissionBatchConfig TransmissionBatchConfig)
     {
-        if (data.Transmission.CurrentGear == 0)
+        if (transmissionData.CurrentGear == 0)
         {
-            data.Transmission.TransmissionTorque = 0f;
+            transmissionData.TransmissionTorque = 0f;
             return;
         }
 
-        float totalRatio = math.abs(data.Transmission.CurrentTotalGearRatio);
+        float totalRatio = math.abs(transmissionData.CurrentTotalGearRatio);
         // torque which transmission gets from engine
-        float engineTorqueToWheels = data.Engine.EngineTorque * data.Transmission.ClutchEngagement;
+        float engineTorqueToWheels = engineData.EngineTorque * transmissionData.ClutchEngagement;
 
         float transmittedTorque = engineTorqueToWheels * TransmissionBatchConfig.TransmissionEfficiency * totalRatio;
         
-        transmittedTorque -= data.Engine.EngineBraking * totalRatio;
+        transmittedTorque -= engineData.EngineBraking * totalRatio;
 
-        if(data.Transmission.CurrentGear == -1)
+        if(transmissionData.CurrentGear == -1)
         {
             transmittedTorque = -math.abs(transmittedTorque);
         }
         
-        data.Transmission.TransmissionTorque = transmittedTorque;
+        transmissionData.TransmissionTorque = transmittedTorque;
     }
 
     // shifting funcs
-    public void ShiftUp(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    public void ShiftUp(ref TransmissionData transmissionData, ref TransmissionBatchConfig TransmissionBatchConfig)
     {
-        if (data.Transmission.CurrentGear < TransmissionBatchConfig.ForwardGearRatios.Length && data.Transmission.ShiftTimer <= 0f)
+        if (transmissionData.CurrentGear < TransmissionBatchConfig.ForwardGearRatios.Length && transmissionData.ShiftTimer <= 0f)
         {
-            data.Transmission.CurrentGear++;
-            data.Transmission.ShiftTimer = TransmissionBatchConfig.ShiftTime;
+            transmissionData.CurrentGear++;
+            transmissionData.ShiftTimer = TransmissionBatchConfig.ShiftTime;
         }
     }
-    public void ShiftDown(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    public void ShiftDown(ref TransmissionData transmissionData, ref TransmissionBatchConfig TransmissionBatchConfig)
     {
-        if (data.Transmission.CurrentGear >= 1 && data.Transmission.ShiftTimer <= 0f)
+        if (transmissionData.CurrentGear >= 1 && transmissionData.ShiftTimer <= 0f)
         {
-            data.Transmission.CurrentGear--;
-            data.Transmission.ShiftTimer = TransmissionBatchConfig.ShiftTime;
+            transmissionData.CurrentGear--;
+            transmissionData.ShiftTimer = TransmissionBatchConfig.ShiftTime;
         }
     }
-    public void ShiftToReverse(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    public void ShiftToReverse(ref TransmissionData transmissionData, ref VehicleData vehicleData, ref TransmissionBatchConfig TransmissionBatchConfig)
     {
-        if (data.Transmission.ShiftTimer > 0f)
+        if (transmissionData.ShiftTimer > 0f)
             return;
-        if (data.Transmission.CurrentGear == -1)
+        if (transmissionData.CurrentGear == -1)
             return;
         
-        float speedKmh = data.Vehicle.SpeedKmH;
+        float speedKmh = vehicleData.SpeedKmH;
         float absSpeed = math.abs(speedKmh);
 
         // player can not reverse car on big speed (you can easily brake your transmission)
@@ -103,17 +103,17 @@ public struct TransmissionSimulation
             return;
         }
 
-        data.Transmission.CurrentGear = -1; // Reverse
+        transmissionData.CurrentGear = -1; // Reverse
 
-        data.Transmission.ShiftTimer = TransmissionBatchConfig.ShiftTime;
+        transmissionData.ShiftTimer = TransmissionBatchConfig.ShiftTime;
     }
-    public void ShiftToNeutral(ref CarPhysicsData data, ref TransmissionBatchConfig TransmissionBatchConfig)
+    public void ShiftToNeutral(ref TransmissionData transmissionData, ref TransmissionBatchConfig TransmissionBatchConfig)
     {
-        if(data.Transmission.ShiftTimer > 0f)
+        if(transmissionData.ShiftTimer > 0f)
             return;
         
-        data.Transmission.CurrentGear = 0;
+        transmissionData.CurrentGear = 0;
 
-        data.Transmission.ShiftTimer = TransmissionBatchConfig.ShiftTime;
+        transmissionData.ShiftTimer = TransmissionBatchConfig.ShiftTime;
     }
 }

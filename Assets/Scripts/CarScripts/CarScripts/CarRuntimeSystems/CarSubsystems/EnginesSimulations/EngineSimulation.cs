@@ -12,17 +12,17 @@ public struct AtmoEngineSimulation
         engineData.CurrentRPM = engineConfig.IdleRPM;
     }
 
-    public void UpdatePhysics(ref CarPhysicsData data, ref EngineBatchConfig engineConfig,  ref PlayerInput input)
+    public void UpdatePhysics(ref EngineData engineData, ref TransmissionData transmissionData, ref WheelData wheelData, ref EngineBatchConfig engineConfig,  ref PlayerInput input, ref float deltaTime)
     {
-        float dt = data.DeltaTime;
+        float dt = deltaTime;
         float throttle = math.clamp(input.ThrottleInput, 0, 1);
 
         // ================= IDLE CONTROL =================
-        if (data.Engine.CurrentRPM < engineConfig.IdleRPM)
+        if (engineData.CurrentRPM < engineConfig.IdleRPM)
             throttle = math.max(throttle, engineConfig.IdleThrottleBoost);
 
         // ================= BASE TORQUE ==================
-        float baseTorque = engineConfig.TorqueCurve.Evaluate(data.Engine.CurrentRPM); // replace by interpolation of auxilary class
+        float baseTorque = engineConfig.TorqueCurve.Evaluate(engineData.CurrentRPM); // replace by interpolation of auxilary class
         float engineTorque = baseTorque * throttle;
 
         // ================= ENGINE LOSSES ================
@@ -30,21 +30,21 @@ public struct AtmoEngineSimulation
 
         // ================= REV LIMITER ==================
         if (engineConfig.UseRevLimiter)
-            engineTorque = ApplyRevLimiter(engineTorque, ref engineConfig, ref data);
+            engineTorque = ApplyRevLimiter(engineTorque, ref engineConfig, ref engineData, ref deltaTime);
 
         // ================= DRIVETRAIN STATE =============
         bool drivetrainConnected =
-            data.Transmission.CurrentGear != 0 &&
-            data.Transmission.ClutchEngagement > 0.01f &&
-            math.abs(data.Transmission.CurrentTotalGearRatio) > 0.01f;
+            transmissionData.CurrentGear != 0 &&
+            transmissionData.ClutchEngagement > 0.01f &&
+            math.abs(transmissionData.CurrentTotalGearRatio) > 0.01f;
 
         // ================= TARGET RPM ===================
-        float targetRPM = data.Engine.CurrentRPM;
+        float targetRPM = engineData.CurrentRPM;
 
         if (drivetrainConnected)
         {
-            //targetRPM = Mathf.Abs(data.WheelData.GeneralWheelsRPM * data.Transmission.CurrentTotalGearRatio);
-            targetRPM = data.WheelData.GeneralWheelsRPM * data.Transmission.CurrentTotalGearRatio;
+            //targetRPM = Mathf.Abs(data.WheelData.GeneralWheelsRPM * transmissionData.CurrentTotalGearRatio);
+            targetRPM = wheelData.GeneralWheelsRPM * transmissionData.CurrentTotalGearRatio;
             targetRPM = math.max(targetRPM, engineConfig.IdleRPM);
         }
 
@@ -53,8 +53,8 @@ public struct AtmoEngineSimulation
 
         if (drivetrainConnected)
         {
-            float rpmError = targetRPM - data.Engine.CurrentRPM;
-            rpmDelta += rpmError * engineConfig.CouplingStrength * data.Transmission.ClutchEngagement;
+            float rpmError = targetRPM - engineData.CurrentRPM;
+            rpmDelta += rpmError * engineConfig.CouplingStrength * transmissionData.ClutchEngagement;
         }
 
         bool isAccelerating = engineTorque > engineBraking;
@@ -73,33 +73,33 @@ public struct AtmoEngineSimulation
         rpmDelta -= engineBraking / math.max(0.001f, inertia);
 
         // ================= APPLY RPM ====================
-        data.Engine.CurrentRPM += rpmDelta * dt;
+        engineData.CurrentRPM += rpmDelta * dt;
 
-        if (data.Engine.CurrentRPM < engineConfig.IdleRPM && throttle <= engineConfig.IdleThrottleBoost + 0.01f)
-            data.Engine.CurrentRPM = math.lerp(data.Engine.CurrentRPM, engineConfig.IdleRPM, dt * 5f);
+        if (engineData.CurrentRPM < engineConfig.IdleRPM && throttle <= engineConfig.IdleThrottleBoost + 0.01f)
+            engineData.CurrentRPM = math.lerp(engineData.CurrentRPM, engineConfig.IdleRPM, dt * 5f);
 
-        data.Engine.CurrentRPM = math.clamp(data.Engine.CurrentRPM, engineConfig.MinRPM, engineConfig.MaxRPM);
+        engineData.CurrentRPM = math.clamp(engineData.CurrentRPM, engineConfig.MinRPM, engineConfig.MaxRPM);
 
         // ================= TORQUE OUTPUT ================
         float torqueToTransmission = 0f;
 
         if (drivetrainConnected)
-            torqueToTransmission = engineTorque * data.Transmission.ClutchEngagement;
+            torqueToTransmission = engineTorque * transmissionData.ClutchEngagement;
 
         // ================= WRITE DATA ===================
-        data.Engine.EngineRPM = data.Engine.CurrentRPM;
-        data.Engine.EngineTorque = torqueToTransmission;
-        data.Engine.EngineBraking = engineBraking;
-        data.Engine.EngineInertia = inertia;
+        engineData.EngineRPM = engineData.CurrentRPM;
+        engineData.EngineTorque = torqueToTransmission;
+        engineData.EngineBraking = engineBraking;
+        engineData.EngineInertia = inertia;
     }
 
-    private float ApplyRevLimiter(float requestedTorque, ref EngineBatchConfig engineConfig, ref CarPhysicsData data)
+    private float ApplyRevLimiter(float requestedTorque, ref EngineBatchConfig engineConfig, ref EngineData engineData, ref float deltaTime)
     {
-        float rpm = data.Engine.CurrentRPM;
+        float rpm = engineData.CurrentRPM;
 
         if (rpm < engineConfig.RevLimiterRPM)
         {
-            data.Engine.RevLimiterTimer = 0f;
+            engineData.RevLimiterTimer = 0f;
             return requestedTorque;
         }
 
@@ -117,17 +117,17 @@ public struct AtmoEngineSimulation
             }
             case RevLimiterType.Ignition:
             {
-                float dt = data.DeltaTime;
+                float dt = deltaTime;
 
-                data.Engine.RevLimiterTimer += dt;
+                engineData.RevLimiterTimer += dt;
 
                 float cutFrequency = 0.05f; // 20 Hz
                 float half = cutFrequency * 0.5f;
 
-                if (data.Engine.RevLimiterTimer >= cutFrequency)
-                    data.Engine.RevLimiterTimer = 0f;
+                if (engineData.RevLimiterTimer >= cutFrequency)
+                    engineData.RevLimiterTimer = 0f;
 
-                return (data.Engine.RevLimiterTimer < half)
+                return (engineData.RevLimiterTimer < half)
                     ? 0f
                     : requestedTorque;
             }

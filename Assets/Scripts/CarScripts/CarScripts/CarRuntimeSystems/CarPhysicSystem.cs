@@ -88,16 +88,16 @@ public class CarPhysicSystem : MonoBehaviour
 
         UpdateVehicleSpeed();
         
-        SteeringSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.SteeringConfig, ref _playerInput);
+        SteeringSimulation.UpdatePhysics(ref _carPhysicsData.Vehicle, ref _carPhysicsData.Steering, ref CarConfigData.SteeringConfig, ref _playerInput, ref _carPhysicsData.DeltaTime);
 
         // transmission 
-        TransmissionSimulation.UpdatePhysics(ref _carPhysicsData, ref _transmissionBatchConfig);
+        TransmissionSimulation.UpdatePhysics(ref _carPhysicsData.Transmission, ref _carPhysicsData.Engine, ref _transmissionBatchConfig, ref _carPhysicsData.DeltaTime);
 
         // engine 
-        EngineSimulation.UpdatePhysics(ref _carPhysicsData, ref _engineBatchConfig, ref _playerInput);
+        EngineSimulation.UpdatePhysics(ref _carPhysicsData.Engine, ref _carPhysicsData.Transmission, ref _carPhysicsData.WheelData, ref _engineBatchConfig, ref _playerInput, ref _carPhysicsData.DeltaTime);
 
         // brakes 
-        BrakeSimulation.UpdatePhysics(ref _carPhysicsData, ref CarConfigData.BreakConfig, ref _playerInput);
+        BrakeSimulation.UpdatePhysics(ref _carPhysicsData.Brake, ref CarConfigData.BreakConfig, ref _playerInput, ref _carPhysicsData.DeltaTime);
 
         ApplyBrakes();
 
@@ -144,12 +144,14 @@ public class CarPhysicSystem : MonoBehaviour
         if (!CurrentPermissions.HasFlag(InputPermissions.GearShift))
             return;
 
-        _playerInput.ShiftCommand = PlayerManager.Instance.Input.ConsumeShiftCommand();
+        //_playerInput.ShiftCommand = PlayerManager.Instance.Input.ConsumeShiftCommand();
+
+        _playerInput.ShiftCommand = PlayerManager.Instance.Input.PlayerInput.ShiftCommand;
 
         switch ( _playerInput.ShiftCommand)
         {
             case GearShiftCommand.Up:
-                TransmissionSimulation.ShiftUp(ref _carPhysicsData, ref _transmissionBatchConfig);
+                TransmissionSimulation.ShiftUp(ref _carPhysicsData.Transmission, ref _transmissionBatchConfig);
                 break;
 
             case GearShiftCommand.Down:
@@ -161,12 +163,12 @@ public class CarPhysicSystem : MonoBehaviour
                 }
                 else
                 {
-                    TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref _transmissionBatchConfig);
+                    TransmissionSimulation.ShiftDown(ref _carPhysicsData.Transmission, ref _transmissionBatchConfig);
                 }
             }
             else
             {
-                TransmissionSimulation.ShiftDown(ref _carPhysicsData, ref _transmissionBatchConfig);
+                TransmissionSimulation.ShiftDown(ref _carPhysicsData.Transmission, ref _transmissionBatchConfig);
             }
             break;
         }

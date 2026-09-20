@@ -6,52 +6,52 @@ using Unity.Mathematics;
 [System.Serializable]
 public struct BrakeSimulation
 {
-    public void UpdatePhysics(ref CarPhysicsData data, ref BrakeConfig brakeConfig, ref PlayerInput input)
+    public void UpdatePhysics(ref BrakeData brakeData, ref BrakeConfig brakeConfig, ref PlayerInput input, ref float deltaTime)
     {
-        UpdateHandBrake(ref data, ref brakeConfig, ref input);
-        UpdateServiceBrake(ref data, ref brakeConfig, ref input);
-        CheckWheelsLock(ref data, ref brakeConfig);
+        UpdateHandBrake(ref brakeData, ref brakeConfig, ref input, ref deltaTime);
+        UpdateServiceBrake(ref brakeData, ref brakeConfig, ref input);
+        CheckWheelsLock(ref brakeData, ref brakeConfig);
     }
 
-    private void CheckWheelsLock(ref CarPhysicsData data, ref BrakeConfig brakeConfig)
+    private void CheckWheelsLock(ref BrakeData brakeData, ref BrakeConfig brakeConfig)
     {
-        data.Brake.IsFrontLocked = data.Brake.FrontBrakeTorque >= brakeConfig.MaxBrakeTorque * brakeConfig.FrontBrakeBias;
+        brakeData.IsFrontLocked = brakeData.FrontBrakeTorque >= brakeConfig.MaxBrakeTorque * brakeConfig.FrontBrakeBias;
         
-        float rearServiceBrake = data.Brake.RearBrakeTorque - 
-                                data.Brake.HandbrakeEngagement * brakeConfig.HandbrakeTorque;
-        data.Brake.IsRearLocked = rearServiceBrake >= brakeConfig.MaxBrakeTorque * (1f - brakeConfig.FrontBrakeBias);
+        float rearServiceBrake = brakeData.RearBrakeTorque - 
+                                brakeData.HandbrakeEngagement * brakeConfig.HandbrakeTorque;
+        brakeData.IsRearLocked = rearServiceBrake >= brakeConfig.MaxBrakeTorque * (1f - brakeConfig.FrontBrakeBias);
     }
 
-    private void UpdateServiceBrake(ref CarPhysicsData data, ref BrakeConfig brakeConfig, ref PlayerInput input)
+    private void UpdateServiceBrake(ref BrakeData brakeData, ref BrakeConfig brakeConfig, ref PlayerInput input)
     {
         float brakeInput = input.BrakeInput;
         if (brakeConfig.UseABS)
         {
-            brakeInput = ApplyABS(brakeInput, ref data);
+            brakeInput = ApplyABS(brakeInput, ref brakeData);
         }
 
         float totalTorque = brakeInput * brakeConfig.MaxBrakeTorque;
-        data.Brake.FrontBrakeTorque = totalTorque * brakeConfig.FrontBrakeBias;
+        brakeData.FrontBrakeTorque = totalTorque * brakeConfig.FrontBrakeBias;
 
         float rearServiceBrake = totalTorque * (1f - brakeConfig.FrontBrakeBias);
 
-        float engagement = data.Brake.HandbrakeEngagement;
+        float engagement = brakeData.HandbrakeEngagement;
         if (engagement < 0.05f) engagement = 0f;
 
         float handbrakeTorque = engagement * brakeConfig.HandbrakeTorque;
-        data.Brake.RearBrakeTorque = math.max(rearServiceBrake, handbrakeTorque);
+        brakeData.RearBrakeTorque = math.max(rearServiceBrake, handbrakeTorque);
     }
 
-    private float ApplyABS(float brakeInput,  ref CarPhysicsData data)
+    private float ApplyABS(float brakeInput,  ref BrakeData brakeData)
     {
-        if(data.Brake.IsFrontLocked || data.Brake.IsRearLocked)
+        if(brakeData.IsFrontLocked || brakeData.IsRearLocked)
         {
             brakeInput *= 0.6f; // yes this is magic number but it works 
         }
         return brakeInput;
     }
 
-    private void UpdateHandBrake(ref CarPhysicsData data, ref BrakeConfig breakConfig, ref PlayerInput input)
+    private void UpdateHandBrake(ref BrakeData brakeData, ref BrakeConfig breakConfig, ref PlayerInput input, ref float deltaTime)
     {
         float target = input.Handbrake ? 1f : 0f;
 
@@ -61,9 +61,9 @@ public struct BrakeSimulation
             releaseSpeed *= 4f;
         }
 
-        data.Brake.HandbrakeEngagement = Mathf.MoveTowards(
-            data.Brake.HandbrakeEngagement,
+        brakeData.HandbrakeEngagement = Mathf.MoveTowards(
+            brakeData.HandbrakeEngagement,
             target,
-            releaseSpeed * data.DeltaTime);
+            releaseSpeed * deltaTime);
     }
 }
