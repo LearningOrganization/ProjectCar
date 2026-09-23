@@ -5,11 +5,24 @@ using UnityEngine;
 
 public class CarPhysicBatchProcessor : MonoBehaviour
 {
+    // config data 
+    private NativeArray<EngineBatchConfig> _engineBatchConfigs;
+    private NativeArray<TransmissionBatchConfig> _transmissionBatchConfigs;
+    private NativeArray<BrakeConfig> _brakeConfigs;
+    private NativeArray<SteeringConfig> _steeringConfigs;
+    // curr physic data
+    private NativeArray<CarPhysicsData> _carPhysicsData;
 
-    private NativeArray<CarPhysicsData> _carsPhysicsData;
-    private NativeArray<CarConfigData>  _carsConfigData;
-    //private ManagedObjects[] _managedObjects;
+    // manage objectts, never burst compiled
+    private Rigidbody[] _rigidbodies;
+    private WheelCollider[] _steeringWheels;
+    private WheelCollider[] _motorizedWheels;
+    private Transform[] _wheelMeshes;
+
+
     private int _carAmount; 
+    private int _capacity;
+    private PlayerInput _sharedPlayerInput;
 
     private AtmoEngineSimulation _atmoEngineSimulation;
     private BrakeSimulation _brakeSimulation;
@@ -28,7 +41,7 @@ public class CarPhysicBatchProcessor : MonoBehaviour
     {
         for(int i = 0; i < _carAmount; i++)
         {
-            ref CarPhysicsData currCarPhysicsData = ref _carsPhysicsData.ExtractElementRef(i);
+            //ref CarPhysicsData currCarPhysicsData = ref _carsPhysicsData.ExtractElementRef(i);
 
             //ref CarConfigData currCarConfigData = ref _carsConfigData.ExtractElementRef(i);
 
@@ -41,8 +54,14 @@ public class CarPhysicBatchProcessor : MonoBehaviour
         }
     }
 
-    public void InitPhysicBatchProcessor()
+    public void InitPhysicBatchProcessor(int capacity)
     {
-        
+       _capacity = capacity;
+       _carAmount = 0;
+
+       
+
+
+
     }
 }

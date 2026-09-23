@@ -1,7 +1,5 @@
 using Unity.Mathematics;
-using UnityEngine;
 
-// TODO: make burst compilable
 [System.Serializable]
 public struct SteeringSimulation
 { 
@@ -15,8 +13,7 @@ public struct SteeringSimulation
         float targetAngle = steeringInput * currentMaxAngle;
         
         float speed = math.abs(steeringInput) > 0.01f ? steeringConfig.SteerSpeed : steeringConfig.ReturnSpeed;
-        steeringData.CurrentSteeringAngle = Mathf.MoveTowards(steeringData.CurrentSteeringAngle, targetAngle, speed * DeltaTime); // Mathf.MoveTowards should be replaced by auxiliary method in additional method
-        
+        steeringData.CurrentSteeringAngle = AuxiliaryMathf.MoveTowards(steeringData.CurrentSteeringAngle, targetAngle, speed * DeltaTime); 
     }
 
 }

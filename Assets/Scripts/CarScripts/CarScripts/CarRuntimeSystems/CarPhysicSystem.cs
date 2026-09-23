@@ -177,8 +177,8 @@ public class CarPhysicSystem : MonoBehaviour
     private void ApplyTorqueToWheels()
     {
         float totalTorque = _carPhysicsData.Transmission.TransmissionTorque;
-        bool isAlmostStopped = Mathf.Abs(_carPhysicsData.Vehicle.SpeedKmH) < 0.3f;
-        bool inDrive = _carPhysicsData.Transmission.CurrentGear > 0;
+        // bool isAlmostStopped = Mathf.Abs(_carPhysicsData.Vehicle.SpeedKmH) < 0.3f;
+        // bool inDrive = _carPhysicsData.Transmission.CurrentGear > 0;
 
         bool inForwardGear = _carPhysicsData.Transmission.CurrentGear > 0;
 

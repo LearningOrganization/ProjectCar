@@ -1,4 +1,5 @@
 using System;
+using Unity.Splines.Examples;
 using UnityEngine;
 using Zenject;
 
@@ -10,12 +11,14 @@ public class RaceBootstrapper : IInitializable
     private readonly StateMachine<IRaceState> _raceStateMachine;
     private readonly DiContainer _container;
     private RaceController _raceController;
+    private CarPhysicBatchProcessor _carPhysicBatchProcessor;
     //private Race
     
     public RaceBootstrapper(
         [Inject(Id = "CarContainer")] CarContainer carContainer,
         [Inject(Id = "CarStartPoint")] GameObject startPoint,
         [Inject(Id = "PlayerCamera")] GameObject playerCamera,
+        [Inject(Id = "CarPhysicBatchProcessor")] CarPhysicBatchProcessor carPhysicBatchProcessor,
         StateMachine<IRaceState> RaceStateMachine,
         DiContainer container,
         RaceController raceController,
@@ -27,6 +30,7 @@ public class RaceBootstrapper : IInitializable
         _raceStateMachine = RaceStateMachine;
         _container = container;
         _raceController = raceController;
+        _carPhysicBatchProcessor = carPhysicBatchProcessor;
     }
     public void Initialize()
     {
@@ -77,8 +81,21 @@ public class RaceBootstrapper : IInitializable
         }
         else
         {
+            CreateCarPhysicBatchProcessor();
             Debug.Log("Batch processing was turned on"); 
         }
         
+    }
+
+    private void CreateCarPhysicBatchProcessor()
+    {
+        var carPhysicBatchProcessor = _container.InstantiatePrefab(
+            _carPhysicBatchProcessor,
+            new Vector3(0, 0, 0), 
+            Quaternion.identity, 
+            null
+        );
+
+        //CarPhysicBatchProcessorcarPhysicBatchProcessor.InitPhysicBatchProcessor(_carContainer.CarsAmounts);
     }
 }

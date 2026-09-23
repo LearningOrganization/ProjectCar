@@ -6,6 +6,7 @@ namespace SpawnShop.Installers
     public class ProjectInstaller : MonoInstaller
     {
         [SerializeField] private CarContainer CarContainer;
+        [SerializeField] private CarPhysicBatchProcessor CarPhysicBatchProcessor;
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);

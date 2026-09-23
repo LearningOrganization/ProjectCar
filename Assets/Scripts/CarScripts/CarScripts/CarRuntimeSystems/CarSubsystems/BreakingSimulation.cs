@@ -1,8 +1,5 @@
-using Unity.Burst;
-using UnityEngine;
 using Unity.Mathematics;
 
-// TODO: make burst compilable
 [System.Serializable]
 public struct BrakeSimulation
 {
@@ -61,7 +58,7 @@ public struct BrakeSimulation
             releaseSpeed *= 4f;
         }
 
-        brakeData.HandbrakeEngagement = Mathf.MoveTowards(
+        brakeData.HandbrakeEngagement = AuxiliaryMathf.MoveTowards(
             brakeData.HandbrakeEngagement,
             target,
             releaseSpeed * deltaTime);
