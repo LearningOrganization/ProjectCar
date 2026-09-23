@@ -54,10 +54,9 @@ public class CarPhysicSystem : MonoBehaviour
         _carPhysicsData.Vehicle.Mass = _rb.mass;
         _carPhysicsData.Transmission.CurrentGear = 0;
 
-        _engineBatchConfig = ToBatchConfig(CarConfigData.EngineConfig);
+        _engineBatchConfig = CarConfigConverter.ToBatchConfig(CarConfigData.EngineConfig);
 
-        _transmissionBatchConfig = ToBatchConfig(CarConfigData.TransmissionConfig);
-
+        _transmissionBatchConfig = CarConfigConverter.ToBatchConfig(CarConfigData.TransmissionConfig);
     }
 
     void Start()
@@ -313,49 +312,6 @@ public class CarPhysicSystem : MonoBehaviour
         collider.GetWorldPose(out Vector3 position, out Quaternion rotation);
         mesh.position = position;
         mesh.rotation = rotation;
-    }
-
-
-    private  EngineBatchConfig ToBatchConfig(EngineConfig config)
-    {
-
-        EngineBatchConfig batch = new EngineBatchConfig
-        {
-            TorqueCurve = CarConfigConverter.FromAnimationCurve(config.TorqueCurve),
-            MinRPM = config.MinRPM,
-            MaxRPM = config.MaxRPM,
-            IdleRPM = config.IdleRPM,
-            EngineInertiaAccel = config.EngineInertiaAccel,
-            EngineInertiaDecel = config.EngineInertiaDecel,
-
-            BackTorque = config.BackTorque,
-            IdleThrottleBoost = config.IdleThrottleBoost,
-
-            CouplingStrength = config.CouplingStrength,
-
-            UseRevLimiter = config.UseRevLimiter,
-            RevLimiterRPM = config.RevLimiterRPM,
-            limiterType = config.limiterType
-        };
-        Debug.Log("Engine was batched");
-        return batch;
-    }
-
-    private  TransmissionBatchConfig ToBatchConfig(TransmissionConfig config)
-    {
-        TransmissionBatchConfig batch = new TransmissionBatchConfig
-        {
-            ForwardGearRatios = CarConfigConverter.ConvertFloatArray(config.ForwardGearRatios, nameof(config.ForwardGearRatios)),
-            ForwardGearsCount = config.ForwardGearRatios?.Length ?? 0,
-            ReverseRatio = CarConfigConverter.ConvertFloatArray(config.ReverseRatio, nameof(config.ReverseRatio)),
-            FinalDriveRatio = config.FinalDriveRatio,
-            TransmissionEfficiency = config.TransmissionEfficiency,
-
-            ShiftTime = config.ShiftTime,
-            ReverseMaxSpeed = config.ReverseMaxSpeed
-        };
-
-        return batch;
     }
 
 }
