@@ -11,15 +11,15 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField] private SteeringSimulation SteeringSimulation;
     // reorganize for more soa 
     [Header("Steer wheels")]
-    [SerializeField] private WheelCollider[] SteeringWheels;
+    [SerializeField] public WheelCollider[] SteeringWheels;
     [Header("Motorized wheels")]
-    [SerializeField] private WheelCollider[] MotorizedWheels;
+    [SerializeField] public WheelCollider[] MotorizedWheels;
 
     [Header("Wheels mesh")]
-    [SerializeField] private Transform LeftFrontWheelMesh;
-    [SerializeField] private Transform RightFrontWheelMesh;
-    [SerializeField] private Transform LeftRearWheelMesh;
-    [SerializeField] private Transform RightRearWheelMesh;
+    [SerializeField] public Transform LeftFrontWheelMesh;
+    [SerializeField] public Transform RightFrontWheelMesh;
+    [SerializeField] public Transform LeftRearWheelMesh;
+    [SerializeField] public Transform RightRearWheelMesh;
 
     [Header("Debug")]
     [SerializeField] private bool ShowDebugInfo = false;
@@ -36,7 +36,7 @@ public class CarPhysicSystem : MonoBehaviour
     [SerializeField]
     public TransmissionBatchConfig _transmissionBatchConfig;
 
-    private CarPhysicsData _carPhysicsData;
+    public CarPhysicsData _carPhysicsData;
     private PlayerInput _playerInput;
     private Rigidbody _rb;
     private float _uiTimer;

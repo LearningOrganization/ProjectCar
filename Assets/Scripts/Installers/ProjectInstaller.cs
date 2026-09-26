@@ -28,6 +28,7 @@ namespace SpawnShop.Installers
 
             // --- Car Container ---
             Container.BindInstance(CarContainer).WithId("CarContainer").AsSingle();
+            Container.BindInstance(CarPhysicBatchProcessor).WithId("CarPhysicBatchProcessor").AsSingle();
         }
 
     }

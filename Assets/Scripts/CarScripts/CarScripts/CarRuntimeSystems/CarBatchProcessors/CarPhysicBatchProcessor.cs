@@ -1,4 +1,5 @@
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Splines.Examples;
 using Unity.VisualScripting.FullSerializer;
 using UnityEditor.Callbacks;
@@ -7,7 +8,7 @@ using UnityEngine;
 public class CarPhysicBatchProcessor : MonoBehaviour
 {
     // config data 
-    private NativeArray<EngineBatchConfig> _engineBatchConfigs;
+    public NativeArray<EngineBatchConfig> _engineBatchConfigs;
     private NativeArray<TransmissionBatchConfig> _transmissionBatchConfigs;
     private NativeArray<BrakeConfig> _brakeConfigs;
     private NativeArray<SteeringConfig> _steeringConfigs;
@@ -22,7 +23,7 @@ public class CarPhysicBatchProcessor : MonoBehaviour
 
 
     private int _carAmount; 
-    private int _capacity;
+    public int _capacity;
     private PlayerInput _sharedPlayerInput;
 
     private AtmoEngineSimulation _atmoEngineSimulation;
@@ -43,7 +44,7 @@ public class CarPhysicBatchProcessor : MonoBehaviour
 
         _rigidbodies = new Rigidbody[capacity];
         _steeringWheels = new WheelCollider[capacity * 2];
-        _motorizedWheels = new WheelCollider[capacity * 4];
+        _motorizedWheels = new WheelCollider[capacity * 2];
         _wheelMeshes = new Transform[capacity * 4];
     }
 
@@ -58,7 +59,7 @@ public class CarPhysicBatchProcessor : MonoBehaviour
 
         if(_carAmount >= _capacity)
         {
-            Debug.Log("Overloading");
+            Debug.Log("Overloading of car amount");
             return -1;
         }
 
@@ -77,8 +78,8 @@ public class CarPhysicBatchProcessor : MonoBehaviour
         _rigidbodies[index] = rigidbody;
         _steeringWheels[index * 2 + 0] = leftFront;
         _steeringWheels[index * 2 + 1] = rightFront;
-        _motorizedWheels[index * 4 + 0] = left;
-        _motorizedWheels[index * 4 + 1] = right;
+        _motorizedWheels[index * 2 + 0] = left;
+        _motorizedWheels[index * 2 + 1] = right;
         _wheelMeshes[index * 4 + 0] = lfMesh;
         _wheelMeshes[index * 4 + 1] = rfMesh;
         _wheelMeshes[index * 4 + 2] = lrMesh;
@@ -214,7 +215,31 @@ public class CarPhysicBatchProcessor : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
+    private void UpdateGear(ref CarPhysicsData data, ref TransmissionBatchConfig transCfg)
+    {
+        switch (_sharedPlayerInput.ShiftCommand)
+        {
+            case GearShiftCommand.Up:
+                _transmissionSimulation.ShiftUp(ref data.Transmission, ref transCfg);
+                break;
+
+            case GearShiftCommand.Down:
+                if (data.Vehicle.SpeedKmH < transCfg.ReverseMaxSpeed)
+                {
+                    if (data.Transmission.CurrentGear == 0)
+                        data.Transmission.CurrentGear = -1;
+                    else
+                        _transmissionSimulation.ShiftDown(ref data.Transmission, ref transCfg);
+                }
+                else
+                {
+                    _transmissionSimulation.ShiftDown(ref data.Transmission, ref transCfg);
+                }
+                break;
+        }
+    }
+
     private void FixedUpdate()
     {
         _sharedPlayerInput = PlayerManager.Instance.Input.PlayerInput;
@@ -222,27 +247,48 @@ public class CarPhysicBatchProcessor : MonoBehaviour
         for(int i = 0; i < _carAmount; i++)
         {
             ref var data = ref _carPhysicsData.ExtractElementRef(i);
+            ref var transCfg = ref _transmissionBatchConfigs.ExtractElementRef(i);
 
-            data.DeltaTime = Time.deltaTime;
+            UpdateGear(ref data, ref transCfg);
+
+            data.DeltaTime = Time.fixedDeltaTime;
             data.Vehicle.Velocity = _rigidbodies[i].linearVelocity;
 
             ReadWheelData(i, ref data);
             UpdateVehicleSpeed(i, ref data);
-            
-            ref var steerCfg = ref _steeringConfigs.ExtractElementRef(i);
-            ref var transCfg = ref _transmissionBatchConfigs.ExtractElementRef(i);
-            ref var engineCfg = ref _engineBatchConfigs.ExtractElementRef(i);
-            ref var brakeCfg = ref _brakeConfigs.ExtractElementRef(i);
-            // should be upgraded by job & burst
-            _steeringSimulation.UpdatePhysics(ref data.Vehicle, ref data.Steering, ref steerCfg, ref _sharedPlayerInput, ref data.DeltaTime);
-            _transmissionSimulation.UpdatePhysics(ref data.Transmission, ref data.Engine, ref transCfg, ref data.DeltaTime);
-            _atmoEngineSimulation.UpdatePhysics(ref data.Engine, ref data.Transmission, ref data.WheelData, ref engineCfg, ref _sharedPlayerInput, ref data.DeltaTime);
-            _brakeSimulation.UpdatePhysics(ref data.Brake, ref brakeCfg, ref _sharedPlayerInput, ref data.DeltaTime);
+        }
 
+            var job = new CarPhysicsJob
+            {
+                PhysicsData = _carPhysicsData,
+                EngineConfigs = _engineBatchConfigs,
+                TransmissionConfigs = _transmissionBatchConfigs,
+                BrakeConfigs = _brakeConfigs,
+                SteeringConfigs = _steeringConfigs,
+                SharedInput = _sharedPlayerInput,
+                DeltaTime = Time.fixedDeltaTime
+            };
+
+            JobHandle handle = job.Schedule(_carAmount, 32); // try another params for innerloopBatchCount param
+            handle.Complete();
+
+        for(int i = 0; i < _carAmount; i++)
+        {
+            ref var data = ref _carPhysicsData.ExtractElementRef(i);
             ApplyBrakes(i, ref data);
             ApplyTorqueToWheels(i, ref data);
             ApplySteering(i, ref data);
             RenderWheels(i);
+        }
+    }
+
+    private void Start()
+    {
+        for(int i = 0; i < _carAmount; i++)
+        {
+            _atmoEngineSimulation.Init(ref _carPhysicsData.ExtractElementRef(i).Engine, ref _engineBatchConfigs.ExtractElementRef(i));
+
+            _carPhysicsData.ExtractElementRef(i).Transmission.ShiftTimer = 0;
         }
     }
 

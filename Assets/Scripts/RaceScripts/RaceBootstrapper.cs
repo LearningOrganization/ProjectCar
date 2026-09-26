@@ -44,58 +44,113 @@ public class RaceBootstrapper : IInitializable
     {
         if(!_carContainer.IsBatchProcessing)
         {
-            if(_carContainer.Car != null)
-            {
-                for(int i = 0; i < _carContainer.CarsAmounts; i++)
-                {   
-                    var car = _container.InstantiatePrefab(
-                        _carContainer.Car,
-                        new Vector3(_startPoint.transform.position.x, _startPoint.transform.position.y, _startPoint.transform.position.z + 2.5f*i),
-                        _startPoint.transform.rotation,
-                        null
-                    );
-
-                    Debug.Log($"Car  spawned: {i}");
-                    
-                    if ( i == 0)
-                    {
-                        // check later
-                        _raceController.SetPlayerCar(car.GetComponent<CarPhysicSystem>());
-
-                        var camera = _container.InstantiatePrefab(_playerCamera,
-                        _startPoint.transform.position,
-                        _startPoint.transform.rotation,
-                        null);
-
-                        if(camera != null)
-                        {
-                            camera.GetComponent<CameraRotation>().TargetObject = car.transform;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("car was not spawned");
-            } 
+            CreateOOPCars();
         }
         else
         {
             CreateCarPhysicBatchProcessor();
-            Debug.Log("Batch processing was turned on"); 
+            //Debug.Log("Batch processing was turned on"); 
         }
         
     }
 
     private void CreateCarPhysicBatchProcessor()
     {
-        var carPhysicBatchProcessor = _container.InstantiatePrefab(
+        var processor = _container.InstantiatePrefab(
             _carPhysicBatchProcessor,
             new Vector3(0, 0, 0), 
             Quaternion.identity, 
             null
-        );
+        ).GetComponent<CarPhysicBatchProcessor>();
 
-        //CarPhysicBatchProcessorcarPhysicBatchProcessor.InitPhysicBatchProcessor(_carContainer.CarsAmounts);
+        processor.InitPhysicBatchProcessor(_carContainer.CarsAmounts);
+
+        if(_carContainer.Car != null)
+        {
+            for(int i = 0; i < _carContainer.CarsAmounts; i++)
+            {
+                var car = _container.InstantiatePrefab(
+                    _carContainer.Car,
+                    new Vector3(_startPoint.transform.position.x, _startPoint.transform.position.y, _startPoint.transform.position.z + 2.5f*i),
+                    _startPoint.transform.rotation,
+                    null
+                );
+
+                var carLogic = car.GetComponent<CarPhysicSystem>();
+
+                Debug.Log($"Car  spawned: {i}");
+
+                processor.RegisterCar(
+                    carLogic.CarConfigData,
+                    car.GetComponent<Rigidbody>(),
+                    carLogic.SteeringWheels[0], carLogic.SteeringWheels[1],
+                    carLogic.MotorizedWheels[0], carLogic.MotorizedWheels[1],
+                    carLogic.LeftFrontWheelMesh, carLogic.RightFrontWheelMesh,
+                    carLogic.LeftRearWheelMesh, carLogic.RightRearWheelMesh
+                );
+
+                carLogic.enabled = false;
+
+                Debug.Log($"Car  spawned: {i}");
+
+                if( i == 0)
+                {
+                    //carLogic.enabled = true;
+                    //_raceController.SetPlayerCar(carLogic);
+
+
+                    var camera = _container.InstantiatePrefab(_playerCamera,
+                    _startPoint.transform.position,
+                    _startPoint.transform.rotation,
+                    null);
+
+                    if(camera != null)
+                    {
+                        camera.GetComponent<CameraRotation>().TargetObject = car.transform;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Car container is empty");
+        }     
+    }
+
+    private void CreateOOPCars()
+    {
+        if(_carContainer.Car != null)
+        {
+            for(int i = 0; i < _carContainer.CarsAmounts; i++)
+            {   
+                var car = _container.InstantiatePrefab(
+                    _carContainer.Car,
+                    new Vector3(_startPoint.transform.position.x, _startPoint.transform.position.y, _startPoint.transform.position.z + 2.5f*i),
+                    _startPoint.transform.rotation,
+                    null
+                );
+
+                Debug.Log($"Car  spawned: {i}");
+                
+                if ( i == 0)
+                {
+                    _raceController.SetPlayerCar(car.GetComponent<CarPhysicSystem>());
+
+                    var camera = _container.InstantiatePrefab(_playerCamera,
+                    _startPoint.transform.position,
+                    _startPoint.transform.rotation,
+                    null);
+
+                    if(camera != null)
+                    {
+                        camera.GetComponent<CameraRotation>().TargetObject = car.transform;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("car was not spawned");
+        } 
     }
 }
