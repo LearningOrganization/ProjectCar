@@ -1,6 +1,9 @@
+using Unity.Burst;
 using Unity.Mathematics;
 
 [System.Serializable]
+[BurstCompile]
+
 public struct SteeringSimulation
 { 
     public void UpdatePhysics(ref VehicleData vehicleData, ref SteeringData steeringData, ref SteeringConfig steeringConfig, ref PlayerInput playerInput, ref float DeltaTime)
@@ -12,7 +15,7 @@ public struct SteeringSimulation
     
         float targetAngle = steeringInput * currentMaxAngle;
         
-        float speed = math.abs(steeringInput) > 0.01f ? steeringConfig.SteerSpeed : steeringConfig.ReturnSpeed;
+        float speed = math.select(steeringConfig.ReturnSpeed, steeringConfig.SteerSpeed, math.abs(steeringInput) > 0.01f);
         steeringData.CurrentSteeringAngle = AuxiliaryMathf.MoveTowards(steeringData.CurrentSteeringAngle, targetAngle, speed * DeltaTime); 
     }
 

@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Burst;
 
 [System.Serializable]
+[BurstCompile]
 public struct TransmissionSimulation
 {
     public void UpdatePhysics(ref TransmissionData transmissionData, ref EngineData engineData, ref TransmissionBatchConfig transmissionBatchConfig, ref float deltaTime)

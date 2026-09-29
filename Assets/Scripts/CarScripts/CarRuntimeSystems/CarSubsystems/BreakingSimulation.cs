@@ -1,6 +1,8 @@
+using Unity.Burst;
 using Unity.Mathematics;
 
 [System.Serializable]
+[BurstCompile]
 public struct BrakeSimulation
 {
     public void UpdatePhysics(ref BrakeData brakeData, ref BrakeConfig brakeConfig, ref PlayerInput input, ref float deltaTime)

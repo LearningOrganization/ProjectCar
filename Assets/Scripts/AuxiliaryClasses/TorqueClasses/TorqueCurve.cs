@@ -18,7 +18,7 @@ public struct TorqueCurvePoint
 [Serializable]
 public struct TorqueCurve
 {
-    public FixedList512Bytes<TorqueCurvePoint> Points;
+    public FixedList128Bytes<TorqueCurvePoint> Points;
     public int Length => Points.Length;
 
     public float Evaluate (float currentRPM)
@@ -55,20 +55,15 @@ public struct TorqueCurve
 
     private int FindSegment(float rpm)
     {
-        int head = 0;
-        int tail = Points.Length - 1;
+        int count = Points.Length;
+        int result = -1;
 
-        while (head <= tail)
+        for (int i = 0; i < count - 1; i++)
         {
-            int middle = (head + tail) >> 1; // fast divide for 2
-
-            if(Points[middle].RPM <= rpm)
-                head = middle + 1;
-            else 
-                tail = middle - 1;
+            bool match = (rpm < Points[i + 1].RPM) & (result == -1);
+            result = math.select(result, i, match);
         }
 
-        return tail;
-
+        return result == -1 ? count - 2 : result;
     }
 }

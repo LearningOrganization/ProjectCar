@@ -1,9 +1,11 @@
+using Unity.Burst;
 using Unity.Mathematics; // - replace Mathf functions by math 
 using UnityEngine;
 
 
 // TODO: make burst compilable
 [System.Serializable]
+[BurstCompile]
 public struct AtmoEngineSimulation
 {
  

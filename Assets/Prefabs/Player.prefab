@@ -177,7 +177,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8126687921717604271}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfb2262d7149392499b76f1142ab99f1, type: 3}
   m_Name: 
@@ -185,5 +185,5 @@ MonoBehaviour:
   Sensitivity: 100
   TopClamp: 40
   BottomClamp: 5
-  Radius: 4
+  Radius: 100
   TargetObject: {fileID: 0}
